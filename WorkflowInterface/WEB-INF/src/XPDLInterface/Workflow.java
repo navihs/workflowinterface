@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Workflow{
 
-	/* Attributs Objets */
+	/* Attributs Objets  */
 	private ArrayList activities;
 	private ArrayList dataFields;
 	//private ArrayList participants;
