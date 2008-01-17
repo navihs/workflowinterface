@@ -2,7 +2,7 @@ package XPDLInterface;
 import java.util.*;
 
 /***
- * Classe défissant <!ELEMENT Package
+ * Classe défissant <!ELEMENT Package 
  * @author Laurent
  *
  */

@@ -17,7 +17,7 @@ public class Activity{
 	//private String TransitionRestriction
 	//private String Join	//XOR ou AND
 	//private String Split 	//XOR ou AND
-	//TransitionRefs ?
+	//TransitionRefs ? 
 	
 	public Activity()
 	{

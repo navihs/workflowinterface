@@ -2,7 +2,7 @@ package XPDLInterface;
 
 public class Transition {
 
-	/* Attributs Objets */
+	/* Attributs Objets */ 
 	private Activity from;
 	private Activity to;
 
