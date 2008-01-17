@@ -29,20 +29,20 @@ public class Parser {
 	
 	private List parseParticipants(Element participants)
 	{
-		/*Tant qui existe des participants (balise participants)
+		/*Tant qui existe des participants (noeud Participants, balise Participant)
 		 * on créer un objet Participant
 		 * on récupère l'élément <Participant Id="responsable_legal" dans Participant.id
 		 * Name="Responsable légal"> dans Participant.name
 		 * <ParticipantType Type="ROLE"/> </Participant> que l'on met dans Participant.type
 		 * fin tant_ue
-		 * On renvoit la liste de participant
+		 * On renvoit une liste de participant
 		 */
 		return null;
 	}
 	
 	private List parseDataFields(Element datafields)
 	{
-		/*Tant qui existe des datafields (balise datafields)
+		/*Tant qui existe des datafields (balise Datafields, balise Datafield)
 		 * on créé un objet DataField
 		 * on récupère l'élément <DataField Id="TRS_validation_proposition_medecin_institutionnel" dans DataField.id
 		 * IsArray="FALSE" dans DataField.isArray
@@ -50,14 +50,14 @@ public class Parser {
 		 * InitialValue dans DataField.initialValue
 		 * 	<DataType> <BasicType Type="BOOLEAN"/> </DataType> </DataField> dans DataField.dataType
 		 * fin tant_que
-		 * On renvoit la liste de datafield
+		 * On renvoit une liste de datafield
 		 */
 		return null;
 	}
 	
-	private List parseWorkflowProcess(Element workflowProcess)
+	private List parseWorkflowProcesses(Element workflowProcesses)
 	{
-		/*Tant qu'il existe des workflows (balise workflowProcess)
+		/*Tant qu'il existe des workflows (noeud WorkflowProcesses, balise WorkflowProcess)
 		 * 	Tant que WorkflowPackage.workflows[i] =! null) // ou .isnext();
 		 * 		id = <WorkflowProcess Id="initialisation"
 		 * 		si (!WorkflowPackage.workflowExist(id))
@@ -65,7 +65,7 @@ public class Parser {
 		 * 		finsi
 		 * 		i++;
 		 * 	fin tant_que
-		 * 
+		 * On renvoit une liste de Workflow
 		 */
 		return null;
 	}
@@ -76,32 +76,86 @@ public class Parser {
 		 * <WorkflowProcess Id="initialisation"  dans Workflow.id
 		 * Name="Initialisation DAI"> dans Workflow.name
 		 * 	<ProcessHeader> <Created>2006-07-24 15:10:03</Created> </ProcessHeader> dans Workflow.created
-		 * on lance parseActivity("Activities")
+		 * on lance parseActivities("Activities")
 		 * on récupère une liste d'Activity que l'on ajoute à Workflow.activities
 		 * on lance parseDataFields("DataFields")
 		 * on récupère une liste de DataFields que l'on ajoute à Workflow.dataFields
 		 * on lance parseFormalParameters("FormalParameters")
 		 * on récupère une liste de FormalParameters que l'on ajoute à Workflow.dataFields
-		 * 
-		 * on récupère l'élément <DataField Id="TRS_validation_proposition_medecin_institutionnel" dans DataField.id
-		 * IsArray="FALSE" dans DataField.isArray
-		 * Name="TRS Validation proposition medecin institutionnel"> dans DataField.name
-		 * InitialValue dans DataField.initialValue
-		 * 	<DataType> <BasicType Type="BOOLEAN"/> </DataType> </DataField> dans DataField.dataType
-		 * On renvoit la liste de datafield
+		 * on lance parseTransitions("Transitions")
+		 * on récupère une liste de Transitions que l'on ajoute à Workflow.transitions
+		 * on lance parseExtendedAttributes("ExtendedAttributes")
+		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à WorkflowPackage.extendedAttributes
+		 * On renvoit un Workflow
 		 */
 		return null;
 	}
 	
-	private List Activities(Element Activities)
+	private List parseActivities(Element activities)
+	{
+		/*Tant qui existe des activities (noeud Activities, balise Activity)
+		 * 	on lance parseActivity("Activity")
+		 * 	on récupère une Activity
+		 *  si (Activity.subflow non null)
+		 *  	si (WorkflowPackage.workflowExist =! null)
+		 *  		Activity.subflow=WorkflowPackage.workflowExist;
+		 * 		sinon
+		 * 			workflowProcess = recupérer l'element avec getWorkflowById(id)
+		 * 			parseWorkflow(Element workflowProcess);
+		 * 		finsi
+		 * 	si
+		 *  
+		 * fin tant_que
+		 * On renvoit une liste d'Activity
+		 */
+		return null;
+	}
+	
+	
+	
+	private List Activity(Element activity)
+	{
+		/* on créé un objet Activity
+		 * <Activity Id="temps_scolaire" dans Activity.id
+		 * Name="Temps scolaire">  dans Activity.name
+		 * si Implementation existe
+		 * 		<Implementation> <SubFlow Execution="SYNCHR" dans Activity.subflow
+		 * 		Id="temps_scolaire"/> </Implementation> dans Activity.subflow.id
+		 * sinon
+		 * Activity.subflow =null;
+		 * <Performer>medecin_institutionnel</Performer> Activity.performer
+		 * <StartMode><Automatic/></StartMode> dans Activity.startMode
+		 * <FinishMode><Automatic/></FinishMode> dans Activity.finishMode
+		 * <TransitionRestriction> <Join Type="XOR"/>  dans Activity.join
+		 * <Split Type="XOR"> </Split> dans Activity.split
+		 * on lance parseExtendedAttributes("ExtendedAttributes")
+		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à Activity.extendedAttributes
+		 * On renvoit une Activity
+		 */
+		return null;
+	}
+	
+	private List parseFormalParameters(Element formalParameters)
 	{
 		return null;
 	}
 	
-	private List parseFormalParameters(Element FormalParameters)
+	private List parseTransitions(Element transitions)
+	{
+		/*
+		 * Parse dans parseWorkflowProcess
+		 */
+		return null;
+	}
+	
+	private List parseExtendedAttributes(Element extendedAttributes)
 	{
 		return null;
 	}
 	
+	private Workflow getWorkflowById(String id)
+	{
+		return null;
 	
+	}
 }
