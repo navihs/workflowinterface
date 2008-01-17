@@ -43,12 +43,19 @@ public class Parser {
 	{
 		/*Tant qui existe des datafields (balise datafields)
 		 * on créer un objet DataField
-		 * on récupère l'élément <Participant Id="responsable_legal" dans Participant.id
-		 * Name="Responsable légal"> dans Participant.name
-		 * <ParticipantType Type="ROLE"/> </Participant> que l'on met dans Participant.type
-		 * On renvoit la liste de participant
+		 * on récupère l'élément <DataField Id="TRS_validation_proposition_medecin_institutionnel" dans DataField.id
+		 * IsArray="FALSE" dans DataField.isArray
+		 * Name="TRS Validation proposition medecin institutionnel"> dans DataField.name
+		 * InitialValue dans DataField.initialValue
+		 * 	<DataType> <BasicType Type="BOOLEAN"/> </DataType> </DataField> dans DataField.dataType
+		 * On renvoit la liste de datafield
 		 */
 		return null;
+	}
+	
+	private List parseWorkflowProcess(Element datafields)
+	{
+	}
 	}
 	
 }
