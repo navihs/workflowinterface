@@ -11,6 +11,7 @@ public class WorkflowPackage {
 	/* Attributs Objets */
 	private ArrayList participants;
 	private ArrayList workflows;
+	private ArrayList extendedAttributes;
 	
 	/* Attributs String*/
 	/***
