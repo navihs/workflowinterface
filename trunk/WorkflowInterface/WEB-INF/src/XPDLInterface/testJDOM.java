@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Iterator;
+import java.text.*;
 
 public class testJDOM {
 
@@ -32,15 +33,15 @@ public class testJDOM {
 	
 	public String parsePackage()
 	{
-		List elements = racine.getChildren("PackageHeader");
-		Element el1 = (Element)elements.get(0);
-		return el1.getName();
-	    //Element packageHeader = racine.getChildren();
-	   // return String.valueOf(racine.getChildren().size());
-	   // return String.valueOf(packageHeader.getChildren().size());
-/*	    Element created = packageHeader.getChild("Created");
-	    return created.getText();*/
-	    
+		Element packageHeader = racine.getChild("PackageHeader");
+		Element created = packageHeader.getChild("Created");
+		DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
+		Date d=null;
+		try{
+			d = dateFormat.parse(created.getValue());
+		}catch(Exception err){}
+		
+		return "err";
 	    /* Attributs String*/
 		/***
 		 * <!ELEMENT Created
