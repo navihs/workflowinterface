@@ -10,9 +10,10 @@ import java.util.*;
 public class WorkflowPackage {
 
 	/* Attributs Objets */
-	private ArrayList participants;
-	private ArrayList workflows;
-	private ArrayList extendedAttributes;
+	private List participants;
+	private List workflows;
+	private List extendedAttributes;
+	private List dataFields;
 	
 	/* Attributs String*/
 	/***
@@ -33,4 +34,23 @@ public class WorkflowPackage {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public void setCreated(Date d)
+	{
+		this.created = d;
+	}
+	
+	public void setDataFields(List dataFields)
+	{
+		this.dataFields = dataFields;
+	}
+	
+	public void setExtendedAttributes(List extendedAttributes)
+	{
+		this.extendedAttributes = extendedAttributes;
+	}
+	
+	public void setWorkflows()
+	{}
+	
 }
