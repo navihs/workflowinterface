@@ -13,7 +13,8 @@ public class testJDOM {
 
 	private org.jdom.Element racine;
 	private org.jdom.Document document;
-
+	WorkflowPackage workflowPackage;
+	
 	public testJDOM()
 	{
 		initParser();
@@ -46,9 +47,9 @@ public class testJDOM {
 		 * on lance parseExtendedAttributes("ExtendedAttributes")
 		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à WorkflowPackage.extendedAttributes
 		 */
-		WorkflowPackage workflowPackage;
 		Element packageHeader = racine.getChild("PackageHeader");
-		workflowPackage = new WorkflowPackage(packageHeader.getAttribute("Id").getValue(),packageHeader.getAttribute("Name").getValue());
+		
+		workflowPackage = new WorkflowPackage(racine.getAttribute("Id").getValue(),racine.getAttribute("Name").getValue());
 		
 		DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
 		Element created = packageHeader.getChild("Created");
@@ -56,7 +57,10 @@ public class testJDOM {
 			workflowPackage.setCreated(dateFormat.parse(created.getValue()));
 		}catch(Exception err){}
 		
-		
+	}
+	public String aff()
+	{
+		return "id : "+workflowPackage.getId()+"<br>"+workflowPackage.getName()+"<br>"+workflowPackage.getCreated().toString();
 	}
 
 }

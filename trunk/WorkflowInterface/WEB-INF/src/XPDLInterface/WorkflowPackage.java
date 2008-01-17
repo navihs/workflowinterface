@@ -10,24 +10,44 @@ import java.util.*;
 public class WorkflowPackage {
 
 	/* Attributs Objets */
+	
 	private List participants;
+	public List getParticipants(){return this.participants;}
+	public void setParticipants(List participants){this.participants = participants;}
+	
 	private List workflows;
+	public List getWorkflows(){return this.workflows;}
+	public void setWorkflows(List workflows){this.workflows = workflows;}
+	
 	private List extendedAttributes;
+	public List getExtendedAttributes(){return this.extendedAttributes;}
+	public void setExtendedAttributes(List extendedAttributes){this.extendedAttributes = extendedAttributes;}
+	
 	private List dataFields;
+	public List getDataFields(){return this.dataFields;}
+	public void setDataFields(List dataFields){this.dataFields = dataFields;}
 	
 	/* Attributs String*/
+	
 	/***
 	 * <!ELEMENT Created
 	 */
 	private Date created;
+	public Date getCreated(){return this.created;}
+	public void setCreated(Date d){this.created = d;}
+	
 	/***
 	 * <!ATTLIST Package id
 	 */
 	private String id;
+	public String getId(){return this.id;}
+	
 	/***
 	 * <!ATTLIST Package name
 	 */
 	private String name;
+	public String getName(){return this.name;}
+	
 	
 	public WorkflowPackage(String id, String name)
 	{
@@ -35,45 +55,18 @@ public class WorkflowPackage {
 		this.name = name;
 	}
 	
-	public void setCreated(Date d)
-	{
-		this.created = d;
-	}
+	public void addParticipants(List newParticipants){this.participants.addAll(newParticipants);}
 	
-	public void setDataFields(List dataFields)
-	{
-		this.dataFields = dataFields;
-	}
-	
-	public void setExtendedAttributes(List extendedAttributes)
-	{
-		this.extendedAttributes = extendedAttributes;
-	}
-	
-	public void setWorkflows(List workflows)
-	{
-		this.workflows = workflows;
-	}
-	
-	public void setParticipants(List participants)
-	{
-		this.participants = participants;
-	}
-	
-	public void addParticipants(List newParticipants)
-	{
-		this.participants.addAll(newParticipants);
-	}
-	
-	public boolean workflowExist(String id)
+	public Workflow workflowExist(String id)
 	{
 		Iterator it = workflows.iterator();
 		while(it.hasNext())
 		{
-			if(((Workflow)(it.next())).getId().equals(id))
-				return true;
+			Workflow wf = (Workflow)it.next();
+			if(wf.getId().equals(id))
+				return wf;
 		}
-		return false;
+		return null;
 	}
 	
 }

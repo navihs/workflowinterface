@@ -1,7 +1,10 @@
 <HTML>
 <BODY>
 <%@ page import="XPDLInterface.*" %>
-<% testJDOM parser = new testJDOM(); %>
-<%=parser.parsePackage() %>
+<% 
+testJDOM parser = new testJDOM(); 
+parser.parsePackage();
+%>
+<%=parser.aff() %>
 </BODY>
 </HTML>
