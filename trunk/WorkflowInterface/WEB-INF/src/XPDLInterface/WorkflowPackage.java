@@ -50,7 +50,19 @@ public class WorkflowPackage {
 		this.extendedAttributes = extendedAttributes;
 	}
 	
-	public void setWorkflows()
-	{}
+	public void setWorkflows(List workflows)
+	{
+		this.workflows = workflows;
+	}
+	
+	public void setParticipants(List participants)
+	{
+		this.participants = participants;
+	}
+	
+	public void addParticipants(List newParticipants)
+	{
+		this.participants.addAll(newParticipants);
+	}
 	
 }
