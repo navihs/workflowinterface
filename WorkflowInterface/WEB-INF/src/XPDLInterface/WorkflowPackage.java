@@ -1,4 +1,5 @@
 package XPDLInterface;
+
 import java.util.*;
 
 /***
@@ -27,8 +28,9 @@ public class WorkflowPackage {
 	 */
 	private String name;
 	
-	public WorkflowPackage()
+	public WorkflowPackage(String id, String name)
 	{
-		
+		this.id = id;
+		this.name = name;
 	}
 }
