@@ -8,6 +8,6 @@
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
 	<classpathentry kind="src" path="WEB-INF/src"/>
 	<classpathentry kind="src" output="work" path="work"/>
-	<classpathentry kind="lib" path="C:/Logiciels/ProjetTB/apache-tomcat-6.0.14/apache-tomcat-6.0.14/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="C:/PRO301/Installs/jdom-1.1/jdom-1.1/build/jdom.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>
