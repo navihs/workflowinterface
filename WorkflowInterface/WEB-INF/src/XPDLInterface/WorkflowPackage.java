@@ -65,4 +65,12 @@ public class WorkflowPackage {
 		this.participants.addAll(newParticipants);
 	}
 	
+	public boolean workflowExist(String id)
+	{
+		/*
+		 * On test l'existance d'un objet Workflow dans workflows en fonction de son id 
+		 */
+		return true;
+	}
+	
 }
