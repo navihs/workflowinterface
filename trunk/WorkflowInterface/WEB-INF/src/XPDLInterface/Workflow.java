@@ -6,6 +6,7 @@ public class Workflow{
 	/* Attributs Objets  */
 	private ArrayList activities;
 	private ArrayList dataFields;
+	private ArrayList extendedAttributes;
 	//private ArrayList participants;
 	
 	/* Attributs String */

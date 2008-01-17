@@ -7,7 +7,8 @@ public class Activity{
 	private Participant performer;
 	private Workflow subflow;
 	private ArrayList transitions;
-	
+	private ArrayList extendedAttributes;
+
 	/* Attributs String */
 	private String description;
 	private String limit;
