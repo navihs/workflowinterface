@@ -1,17 +1,36 @@
 package XPDLInterface;
+import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import org.jdom.*;
+import org.jdom.input.SAXBuilder;
 
 public class Parser {
-
+	
+	private org.jdom.Element racine;
+	private org.jdom.Document document;
+	private WorkflowPackage workflowPackage;
+	
 	public Parser()
 	{
-		
+		initParser();
+	}
+	
+	private void initParser()
+	{
+		 SAXBuilder sxb = new SAXBuilder();
+	     try
+	     {
+	    	 document = sxb.build(new File("c:\\DAI3.1.xpdl"));
+	     }
+	     catch(Exception e){}
+	     racine = document.getRootElement();
 	}
 	
 	public void parsePackage()
 	{
-		/*on lit le Header,
+		/* on lit le Header,
 		 * on créé un objet WorkflowPackage
 		 * on récupère l'élément <Package Id="dossier_accueil_individualise" Name="Dossier d'accueil individualisé" 
 		 * que l'on met dans WorkflowPackage.id et WorkflowPackage.name
@@ -25,6 +44,27 @@ public class Parser {
 		 * on lance parseExtendedAttributes("ExtendedAttributes")
 		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à WorkflowPackage.extendedAttributes
 		 */
+		Element packageHeader = racine.getChild("PackageHeader");
+		
+		this.workflowPackage = new WorkflowPackage(racine.getAttribute("Id").getValue(),racine.getAttribute("Name").getValue());
+		
+		DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
+		Element created = packageHeader.getChild("Created");
+		try{
+			workflowPackage.setCreated(dateFormat.parse(created.getValue()));
+		}catch(Exception err){}
+		
+		if(racine.getChild("Participants")!=null)
+			workflowPackage.setParticipants(parseParticipants(racine.getChild("Participants")));
+		
+		if(racine.getChild("DataFields")!=null)
+			workflowPackage.setDataFields(parseDataFields(racine.getChild("DataFields")));
+		
+		if(racine.getChild("WorkflowProcesses")!=null)
+			workflowPackage.setWorkflows(parseWorkflowProcesses(racine.getChild("WorkflowProcesses")));
+		
+		if(racine.getChild("ExtendedAttributes")!=null)
+			workflowPackage.setExtendedAttributes(parseExtendedAttributes(racine.getChild("ExtendedAttributes")));
 	}
 	
 	private List parseParticipants(Element participants)
