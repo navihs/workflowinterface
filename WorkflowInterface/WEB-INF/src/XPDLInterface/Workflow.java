@@ -20,4 +20,9 @@ public class Workflow{
 	{
 		
 	}
+	
+	public String getId()
+	{
+		return this.id;
+	}
 }

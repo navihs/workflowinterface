@@ -67,10 +67,13 @@ public class WorkflowPackage {
 	
 	public boolean workflowExist(String id)
 	{
-		/*
-		 * On test l'existance d'un objet Workflow dans workflows en fonction de son id 
-		 */
-		return true;
+		Iterator it = workflows.iterator();
+		while(it.hasNext())
+		{
+			if(((Workflow)(it.next())).getId().equals(id))
+				return true;
+		}
+		return false;
 	}
 	
 }
