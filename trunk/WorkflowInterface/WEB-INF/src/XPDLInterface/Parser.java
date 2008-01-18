@@ -44,9 +44,10 @@ public class Parser {
 		 * on lance parseExtendedAttributes("ExtendedAttributes")
 		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à WorkflowPackage.extendedAttributes
 		 */
-		Element packageHeader = racine.getChild("PackageHeader");
 		
 		this.workflowPackage = new WorkflowPackage(racine.getAttribute("Id").getValue(),racine.getAttribute("Name").getValue());
+		
+		Element packageHeader = racine.getChild("PackageHeader");
 		
 		DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
 		Element created = packageHeader.getChild("Created");
