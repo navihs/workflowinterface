@@ -9,8 +9,6 @@ import java.util.*;
  */
 public class WorkflowPackage {
 
-	/* Attributs Objets */
-	
 	private List participants;
 	public List getParticipants(){return this.participants;}
 	public void setParticipants(List participants){this.participants = participants;}
@@ -26,8 +24,6 @@ public class WorkflowPackage {
 	private List dataFields;
 	public List getDataFields(){return this.dataFields;}
 	public void setDataFields(List dataFields){this.dataFields = dataFields;}
-	
-	/* Attributs String*/
 	
 	/***
 	 * <!ELEMENT Created

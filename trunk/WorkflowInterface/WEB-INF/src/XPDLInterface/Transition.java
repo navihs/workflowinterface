@@ -1,21 +1,34 @@
 package XPDLInterface;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Transition {
 
-	/* Attributs Objets */ 
 	private Activity from;
-	private Activity to;
-	private ArrayList extendedAttributes;
-
-	/* Attributs String */
-	private String id;
-	private String conditionType;
-	private String condition;
+	public Activity getFrom(){return this.from;}
+	public void setFrom(Activity tFrom){this.from = tFrom;}
 	
-	public Transition()
+	private Activity to;
+	public Activity getTo(){return this.to;}
+	public void setTo(Activity tTo){this.to = tTo;}
+	
+	private List extendedAttributes;
+	public List getExtendedAttributes(){return this.extendedAttributes;}
+	public void setExtendedAttributes(List tExtendedAttributes){this.extendedAttributes = tExtendedAttributes;}
+	
+	private String id;
+	public String getId(){return this.id;}
+	
+	private String conditionType;
+	public String getConditionType(){return this.conditionType;}
+	
+	private String condition;
+	public String getCondition(){return this.condition;}
+	
+	public Transition(String tId, String tConditionType, String tCondition)
 	{
-		
+		this.id = tId;
+		this.conditionType = tConditionType;
+		this.condition = tCondition;
 	}
 }

@@ -2,14 +2,23 @@ package XPDLInterface;
 
 public class Participant {
 
-	/* Attributs String */
 	private String id;
-	private String name;
-	private String type;
-	private String description;
+	public String getId(){return this.id;}
 	
-	public Participant()
+	private String name;
+	public String getName(){return this.name;}
+
+	private String type;
+	public String getType(){return this.type;}
+	
+	private String description;
+	public String getDescription(){return this.description;}
+
+	public Participant(String pId, String pName, String pType, String pDescription)
 	{
-		
+		this.id = pId;
+		this.name = pName;
+		this.type = pType;
+		this.description = pDescription;
 	}
 }
