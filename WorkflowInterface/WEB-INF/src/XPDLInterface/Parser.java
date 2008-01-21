@@ -82,6 +82,7 @@ public class Parser {
 		 */
 		
 		List participantsReturn;
+		Element participant = participants.getChild("Participant");
 		
 		/*
 		//Pour parcourir tous les noeuds
@@ -89,19 +90,21 @@ public class Parser {
 		int tailleListParticipants = listeParticipants.getLength();
 		int i =0;*/
 		
-		while (participants.getNextSibling()!=null)
+		while (participant=null)
 		{
 			String type=null;
 			String desc=null;
-			if(participants.getChild("ParticipantType")!=null)
-				type = participants.getAttribute("Type").getvalue());
-			if(participants.getChild("Description")!=null)
-				desc = participants.getTextContent();
+			if(participant.getChild("ParticipantType")!=null)
+				type = participant.getAttribute("Type").getvalue());
+			if(participant.getChild("Description")!=null)
+				desc = participant.getTextContent();
 
-			Participant p = new Participant(participants.getAttribute("Id").getValue(), participants.getAttribute("Name").getValue(), type, desc);
+			Participant p = new Participant(participant.getAttribute("Id").getValue(), participant.getAttribute("Name").getValue(), type, desc);
 			participantsReturn.add(p);			
-			participants=participants.getNextSibling();
+			participant=participant.getNextSibling();
 		}
+		
+			
 		return participantsReturn;
 	}
 	
@@ -126,7 +129,8 @@ public class Parser {
 		int i =0;
 		//Element dataType = datafields.getChild("DataType");
 		*/
-		while (datafields.getNextSibling()=!null)
+			
+		while (datafields=!null) 
 		{
 			/* Recup le Type
 			String type=null;
@@ -137,6 +141,8 @@ public class Parser {
 			datafieldsReturn.add(d);			
 			datafields=datafields.getNextSibling()
 		}
+		
+			
 		return datafieldsReturn;
 		
 	}
@@ -152,7 +158,23 @@ public class Parser {
 		 * 		i++;
 		 * 	fin tant_que
 		 * On renvoit une liste de Workflow
+		 * 
+		 * do
+		{
+			while (workflowPackage.workflows.isnext()=!null)
+			{
+				if(!WorkflowPackage.workflowExist(id))
+					parseWorkflow(Element workflowProcess)
+			}
+			
+		}
+		while(workflowProcesses.getNextSibling()=!null)
+		
 		 */
+		
+		
+		
+		
 		return null;
 	}
 	
@@ -173,6 +195,9 @@ public class Parser {
 		 * on lance parseExtendedAttributes("ExtendedAttributes")
 		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à WorkflowPackage.extendedAttributes
 		 * On renvoit un Workflow
+		 * Element processHeader = workflowProcess.get
+		Workflow w = new Workflow(workflowProcess.getAttribute("Id").getValue(),workflowProcess.getAttribute("Name").getValue())
+		return w;
 		 */
 		return null;
 	}
@@ -246,6 +271,31 @@ public class Parser {
 	
 	private List parseExtendedAttributes(Element extendedAttributes)
 	{
+		/*Tant qui existe des ExtendedAttributes (balise ExtendedAttributes, noeud ExtendedAttribute )
+		 * <ExtendedAttribute Name="EDITING_TOOL" Value="Together Workflow Editor Community Edition"/>
+		 * on créé un objet ExtendedAttribute
+		 * fin tant_que
+		 * On renvoit une liste de ExtendedAttribute
+		 */
+		List extendedAttributesReturn;
+		Element extendedAttribute = extendedAttributes.getChild("ExtendedAttribute");
+					
+		while (extendedAttribute=!null) 
+		{
+			/* Recup le Type
+			String type=null;
+			if(dataType.getChild("BasicType")!=null)
+				type = dataType.getChild("BasicType").getAttribute("Type").getvalue());
+			*/
+			ExtendedAttribute e = new DataField(extendedAttribute.getAttribute("Name").getValue(),extendedAttribute.getAttribute("Value").getValue());
+			extendedAttributesReturn.add(e);
+			extendedAttribute=extendedAttribute.getNextSibling();
+		}
+		
+			
+		return extendedAttributesReturn;
+		
+		
 		return null;
 	}
 	/*
@@ -255,21 +305,23 @@ public class Parser {
 	private Workflow getWorkflowById(String id)
 	{
 		/*Tant qu'il existe des workflows (noeud WorkflowProcesses, balise WorkflowProcess)
-		 * 	si worflow.id = WorkflowProcess
+		 * 	si workflow.id = WorkflowProcess
 		 * On renvoit une liste de Workflow
-		 */
-		Element workflowProcesses = racine.getChild("WorkflowProcesses");
+		 * Element workflowProcesses = racine.getChild("WorkflowProcesses");
 		NodeList listeWorkflowProcesses = workflowProcesses.getChildNodes();
 		int tailleListWorkflowProcesses = listeWorkflowProcesses.getLength();
 		int i= 0;
 		
 		while (i<=tailleListWorkflowProcesses)
 		{
+			if workflow
 			
 		}
 		
 		
 		Element workflow = workflowProcesses.getChild("WorkflowProcess");
+		 */
+		
 		return null;
 	
 	}
