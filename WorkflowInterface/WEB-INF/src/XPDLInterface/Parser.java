@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 public class Parser {
 	
@@ -94,10 +92,12 @@ public class Parser {
 		{
 			String type=null;
 			String desc=null;
-			if(participant.getChild("ParticipantType")!=null)
-				type = participant.getAttribute("Type").getvalue());
-			if(participant.getChild("Description")!=null)
-				desc = participant.getTextContent();
+			if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
+			//if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue()!=null)
+				//type = participant.getAttribute("Type").getvalue());
+			if((desc = participant.getChild("Description").getTextContent())!=null)
+			//if(participant.getChild("Description")!=null)
+				//desc = participant.getTextContent();
 
 			Participant p = new Participant(participant.getAttribute("Id").getValue(), participant.getAttribute("Name").getValue(), type, desc);
 			participantsReturn.add(p);			
@@ -122,6 +122,7 @@ public class Parser {
 		 */
 		
 		List datafieldsReturn;
+		Element datafield = datafields.getChild("DataField");
 		
 		/*//Pour parcourir tous les noeuds
 		NodeList listeDatafields = datafields.getChildNodes();
@@ -130,16 +131,16 @@ public class Parser {
 		//Element dataType = datafields.getChild("DataType");
 		*/
 			
-		while (datafields=!null) 
+		while (datafield=!null) 
 		{
 			/* Recup le Type
 			String type=null;
 			if(dataType.getChild("BasicType")!=null)
 				type = dataType.getChild("BasicType").getAttribute("Type").getvalue());
 			*/
-			DataField d = new DataField(datafields.getAttribute("Id").getValue(), datafields.getAttribute("Name").getValue(), datafields.getAttribute("IsArray").getValue());
+			DataField d = new DataField(datafield.getAttribute("Id").getValue(), datafield.getAttribute("Name").getValue(), datafield.getAttribute("IsArray").getValue());
 			datafieldsReturn.add(d);			
-			datafields=datafields.getNextSibling()
+			datafield=datafield.getNextSibling()
 		}
 		
 			
