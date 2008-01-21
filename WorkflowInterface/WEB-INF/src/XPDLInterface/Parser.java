@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class Parser {
 	
@@ -78,7 +80,29 @@ public class Parser {
 		 * fin tant_ue
 		 * On renvoit une liste de participant
 		 */
-		return null;
+		
+		List participantsReturn;
+		
+		/*
+		//Pour parcourir tous les noeuds
+		NodeList listeParticipants = participants.getChildNodes();
+		int tailleListParticipants = listeParticipants.getLength();
+		int i =0;*/
+		
+		while (participants.getNextSibling()!=null)
+		{
+			String type=null;
+			String desc=null;
+			if(participants.getChild("ParticipantType")!=null)
+				type = participants.getAttribute("Type").getvalue());
+			if(participants.getChild("Description")!=null)
+				desc = participants.getTextContent();
+
+			Participant p = new Participant(participants.getAttribute("Id").getValue(), participants.getAttribute("Name").getValue(), type, desc);
+			participantsReturn.add(p);			
+			participants=participants.getNextSibling();
+		}
+		return participantsReturn;
 	}
 	
 	private List parseDataFields(Element datafields)
@@ -93,7 +117,28 @@ public class Parser {
 		 * fin tant_que
 		 * On renvoit une liste de datafield
 		 */
-		return null;
+		
+		List datafieldsReturn;
+		
+		/*//Pour parcourir tous les noeuds
+		NodeList listeDatafields = datafields.getChildNodes();
+		int tailleListDatafields = listeDatafields.getLength();
+		int i =0;
+		//Element dataType = datafields.getChild("DataType");
+		*/
+		while (datafields.getNextSibling()=!null)
+		{
+			/* Recup le Type
+			String type=null;
+			if(dataType.getChild("BasicType")!=null)
+				type = dataType.getChild("BasicType").getAttribute("Type").getvalue());
+			*/
+			DataField d = new DataField(datafields.getAttribute("Id").getValue(), datafields.getAttribute("Name").getValue(), datafields.getAttribute("IsArray").getValue());
+			datafieldsReturn.add(d);			
+			datafields=datafields.getNextSibling()
+		}
+		return datafieldsReturn;
+		
 	}
 	
 	private List parseWorkflowProcesses(Element workflowProcesses)
@@ -178,6 +223,16 @@ public class Parser {
 	
 	private List parseFormalParameters(Element formalParameters)
 	{
+		/*Tant qui existe des formalParameters (balise FormalParameters, noeud FormalParameter)
+		 * on récupère l'élément <FormalParameter Id="idEnfant" Mode="IN">
+		 * on récupère <DataType><BasicType Type="STRING"/></DataType> le type noeud DataType
+		 * on récupère <Description> table DAI.	</Description> la description
+		 * </FormalParameter>
+		 * on créé un objet FormalParameter
+		 * fin tant_que
+		 * On renvoit une liste de FormalParameter
+		 */
+				
 		return null;
 	}
 	
@@ -193,9 +248,28 @@ public class Parser {
 	{
 		return null;
 	}
-	
+	/*
+	 * Récupère le Workflow dans le fichier Java en fonction de son id
+	 * 
+	 */
 	private Workflow getWorkflowById(String id)
 	{
+		/*Tant qu'il existe des workflows (noeud WorkflowProcesses, balise WorkflowProcess)
+		 * 	si worflow.id = WorkflowProcess
+		 * On renvoit une liste de Workflow
+		 */
+		Element workflowProcesses = racine.getChild("WorkflowProcesses");
+		NodeList listeWorkflowProcesses = workflowProcesses.getChildNodes();
+		int tailleListWorkflowProcesses = listeWorkflowProcesses.getLength();
+		int i= 0;
+		
+		while (i<=tailleListWorkflowProcesses)
+		{
+			
+		}
+		
+		
+		Element workflow = workflowProcesses.getChild("WorkflowProcess");
 		return null;
 	
 	}
