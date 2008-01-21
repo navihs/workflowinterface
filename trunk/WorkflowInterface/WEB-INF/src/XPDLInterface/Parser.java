@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
+import org.w3c.dom.*;
+import org.w3c.dom.Element;
 
 public class Parser {
 	
@@ -81,6 +83,8 @@ public class Parser {
 		
 		List participantsReturn;
 		Element participant = participants.getChild("Participant");
+		String type=null;
+		String desc=null;
 		
 		/*
 		//Pour parcourir tous les noeuds
@@ -90,8 +94,7 @@ public class Parser {
 		
 		while (participant=null)
 		{
-			String type=null;
-			String desc=null;
+			
 			if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
 			//if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue()!=null)
 				//type = participant.getAttribute("Type").getvalue());
@@ -142,8 +145,6 @@ public class Parser {
 			datafieldsReturn.add(d);			
 			datafield=datafield.getNextSibling()
 		}
-		
-			
 		return datafieldsReturn;
 		
 	}
@@ -258,6 +259,29 @@ public class Parser {
 		 * fin tant_que
 		 * On renvoit une liste de FormalParameter
 		 */
+		
+		List formalParametersReturn;
+		Element formalParameter = formalParameters.getChild("FormalParameter");
+		String dataType=null;
+		String desc=null;
+			
+		while (formalParameter=!null) 
+		{
+			/* Recup le Type
+			String type=null;
+			if(dataType.getChild("BasicType")!=null)
+				type = dataType.getChild("BasicType").getAttribute("Type").getvalue());
+			*/
+			if((dataType = formalParameter.getChild("DataType").getChild("BasicType").getAttribute("Type").getvalue())!=null)
+			if((desc = participant.getChild("Description").getTextContent())!=null)
+			
+			FormalParameter f = new FormalParameter(formalParameter.getAttribute("Id").getValue(), formalParameter.getAttribute("Mode").getValue(), dataType, desc);
+			formalParametersReturn.add(f);	
+			formalParameter=formalParameter.getNextSibling();			
+		}
+		
+			
+		return datafieldsReturn;
 				
 		return null;
 	}
@@ -290,7 +314,7 @@ public class Parser {
 			*/
 			ExtendedAttribute e = new DataField(extendedAttribute.getAttribute("Name").getValue(),extendedAttribute.getAttribute("Value").getValue());
 			extendedAttributesReturn.add(e);
-			extendedAttribute=extendedAttribute.getNextSibling();
+			extendedAttribute=extendedAttribute.getDescendants();
 		}
 		
 			
