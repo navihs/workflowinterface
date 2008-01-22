@@ -298,6 +298,9 @@ public class Parser {
 		Element a = activity;
 		
 		Activity act = new Activity(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue());
+		if (a.getChild("Implementation")!=null)
+		
+		
 		
 		if(a.getChild("Activities")!=null)
 			w.setActivities(parseActivities(a.getChild("Activities")));
