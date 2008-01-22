@@ -99,8 +99,8 @@ public class Parser {
 		while (it.hasNext())
 		{
 			a=(Element)it.next();
-			type = a.getChild("ParticipantType").getAttribute("Type").getvalue();
-			desc = a.getChild("Description").getTextContent()
+			type = a.getChild("ParticipantType").getAttribute("Type").getValue();
+			desc = a.getChild("Description").getTextContent();
 			/*if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
 			//if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue()!=null)
 				//type = participant.getAttribute("Type").getvalue());
