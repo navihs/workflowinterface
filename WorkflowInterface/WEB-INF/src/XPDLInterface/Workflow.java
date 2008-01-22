@@ -24,6 +24,10 @@ public class Workflow{
 	public List<FormalParameter> getFormalParameters(){return this.formalParameters;}
 	public void setFormalParameters(List<FormalParameter> wfFormalParameters){this.formalParameters = wfFormalParameters;}
 	
+	private List<Transition> transitions;
+	public List<Transition> getTransitions(){return this.transitions;}
+	public void setTransitions(List<Transition> wfTransitions){this.transitions = wfTransitions;}
+	
 	//private ArrayList participants;
 	
 	private String id;

@@ -81,8 +81,8 @@ public class Parser {
 		 * On renvoit une liste de participant
 		 */
 		
-		List participantsReturn;
-		List participant = participants.getChildren("Participant");
+		List<Participant> participantsReturn= new ArrayList();
+		List<Participant> participant = participants.getChildren("Participant");
 		Iterator it = participant.iterator();
 		Element a;
 		//.getChild("Participant");
@@ -126,8 +126,8 @@ public class Parser {
 		 * On renvoit une liste de datafield
 		 */
 		
-		List datafieldsReturn=null;
-		List datafield = datafields.getChildren("Datafield");//datafields.getChild("DataField");
+		List<DataField> datafieldsReturn=new ArrayList();
+		List<DataField> datafield = datafields.getChildren("Datafield");//datafields.getChild("DataField");
 		Iterator it = datafield.iterator();
 		Element a;
 		
@@ -160,8 +160,8 @@ public class Parser {
 		 * On renvoit une liste de Workflow
 		 * 		
 		 */
-		List workflowProcessesReturn=null;
-		List workflowProcess = workflowProcesses.getChildren("WorkflowProcess");
+		List<Workflow> workflowProcessesReturn= new ArrayList();
+		List<Workflow> workflowProcess = workflowProcesses.getChildren("WorkflowProcess");
 		Iterator it = workflowProcess.iterator();
 		Element a;
 		Workflow w, newW;
@@ -170,10 +170,15 @@ public class Parser {
 		{
 			a=(Element)it.next();
 			w= workflowPackage.workflowExist(a.getAttribute("Id").getValue());
-
+			//si le workflow n'existe pas
 			if (w==null)
 			{
 				newW = parseWorkflow(a);
+			}
+			//sinon on renvoi le Worflow;
+			else
+			{
+				newW=w;
 			}
 			workflowProcessesReturn.add(newW);
 		}
@@ -213,7 +218,7 @@ public class Parser {
 		if(a.getChild("FormalParameters")!=null)
 			w.setFormalParameters(parseFormalParameters(a.getChild("FormalParameters")));
 		if(a.getChild("Transitions")!=null)
-			w.setTransitions(parseTransitions(a.getChild("Transitions")));
+			w.setTransitions(parseTransitions(a.getChild("Transitions"),w));
 		if(a.getChild("ExtendedAttributes")!=null)
 			w.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes")));
 
@@ -237,11 +242,11 @@ public class Parser {
 		 * fin tant_que
 		 * On renvoit une liste d'Activity
 		 */
-		List activitiesReturn;
-		List activity = activities.getChildren("Activity");
+		List<Activity> activitiesReturn = new ArrayList();
+		List<Activity> activity = activities.getChildren("Activity");
 		Iterator it = activity.iterator();
 		Element a;
-		Workflow w, wRecup;
+		Workflow w, wRecup = null;
 		Activity act;
 			
 		while(it.hasNext())
@@ -252,7 +257,7 @@ public class Parser {
 			if (act.isSubflow())
 			{	
 				//on test si un Workflow avec le même ID que l'Activité existe 
-				w = workflowPackage.workflowExist(a.getAttribute("Id"));
+				w = workflowPackage.workflowExist(a.getAttribute("Id").getValue());
 				//si un workflow existe avec le meme id que l'activité
 				if(w!=null)
 				{
@@ -262,9 +267,32 @@ public class Parser {
 				//sinon le workflow lié à l'activité n'existe pas encore
 				else
 				{
-					//on recupère le workflow que l'on parse
-					w = getWorkflowById(a.getAttribute("Id"));
-					wRecup = parseWorkflow(w);
+					//on recupère le workflow à parser
+					String workflowId =a.getAttribute("Id").getValue();
+					w = workflowPackage.getWorkflowById(workflowId);
+					
+					//----------------------------------------------------------------------------------//
+					//il faut identifier l'élément workflow lié au SubFlow
+					//----------------------------------------------------------------------------------//
+					String id = w.getId();
+					
+					Element wkf;
+					List<Activity> listWkf = new ArrayList();
+					listWkf = racine.getChild("WorkflowProcesses").getChildren("WorkflowProcess");
+					Iterator it2 = listWkf.iterator();
+					
+					//parcours des Workflows
+					while(it2.hasNext())
+					{
+						wkf = (Element)it2.next();
+						//Si l'attribut id de l'element Workflow est égal à l'attribut du Worflow à parser
+						if(wkf.getAttribute("Id").getValue()==id)
+							wRecup = parseWorkflow(wkf);
+						else
+							wRecup=null;
+						
+					}				
+					//----------------------------------------------------------------------------------//
 					act.setSubflow(wRecup);
 				}
 			}
@@ -303,7 +331,7 @@ public class Parser {
 		
 		if(a.getChild("Performer")!=null)
 		{
-			p=workflowPackage.getParticipantById(a.getChild("Performer").getText();
+			p=workflowPackage.getParticipantById(a.getChild("Performer").getText());
 			act.setPerformer(p); 
 		}
 		
@@ -353,7 +381,7 @@ public class Parser {
 		return formalParametersReturn;	
 	}
 	
-	private List parseTransitions(Element transitions,Elem)//workflow en paramètre pour rechercher l'activité
+	private List parseTransitions(Element transitions,Workflow workflow)//workflow en paramètre pour rechercher l'activité
 	{
 		/*
 		 * Parse dans parseWorkflowProcess
@@ -376,8 +404,8 @@ public class Parser {
 			
 			Transition t = new Transition(a.getAttribute("Id").getValue(),conditionType,condition);
 			
-			Activity from =getActivityById(a.getAttribute("From").getValue());
-			Activity to = getActivityById(a.getAttribute("To").getValue());
+			Activity from =workflow.getActivityById(a.getAttribute("From").getValue());
+			Activity to = workflow.getActivityById(a.getAttribute("To").getValue());
 			t.setFrom(from);
 			t.setTo(to);
 			transitionsReturn.add(t);
@@ -407,38 +435,5 @@ public class Parser {
 		return extendedAttributesReturn;
 	}
 	
-	/*
-	 * Récupère le Workflow dans le fichier Java en fonction de son id
-	 * 
-	 */
-	private Workflow getWorkflowById(String id)
-	{
-		/*Tant qu'il existe des workflows (noeud WorkflowProcesses, balise WorkflowProcess)
-		 * 	si workflow.id = WorkflowProcess
-		 * On renvoit une liste de Workflow
-		 * Element workflowProcesses = racine.getChild("WorkflowProcesses");
-		NodeList listeWorkflowProcesses = workflowProcesses.getChildNodes();
-		int tailleListWorkflowProcesses = listeWorkflowProcesses.getLength();
-		int i= 0;
-		
-		while (i<=tailleListWorkflowProcesses)
-		{
-			if workflow
-			
-		}
-		
-		
-		Element workflow = workflowProcesses.getChild("WorkflowProcess");
-		 */
-		
-		return null;
-	
-	}
-/*	private Activity getActivityById(String id)
-	{
-		return null;
-		
 
-	}
-*/
 }
