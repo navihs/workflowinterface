@@ -3,10 +3,9 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
-import org.w3c.dom.*;
-import org.w3c.dom.Element;
 
 public class Parser {
 	
@@ -82,7 +81,10 @@ public class Parser {
 		 */
 		
 		List participantsReturn;
-		Element participant = participants.getChild("Participant");
+		List participant = participants.getChildren("Participant");
+		Iterator it = participant.iterator();
+		Element a;
+		//.getChild("Participant");
 		String type=null;
 		String desc=null;
 		
@@ -92,22 +94,21 @@ public class Parser {
 		int tailleListParticipants = listeParticipants.getLength();
 		int i =0;*/
 		
-		while (participant=null)
+		while (it.hasNext())
 		{
-			
-			if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
+			a=(Element)it.next();
+			type = a.getChild("ParticipantType").getAttribute("Type").getvalue();
+			desc = a.getChild("Description").getTextContent()
+			/*if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
 			//if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue()!=null)
 				//type = participant.getAttribute("Type").getvalue());
 			if((desc = participant.getChild("Description").getTextContent())!=null)
 			//if(participant.getChild("Description")!=null)
 				//desc = participant.getTextContent();
-
-			Participant p = new Participant(participant.getAttribute("Id").getValue(), participant.getAttribute("Name").getValue(), type, desc);
+			 */
+			Participant p = new Participant(a.getAttribute("Id").getValue(), a.getAttribute("Name").getValue(), type, desc);
 			participantsReturn.add(p);			
-			participant=participant.getNextSibling();
 		}
-		
-			
 		return participantsReturn;
 	}
 	
@@ -125,7 +126,9 @@ public class Parser {
 		 */
 		
 		List datafieldsReturn;
-		Element datafield = datafields.getChild("DataField");
+		List datafield = datafields.getChildren("Datafield");//datafields.getChild("DataField");
+		Iterator it = datafield.iterator();
+		Element a;
 		
 		/*//Pour parcourir tous les noeuds
 		NodeList listeDatafields = datafields.getChildNodes();
@@ -134,19 +137,13 @@ public class Parser {
 		//Element dataType = datafields.getChild("DataType");
 		*/
 			
-		while (datafield=!null) 
+		while (it.hasNext()) 
 		{
-			/* Recup le Type
-			String type=null;
-			if(dataType.getChild("BasicType")!=null)
-				type = dataType.getChild("BasicType").getAttribute("Type").getvalue());
-			*/
-			DataField d = new DataField(datafield.getAttribute("Id").getValue(), datafield.getAttribute("Name").getValue(), datafield.getAttribute("IsArray").getValue());
+			a = (Element)it.next();
+			DataField d = new DataField(a.getAttribute("Id").getValue(), a.getAttribute("Name").getValue(), a.getAttribute("IsArray").getValue());
 			datafieldsReturn.add(d);			
-			datafield=datafield.getNextSibling()
 		}
-		return datafieldsReturn;
-		
+		return datafieldsReturn;	
 	}
 	
 	private List parseWorkflowProcesses(Element workflowProcesses)
@@ -160,24 +157,21 @@ public class Parser {
 		 * 		i++;
 		 * 	fin tant_que
 		 * On renvoit une liste de Workflow
-		 * 
-		 * do
+		 * 		
+		 */
+		List workflowProcessesReturn;
+		List workflowProcess = workflowProcesses.getChildren("WorkflowProcess");
+		Iterator it = workflowProcess.iterator();
+		Element a;
+			
+		while(it.hasNext())
 		{
-			while (workflowPackage.workflows.isnext()=!null)
-			{
-				if(!WorkflowPackage.workflowExist(id))
-					parseWorkflow(Element workflowProcess)
-			}
+			a=(Element)it.next();
+			workflowProcessesReturn.add(parseWorkflow(a));
 			
 		}
-		while(workflowProcesses.getNextSibling()=!null)
 		
-		 */
-		
-		
-		
-		
-		return null;
+		return workflowProcessesReturn;
 	}
 	
 	private List parseWorkflow(Element workflowProcess)
@@ -201,6 +195,12 @@ public class Parser {
 		Workflow w = new Workflow(workflowProcess.getAttribute("Id").getValue(),workflowProcess.getAttribute("Name").getValue())
 		return w;
 		 */
+		String created;
+		Element a = workflowProcess;
+		
+		created= a.getChild("ProcessHeader").getChild("Created").getText();
+		Worflow w = new Workflow(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(), created);
+		
 		return null;
 	}
 	
@@ -261,29 +261,25 @@ public class Parser {
 		 */
 		
 		List formalParametersReturn;
-		Element formalParameter = formalParameters.getChild("FormalParameter");
-		String dataType=null;
-		String desc=null;
+		List formalParameter = formalParameters.getChildren("FormalParameter") //.getChild("FormalParameter");
+		Iterator it = formalParameter.iterator();
+		Element a;
+		String dataType;
+		String desc;
 			
-		while (formalParameter=!null) 
+		while (it.hasNext()) 
 		{
-			/* Recup le Type
-			String type=null;
-			if(dataType.getChild("BasicType")!=null)
-				type = dataType.getChild("BasicType").getAttribute("Type").getvalue());
-			*/
-			if((dataType = formalParameter.getChild("DataType").getChild("BasicType").getAttribute("Type").getvalue())!=null)
-			if((desc = participant.getChild("Description").getTextContent())!=null)
+			dataType=null;
+			desc=null;
+			a = (Element)it.next();
 			
-			FormalParameter f = new FormalParameter(formalParameter.getAttribute("Id").getValue(), formalParameter.getAttribute("Mode").getValue(), dataType, desc);
+			dataType = a.getChild("DataType").getChild("BasicType").getAttribute("Type").getvalue();
+			desc = a.getChild("Description").getTextContent();
+			
+			FormalParameter f = new FormalParameter(a.getAttribute("Id").getValue(), a.getAttribute("Mode").getValue(), dataType, desc);
 			formalParametersReturn.add(f);	
-			formalParameter=formalParameter.getNextSibling();			
 		}
-		
-			
-		return datafieldsReturn;
-				
-		return null;
+		return formalParametersReturn;	
 	}
 	
 	private List parseTransitions(Element transitions)
@@ -291,7 +287,31 @@ public class Parser {
 		/*
 		 * Parse dans parseWorkflowProcess
 		 */
-		return null;
+		List transitionsReturn;
+		List transition = transitions.getChildren("Transition")
+		Iterator it = transition.iterator();
+		Element a;
+		
+		String conditionType;
+		String condition;
+			
+		while (it.hasNext()) 
+		{
+			a = (Element)it.next();
+			conditionType=null;
+			condition=null;
+			conditionType=a.getChild("Condition").getAttribute.getValue("Type");
+			condition = a.getChild("Condition").getText();
+			
+			Transition t = new Transition(a.getAttribute("Id").getValue(),conditionType,condition);
+			
+			Activity from =getActivityById(a.getAttribute("From").getValue());
+			Activity to = getActivityById(a.getAttribute("To").getValue()):
+			t.setFrom(from);
+			t.setTo(to);
+			transitionsReturn.add(t);
+		}
+		return transitionsReturn;
 	}
 	
 	private List parseExtendedAttributes(Element extendedAttributes)
@@ -303,26 +323,19 @@ public class Parser {
 		 * On renvoit une liste de ExtendedAttribute
 		 */
 		List extendedAttributesReturn;
-		Element extendedAttribute = extendedAttributes.getChild("ExtendedAttribute");
+		List extendedAttribute = extendedAttributes.getChildren("ExtendedAttribute");
+		Iterator it = extendedAttribute.iterator();
+		Element a;
 					
-		while (extendedAttribute=!null) 
+		while (it.hasNext()) 
 		{
-			/* Recup le Type
-			String type=null;
-			if(dataType.getChild("BasicType")!=null)
-				type = dataType.getChild("BasicType").getAttribute("Type").getvalue());
-			*/
+			a = (Element)it.next();
 			ExtendedAttribute e = new DataField(extendedAttribute.getAttribute("Name").getValue(),extendedAttribute.getAttribute("Value").getValue());
 			extendedAttributesReturn.add(e);
-			extendedAttribute=extendedAttribute.getDescendants();
 		}
-		
-			
 		return extendedAttributesReturn;
-		
-		
-		return null;
 	}
+	
 	/*
 	 * Récupère le Workflow dans le fichier Java en fonction de son id
 	 * 
@@ -349,5 +362,11 @@ public class Parser {
 		
 		return null;
 	
+	}
+	private Activity getActivityById(String id)
+	{
+		return null;
+		
+	}
 	}
 }
