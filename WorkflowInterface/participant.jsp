@@ -1,17 +1,13 @@
 <html>
 <head>
 <%@ page import="XPDLInterface.*" %>
+<%@page import="Vues.ModeleTexte;"%>
 </head>
 <body>
 <% 
-WorkflowPackage wf = (WorkflowPackage)session.getAttribute("workflowPackage");
-Participant p = wf.getParticipantById(request.getParameter("id"));
+WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
+Participant p = wp.getParticipantById(request.getParameter("id"));
 %>
-<table>
-<tr>
-<td>name</td>
-<td><%=p.getName() %></td>
-</tr>
-</table>
+<%=ModeleTexte.participant(p) %>
 </body>
 </html>

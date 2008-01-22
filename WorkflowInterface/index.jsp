@@ -5,8 +5,7 @@
 <TITLE>Page de démarrage</TITLE>
 </HEAD>
 <BODY>
-Bonjour <%=wp.getName() %><br>
-id : <%=wp.getId() %>
+<a href=a>aa</a>
 
 </BODY>
 </HTML>
