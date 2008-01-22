@@ -12,9 +12,9 @@ public class Transition {
 	public Activity getTo(){return this.to;}
 	public void setTo(Activity tTo){this.to = tTo;}
 	
-	private List extendedAttributes;
-	public List getExtendedAttributes(){return this.extendedAttributes;}
-	public void setExtendedAttributes(List tExtendedAttributes){this.extendedAttributes = tExtendedAttributes;}
+	private List<ExtendedAttribute> extendedAttributes;
+	public List<ExtendedAttribute> getExtendedAttributes(){return this.extendedAttributes;}
+	public void setExtendedAttributes(List<ExtendedAttribute> tExtendedAttributes){this.extendedAttributes = tExtendedAttributes;}
 	
 	private String id;
 	public String getId(){return this.id;}

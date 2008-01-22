@@ -23,16 +23,16 @@ public class Activity{
 	/***
 	 * <!ELEMENT TransitionRefs (TransitionRef*)>
 	 */
-	private List transitions;
-	public void setTranstions(List activityTranstions){this.transitions=activityTranstions;}
-	public List getTranstions(){return this.transitions;}
+	private List<Transition> transitions;
+	public void setTranstions(List<Transition> activityTranstions){this.transitions=activityTranstions;}
+	public List<Transition> getTranstions(){return this.transitions;}
 	
 	/***
 	 * <!ELEMENT ExtendedAttributes (ExtendedAttribute*)>
 	 */
-	private List extendedAttributes;
-	public void setExtendedAttributes(List activityExtendedAttributes){this.extendedAttributes=activityExtendedAttributes;}
-	public List getExtendedAttributes(){return this.extendedAttributes;}
+	private List<ExtendedAttribute> extendedAttributes;
+	public void setExtendedAttributes(List<ExtendedAttribute> activityExtendedAttributes){this.extendedAttributes=activityExtendedAttributes;}
+	public List<ExtendedAttribute> getExtendedAttributes(){return this.extendedAttributes;}
 	
 	/***
 	 * <!ELEMENT Description (#PCDATA)>

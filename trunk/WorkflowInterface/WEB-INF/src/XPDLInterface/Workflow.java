@@ -8,21 +8,21 @@ import org.jdom.Element;
 
 public class Workflow{
 
-	private List activities;
-	public List getActivities(){return this.activities;}
-	public void setActivities(List wfActivities){this.activities = wfActivities;}
+	private List<Activity> activities;
+	public List<Activity> getActivities(){return this.activities;}
+	public void setActivities(List<Activity> wfActivities){this.activities = wfActivities;}
 
-	private List dataFields;
-	public List getDataFields(){return this.dataFields;}
-	public void setDataFields(List wfDataFields){this.dataFields = wfDataFields;}
+	private List<DataField> dataFields;
+	public List<DataField> getDataFields(){return this.dataFields;}
+	public void setDataFields(List<DataField> wfDataFields){this.dataFields = wfDataFields;}
 
-	private List extendedAttributes;
-	public List getExtendedAttributes(){return this.extendedAttributes;}
-	public void setExtendedAttributes(List wfExtendedAttributes){this.extendedAttributes = wfExtendedAttributes;}
+	private List<ExtendedAttribute> extendedAttributes;
+	public List<ExtendedAttribute> getExtendedAttributes(){return this.extendedAttributes;}
+	public void setExtendedAttributes(List<ExtendedAttribute> wfExtendedAttributes){this.extendedAttributes = wfExtendedAttributes;}
 	
-	private List formalParameters;
-	public List getFormalParameters(){return this.formalParameters;}
-	public void setFormalParameters(List wfFormalParameters){this.formalParameters = wfFormalParameters;}
+	private List<FormalParameter> formalParameters;
+	public List<FormalParameter> getFormalParameters(){return this.formalParameters;}
+	public void setFormalParameters(List<FormalParameter> wfFormalParameters){this.formalParameters = wfFormalParameters;}
 	
 	//private ArrayList participants;
 	
