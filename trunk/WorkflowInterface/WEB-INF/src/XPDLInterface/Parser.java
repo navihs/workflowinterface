@@ -29,7 +29,7 @@ public class Parser {
 	     racine = document.getRootElement();
 	}
 	
-	public void parsePackage()
+	public WorkflowPackage parsePackage()
 	{
 		/* on lit le Header,
 		 * on créé un objet WorkflowPackage
@@ -67,6 +67,8 @@ public class Parser {
 		
 		if(racine.getChild("ExtendedAttributes")!=null)
 			workflowPackage.setExtendedAttributes(parseExtendedAttributes(racine.getChild("ExtendedAttributes")));
+	
+		return workflowPackage;
 	}
 	
 	private List parseParticipants(Element participants)
@@ -240,7 +242,7 @@ public class Parser {
 		List activity = activities.getChildren("Activity");
 		Iterator it = activity.iterator();
 		Element a;
-		//Worflow w;
+		Worflow w, wRecup;
 		Activity act;
 			
 		while(it.hasNext())
@@ -249,24 +251,25 @@ public class Parser {
 			act = parseActivity(a);
 			//on test si l'activitée possède un Subflow
 			if (act.isSubflow())
-			{
-				//w=getWorkflowById(a.getAttribute("Id"));
-				
+			{	
 				//on test si un Workflow avec le même ID que l'Activité existe 
-				//si un workflow existe avec le meme id que l'activité 
-				if(WorkflowPackage.workflowExist(a.getAttribute("Id")))
-				//if (getActivityById(a.getAttribute("Id"))=!null) //faux
+				w = workflowPackage.workflowExist(a.getAttribute("Id"));
+				//si un workflow existe avec le meme id que l'activité
+				if(w!=null)
 				{
-					act.setSubflow();
+					//le subflow de l'activité est le workflow avec le meme id
+					act.setSubflow(w);
 				}
-				//sinon l'activité n'existe pas encore
+				//sinon le workflow lié à l'activité n'existe pas encore
 				else
 				{
-					
+					//on recupère le workflow que l'on parse
+					w = getWorkflowById(a.getAttribute("Id"));
+					wRecup = parseWorkflow(w);
+					act.setSubflow(wRecup);
 				}
 			}
 		}
-		
 		return activitiesReturn;
 	}
 	
@@ -291,6 +294,24 @@ public class Parser {
 		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à Activity.extendedAttributes
 		 * On renvoit une Activity
 		 */
+		
+		Element a = activity;
+		
+		Activity act = new Activity(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue());
+		
+		if(a.getChild("Activities")!=null)
+			w.setActivities(parseActivities(a.getChild("Activities")));
+		if(a.getChild("DataFields")!=null)
+			w.setDataFields(parseDataFields(a.getChild("DataFields")));
+		if(a.getChild("FormalParameters")!=null)
+			w.setFormalParameters(parseFormalParameters(a.getChild("FormalParameters")));
+		if(a.getChild("Transitions")!=null)
+			w.setTransitions(parseTransitions(a.getChild("Transitions")));
+		if(a.getChild("ExtendedAttributes")!=null)
+			w.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes")));
+
+		return w;
+		
 		return null;
 	}
 	
