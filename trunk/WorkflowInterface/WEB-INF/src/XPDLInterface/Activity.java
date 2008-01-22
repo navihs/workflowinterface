@@ -58,23 +58,12 @@ public class Activity{
 	/***
 	 * <!ELEMENT Implementation (No | Tool+ | SubFlow | Loop)>
 	 */
-	private String implementation;
-	public void setImplementation(String activityImplementation){this.implementation=activityImplementation;}
-	public String getImplementation(){return this.implementation;}
+	private boolean implementation;
+	//public void setImplementation(String activityImplementation){this.implementation=activityImplementation;}
+	//public String getImplementation(){return this.implementation;}
+	public void setImplementation(boolean activityImplementation){this.implementation=activityImplementation;}
+	public Boolean getImplementation(){return this.implementation;}
 	
-	/***
-	 * <!ELEMENT StartMode (%Mode;)>
-	 */
-	private String startMode;
-	public void setStartMode(String activityStartMode){this.startMode=activityStartMode;}
-	public String getStartMode(){return this.startMode;}
-	
-	/***
-	 * <!ELEMENT FinishMode (%Mode;)>
-	 */
-	private String finishMode;
-	public void setFinishMode(String activityFinishMode){this.finishMode=activityFinishMode;}
-	public String getFinishMode(){return this.finishMode;}
 		
 	/***
 	 * <!ATTLIST Activity Id NMTOKEN #REQUIRED
@@ -92,7 +81,15 @@ public class Activity{
 	//private String Split 	//XOR ou AND
 	//TransitionRefs ? 
 	
-	public Activity(String activityId, String activityName, String implementation)
+	private String transitionRestrictionJoin;
+	public void setTransitionRestrictionJoin(String activityTransitionRestrictionJoin){this.transitionRestrictionJoin=activityTransitionRestrictionJoin;}
+	public String getTransitionRestrictionJoin(){return this.transitionRestrictionJoin;}
+	
+	private String transitionRestrictionSplit;
+	public void setTransitionRestrictionSplit(String activityTransitionRestrictionSplit){this.transitionRestrictionSplit=activityTransitionRestrictionSplit;}
+	public String getTransitionRestrictionSplit(){return this.transitionRestrictionSplit;}
+	
+	public Activity(String activityId, String activityName, Boolean implementation)
 	{
 		this.id = id;
 		this.name = name;
@@ -101,7 +98,7 @@ public class Activity{
 	
 	public boolean isSubflow()
 	{
-		if(implementation=="Subflow")
+		if(implementation)
 			return true;
 		else
 			return false;
