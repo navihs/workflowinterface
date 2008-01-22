@@ -51,8 +51,6 @@ public class WorkflowPackage {
 		this.name = name;
 	}
 	
-	public void addParticipants(List newParticipants){this.participants.addAll(newParticipants);}
-	
 	public Workflow workflowExist(String id)
 	{
 		Iterator<Workflow> it = workflows.iterator();
@@ -65,7 +63,7 @@ public class WorkflowPackage {
 		return null;
 	}
 	
-	public Participant getParticipant(String id)
+	public Participant getParticipantById(String id)
 	{
 		Iterator<Participant> it = participants.iterator();
 		while(it.hasNext())
@@ -77,7 +75,7 @@ public class WorkflowPackage {
 		return null;
 	}
 	
-	public ExtendedAttribute getExtendedAttribute(String name)
+	public ExtendedAttribute getExtendedAttributeByName(String name)
 	{
 		Iterator<ExtendedAttribute> it = extendedAttributes.iterator();
 		while(it.hasNext())
@@ -89,7 +87,7 @@ public class WorkflowPackage {
 		return null;
 	}
 	
-	public DataField getDataField(String id)
+	public DataField getDataFieldById(String id)
 	{
 		Iterator<DataField> it = dataFields.iterator();
 		while(it.hasNext())

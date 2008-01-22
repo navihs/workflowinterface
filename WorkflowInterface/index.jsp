@@ -1,13 +1,12 @@
-<%@page import="Vues.testAfficheur"%>
 <HTML>
 <HEAD>
+<%@ page import="XPDLInterface.*" %>
+<% WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage"); %>
 <TITLE>Page de démarrage</TITLE>
 </HEAD>
 <BODY>
-<% 
-Session session = 
-testAfficheur aff= (testAfficheur) session.getAttribute("testAfficheur"); 
-%>
-<%=aff.getB() %>
+Bonjour <%=wp.getName() %><br>
+id : <%=wp.getId() %>
+
 </BODY>
 </HTML>
