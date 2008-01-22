@@ -92,15 +92,20 @@ public class Activity{
 	//private String Split 	//XOR ou AND
 	//TransitionRefs ? 
 	
-	public Activity(String activityId, String activityName)
+	public Activity(String activityId, String activityName, String implementation)
 	{
 		this.id = id;
 		this.name = name;
+		this.implementation = implementation;
 	}
 	
 	public boolean isSubflow()
 	{
-		return (subflow!=null);
+		if(implementation=="Subflow")
+			return true;
+		else
+			return false;
+		//return (subflow!=null);
 	}
 	
 }

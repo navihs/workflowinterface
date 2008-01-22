@@ -3,7 +3,6 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
 
@@ -100,7 +99,7 @@ public class Parser {
 		{
 			a=(Element)it.next();
 			type = a.getChild("ParticipantType").getAttribute("Type").getValue();
-			desc = a.getChild("Description").getTextContent();
+			desc = a.getChild("Description").getText();
 			/*if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
 			//if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue()!=null)
 				//type = participant.getAttribute("Type").getvalue());
@@ -127,7 +126,7 @@ public class Parser {
 		 * On renvoit une liste de datafield
 		 */
 		
-		List datafieldsReturn;
+		List datafieldsReturn=null;
 		List datafield = datafields.getChildren("Datafield");//datafields.getChild("DataField");
 		Iterator it = datafield.iterator();
 		Element a;
@@ -161,7 +160,7 @@ public class Parser {
 		 * On renvoit une liste de Workflow
 		 * 		
 		 */
-		List workflowProcessesReturn;
+		List workflowProcessesReturn=null;
 		List workflowProcess = workflowProcesses.getChildren("WorkflowProcess");
 		Iterator it = workflowProcess.iterator();
 		Element a;
@@ -182,7 +181,7 @@ public class Parser {
 		return workflowProcessesReturn;
 	}
 	
-	private List parseWorkflow(Element workflowProcess)
+	private Workflow parseWorkflow(Element workflowProcess)
 	{
 		 /* on créé un objet Workflow
 		 * <WorkflowProcess Id="initialisation"  dans Workflow.id
@@ -242,7 +241,7 @@ public class Parser {
 		List activity = activities.getChildren("Activity");
 		Iterator it = activity.iterator();
 		Element a;
-		Worflow w, wRecup;
+		Workflow w, wRecup;
 		Activity act;
 			
 		while(it.hasNext())
@@ -301,7 +300,7 @@ public class Parser {
 		if (a.getChild("Implementation")!=null)
 		
 		
-		
+		/*
 		if(a.getChild("Activities")!=null)
 			w.setActivities(parseActivities(a.getChild("Activities")));
 		if(a.getChild("DataFields")!=null)
@@ -313,7 +312,7 @@ public class Parser {
 		if(a.getChild("ExtendedAttributes")!=null)
 			w.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes")));
 
-		return w;
+		return w; */
 		
 		return null;
 	}
@@ -331,7 +330,7 @@ public class Parser {
 		 */
 		
 		List formalParametersReturn;
-		List formalParameter = formalParameters.getChildren("FormalParameter") //.getChild("FormalParameter");
+		List formalParameter = formalParameters.getChildren("FormalParameter"); //.getChild("FormalParameter");
 		Iterator it = formalParameter.iterator();
 		Element a;
 		String dataType;
@@ -343,8 +342,8 @@ public class Parser {
 			desc=null;
 			a = (Element)it.next();
 			
-			dataType = a.getChild("DataType").getChild("BasicType").getAttribute("Type").getvalue();
-			desc = a.getChild("Description").getTextContent();
+			dataType = a.getChild("DataType").getChild("BasicType").getAttribute("Type").getValue();
+			desc = a.getChild("Description").getText();
 			
 			FormalParameter f = new FormalParameter(a.getAttribute("Id").getValue(), a.getAttribute("Mode").getValue(), dataType, desc);
 			formalParametersReturn.add(f);	
@@ -358,7 +357,7 @@ public class Parser {
 		 * Parse dans parseWorkflowProcess
 		 */
 		List transitionsReturn;
-		List transition = transitions.getChildren("Transition")
+		List transition = transitions.getChildren("Transition");
 		Iterator it = transition.iterator();
 		Element a;
 		
@@ -370,13 +369,13 @@ public class Parser {
 			a = (Element)it.next();
 			conditionType=null;
 			condition=null;
-			conditionType=a.getChild("Condition").getAttribute.getValue("Type");
+			conditionType=a.getChild("Condition").getAttribute("Type").getValue();
 			condition = a.getChild("Condition").getText();
 			
 			Transition t = new Transition(a.getAttribute("Id").getValue(),conditionType,condition);
 			
 			Activity from =getActivityById(a.getAttribute("From").getValue());
-			Activity to = getActivityById(a.getAttribute("To").getValue()):
+			Activity to = getActivityById(a.getAttribute("To").getValue());
 			t.setFrom(from);
 			t.setTo(to);
 			transitionsReturn.add(t);
@@ -400,7 +399,7 @@ public class Parser {
 		while (it.hasNext()) 
 		{
 			a = (Element)it.next();
-			ExtendedAttribute e = new DataField(extendedAttribute.getAttribute("Name").getValue(),extendedAttribute.getAttribute("Value").getValue());
+			ExtendedAttribute e = new ExtendedAttribute(a.getAttribute("Name").getValue(),a.getAttribute("Value").getValue());
 			extendedAttributesReturn.add(e);
 		}
 		return extendedAttributesReturn;
@@ -437,6 +436,6 @@ public class Parser {
 	{
 		return null;
 		
-	}
+
 	}
 }
