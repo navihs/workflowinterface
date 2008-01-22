@@ -65,4 +65,39 @@ public class WorkflowPackage {
 		return null;
 	}
 	
+	public Participant getParticipant(String id)
+	{
+		Iterator it = participants.iterator();
+		while(it.hasNext())
+		{
+			Participant p = (Participant)it.next();
+			if(p.getId().equals(id))
+				return p;
+		}
+		return null;
+	}
+	
+	public ExtendedAttribute getExtendedAttribute(String name)
+	{
+		Iterator it = extendedAttributes.iterator();
+		while(it.hasNext())
+		{
+			ExtendedAttribute eA = (ExtendedAttribute)it.next();
+			if(eA.getName().equals(id))
+				return eA;
+		}
+		return null;
+	}
+	
+	public DataField getDataField(String id)
+	{
+		Iterator it = dataFields.iterator();
+		while(it.hasNext())
+		{
+			DataField df = (DataField)it.next();
+			if(df.getId().equals(id))
+				return df;
+		}
+		return null;
+	}
 }
