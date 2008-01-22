@@ -47,7 +47,18 @@ public class Workflow{
 		{
 			this.created = null;
 		}
-		
 	}
 	
+	public Activity getActivityById(String id)
+	{
+		Iterator<Activity> it = activities.iterator();
+		while(it.hasNext())
+		{
+			Activity act = it.next();
+			if(act.getId().equals(id))
+				return act;
+		}
+		return null;
+	}
+		
 }

@@ -49,6 +49,11 @@ public class WorkflowPackage {
 	{
 		this.id = id;
 		this.name = name;
+		this.created = null;
+		this.participants = new ArrayList<Participant>();
+		this.workflows = new ArrayList<Workflow>();
+		this.extendedAttributes = new ArrayList<ExtendedAttribute>();
+		this.dataFields = new ArrayList<DataField>();	
 	}
 	
 	public Workflow workflowExist(String id)
@@ -98,4 +103,17 @@ public class WorkflowPackage {
 		}
 		return null;
 	}
+	
+	public Workflow getWorkflowById(String id)
+	{
+		Iterator<Workflow> it = workflows.iterator();
+		while(it.hasNext())
+		{
+			Workflow wf = it.next();
+			if(wf.getId().equals(id))
+				return wf;
+		}
+		return null;
+	}
+
 }
