@@ -163,12 +163,18 @@ public class Parser {
 		List workflowProcess = workflowProcesses.getChildren("WorkflowProcess");
 		Iterator it = workflowProcess.iterator();
 		Element a;
+		Workflow w, newW;
 			
 		while(it.hasNext())
 		{
 			a=(Element)it.next();
-			workflowProcessesReturn.add(parseWorkflow(a));
-			
+			w= workflowPackage.workflowExist(a.getAttribute("Id").getValue());
+
+			if (w==null)
+			{
+				newW = parseWorkflow(a);
+			}
+			workflowProcessesReturn.add(newW);
 		}
 		
 		return workflowProcessesReturn;
@@ -191,17 +197,26 @@ public class Parser {
 		 * on lance parseExtendedAttributes("ExtendedAttributes")
 		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à WorkflowPackage.extendedAttributes
 		 * On renvoit un Workflow
-		 * Element processHeader = workflowProcess.get
-		Workflow w = new Workflow(workflowProcess.getAttribute("Id").getValue(),workflowProcess.getAttribute("Name").getValue())
-		return w;
+		 * 
 		 */
 		String created;
 		Element a = workflowProcess;
 		
 		created= a.getChild("ProcessHeader").getChild("Created").getText();
-		Worflow w = new Workflow(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(), created);
+		Workflow w = new Workflow(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(), created);
 		
-		return null;
+		if(a.getChild("Activities")!=null)
+			w.setActivities(parseActivities(a.getChild("Activities")));
+		if(a.getChild("DataFields")!=null)
+			w.setDataFields(parseDataFields(a.getChild("DataFields")));
+		if(a.getChild("FormalParameters")!=null)
+			w.setFormalParameters(parseFormalParameters(a.getChild("FormalParameters")));
+		if(a.getChild("Transitions")!=null)
+			w.setTransitions(parseTransitions(a.getChild("Transitions")));
+		if(a.getChild("ExtendedAttributes")!=null)
+			w.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes")));
+
+		return w;
 	}
 	
 	private List parseActivities(Element activities)
@@ -221,7 +236,38 @@ public class Parser {
 		 * fin tant_que
 		 * On renvoit une liste d'Activity
 		 */
-		return null;
+		List activitiesReturn;
+		List activity = activities.getChildren("Activity");
+		Iterator it = activity.iterator();
+		Element a;
+		//Worflow w;
+		Activity act;
+			
+		while(it.hasNext())
+		{
+			a = (Element)it.next();
+			act = parseActivity(a);
+			//on test si l'activitée possède un Subflow
+			if (act.isSubflow())
+			{
+				//w=getWorkflowById(a.getAttribute("Id"));
+				
+				//on test si un Workflow avec le même ID que l'Activité existe 
+				//si un workflow existe avec le meme id que l'activité 
+				if(WorkflowPackage.workflowExist(a.getAttribute("Id")))
+				//if (getActivityById(a.getAttribute("Id"))=!null) //faux
+				{
+					act.setSubflow();
+				}
+				//sinon l'activité n'existe pas encore
+				else
+				{
+					
+				}
+			}
+		}
+		
+		return activitiesReturn;
 	}
 	
 	
