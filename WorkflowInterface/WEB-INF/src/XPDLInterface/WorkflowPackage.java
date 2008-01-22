@@ -9,21 +9,21 @@ import java.util.*;
  */
 public class WorkflowPackage {
 
-	private List participants;
-	public List getParticipants(){return this.participants;}
-	public void setParticipants(List participants){this.participants = participants;}
+	private List<Participant> participants;
+	public List<Participant> getParticipants(){return this.participants;}
+	public void setParticipants(List<Participant> participants){this.participants = participants;}
 	
-	private List workflows;
-	public List getWorkflows(){return this.workflows;}
-	public void setWorkflows(List workflows){this.workflows = workflows;}
+	private List<Workflow> workflows;
+	public List<Workflow> getWorkflows(){return this.workflows;}
+	public void setWorkflows(List<Workflow> workflows){this.workflows = workflows;}
 	
-	private List extendedAttributes;
-	public List getExtendedAttributes(){return this.extendedAttributes;}
-	public void setExtendedAttributes(List extendedAttributes){this.extendedAttributes = extendedAttributes;}
+	private List<ExtendedAttribute> extendedAttributes;
+	public List<ExtendedAttribute> getExtendedAttributes(){return this.extendedAttributes;}
+	public void setExtendedAttributes(List<ExtendedAttribute> extendedAttributes){this.extendedAttributes = extendedAttributes;}
 	
-	private List dataFields;
-	public List getDataFields(){return this.dataFields;}
-	public void setDataFields(List dataFields){this.dataFields = dataFields;}
+	private List<DataField> dataFields;
+	public List<DataField> getDataFields(){return this.dataFields;}
+	public void setDataFields(List<DataField> dataFields){this.dataFields = dataFields;}
 	
 	/***
 	 * <!ELEMENT Created
@@ -55,10 +55,10 @@ public class WorkflowPackage {
 	
 	public Workflow workflowExist(String id)
 	{
-		Iterator it = workflows.iterator();
+		Iterator<Workflow> it = workflows.iterator();
 		while(it.hasNext())
 		{
-			Workflow wf = (Workflow)it.next();
+			Workflow wf = it.next();
 			if(wf.getId().equals(id))
 				return wf;
 		}
@@ -67,10 +67,10 @@ public class WorkflowPackage {
 	
 	public Participant getParticipant(String id)
 	{
-		Iterator it = participants.iterator();
+		Iterator<Participant> it = participants.iterator();
 		while(it.hasNext())
 		{
-			Participant p = (Participant)it.next();
+			Participant p = it.next();
 			if(p.getId().equals(id))
 				return p;
 		}
@@ -79,10 +79,10 @@ public class WorkflowPackage {
 	
 	public ExtendedAttribute getExtendedAttribute(String name)
 	{
-		Iterator it = extendedAttributes.iterator();
+		Iterator<ExtendedAttribute> it = extendedAttributes.iterator();
 		while(it.hasNext())
 		{
-			ExtendedAttribute eA = (ExtendedAttribute)it.next();
+			ExtendedAttribute eA = it.next();
 			if(eA.getName().equals(id))
 				return eA;
 		}
@@ -91,10 +91,10 @@ public class WorkflowPackage {
 	
 	public DataField getDataField(String id)
 	{
-		Iterator it = dataFields.iterator();
+		Iterator<DataField> it = dataFields.iterator();
 		while(it.hasNext())
 		{
-			DataField df = (DataField)it.next();
+			DataField df = it.next();
 			if(df.getId().equals(id))
 				return df;
 		}
