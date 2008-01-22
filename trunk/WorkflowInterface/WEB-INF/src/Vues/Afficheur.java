@@ -39,10 +39,11 @@ public class Afficheur extends HttpServlet
 				WorkflowPackage wp = new WorkflowPackage("a","PackageTest");
 				List<Participant> l = new ArrayList<Participant>();
 				l.add(new Participant("id1","name1","Type1","Description1"));
+				l.add(new Participant("id2","name2","Type2","Description2"));
 				wp.setParticipants(l);
 				
 				session.setAttribute("workflowPackage", wp);
-				this.forward("/index.jsp", request, response);
+				this.forward("/package.jsp", request, response);
 				break;
 			case 1:
 				this.forward("/package.jsp", request, response);
@@ -65,15 +66,7 @@ public class Afficheur extends HttpServlet
 		if(session.getAttribute("workflowPackage")==null)
 		{
 			writer.println("Erreur : Aucun Package à explorer !");
-		}/*else{
-			String a = getRequestParameter(request,"action");
-			if(a!=null)
-			{
-				request.setAttribute("testAfficheur", session.getAttribute("testAfficheur"));
-				this.forward("/aff.jsp", request, response);
-			}
-				
-		}*/
+		}
 		
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
