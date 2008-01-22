@@ -25,32 +25,45 @@ public class Afficheur extends HttpServlet
 		// on récupère la session en cours
 		HttpSession session=request.getSession();
 		
+		PrintWriter writer = response.getWriter();
+		
 		//On récupère et traite l'action
 		String action = getRequestParameter(request,"action");
+		
 		switch(getActionId(action))
 		{
 			case 0:
-				Parser parser = new Parser();
-				WorkflowPackage wp = parser.parsePackage();
+				//Parser parser = new Parser();
+				//WorkflowPackage wp = parser.parsePackage();
+				
+				WorkflowPackage wp = new WorkflowPackage("a","PackageTest");
+				List<Participant> l = new ArrayList<Participant>();
+				l.add(new Participant("id1","name1","Type1","Description1"));
+				wp.setParticipants(l);
+				
 				session.setAttribute("workflowPackage", wp);
+				this.forward("/index.jsp", request, response);
 				break;
 			case 1:
-				this.forward("package.jsp", request, response);
+				this.forward("/package.jsp", request, response);
 				break;
 			case 2:
-				this.forward("workflow.jsp", request, response);
+				this.forward("/workflow.jsp", request, response);
 				break;
 			case 3:
-				this.forward("activity.jsp", request, response);
+				this.forward("/activity.jsp", request, response);
 				break;
 			case 4:
-				this.forward("participant.jsp", request, response);
+				this.forward("/participant.jsp", request, response);
 				break;
+			default:
+				writer.println("<html><body>");
+				writer.println("<a href=\"Afficheur?action=doParse\">Lancer le parsing du fichier XPDL</a><br>");
+				writer.println("</body></html>");
 		}
 		
 		if(session.getAttribute("workflowPackage")==null)
 		{
-			PrintWriter writer = response.getWriter();
 			writer.println("Erreur : Aucun Package à explorer !");
 		}/*else{
 			String a = getRequestParameter(request,"action");
@@ -61,6 +74,7 @@ public class Afficheur extends HttpServlet
 			}
 				
 		}*/
+		
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 	throws IOException, ServletException
@@ -91,6 +105,7 @@ public class Afficheur extends HttpServlet
 	
 	private int getActionId(String action)
 	{
+		if(action==null) return -1;
 		Map<String, Integer> map = new TreeMap<String, Integer>();
 		map.put("doParse", 0);
 		map.put("doGetPackage", 1);
@@ -98,7 +113,7 @@ public class Afficheur extends HttpServlet
 		map.put("doGetActivity", 3);
 		map.put("doGetParticipant", 4);
 		
-		return map.get(action);
+		return (map.get(action)!=null)?map.get(action):-1;
 	}
 	
 }
