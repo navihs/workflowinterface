@@ -21,7 +21,9 @@ public class TestXPath
     {
       SAXBuilder sxb = new SAXBuilder();
       Document document = sxb.build(new File("D:/user/ptanguy/Developpement/JACOT/jacotbis/WEB-INF/files/XPDLrepository/DAI3.1.xpdl"));
-      XPath xpath = XPath.newInstance("//namespaceParDefaut:Participant");
+      
+      
+      XPath xpath = XPath.newInstance("// namespaceParDefaut:ExtendedAttribute");
       xpath.addNamespace("namespaceParDefaut","http://www.wfmc.org/2002/XPDL1.0");
       List elements = xpath.selectNodes(document);
 
@@ -32,7 +34,8 @@ public class TestXPath
       while(it.hasNext())
       {
         Element elem = (Element)it.next();
-        System.out.println("Element : " + elem.getAttributeValue("Id"));
+        Element parent = (Element)elem.getParent();
+        System.out.println("Element : " + elem.getAttributeValue("Name") + "   -> parent = " + parent.getAttributeValue("Id"));
       }
     }
     catch (JDOMException e)
