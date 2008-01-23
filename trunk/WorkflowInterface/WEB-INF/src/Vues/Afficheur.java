@@ -33,15 +33,15 @@ public class Afficheur extends HttpServlet
 		switch(getActionId(action))
 		{
 			case 0:
-				//Parser parser = new Parser();
-				//WorkflowPackage wp = parser.parsePackage();
+				Parser parser = new Parser();
+				WorkflowPackage wp = parser.parsePackage();
 				
-				WorkflowPackage wp = new WorkflowPackage("a","PackageTest");
+				/*WorkflowPackage wp = new WorkflowPackage("a","PackageTest");
 				List<Participant> l = new ArrayList<Participant>();
 				l.add(new Participant("id1","name1","Type1","Description1"));
 				l.add(new Participant("id2","name2","Type2","Description2"));
 				wp.setParticipants(l);
-				
+				*/
 				session.setAttribute("workflowPackage", wp);
 				this.forward("/package.jsp", request, response);
 				break;
@@ -57,6 +57,19 @@ public class Afficheur extends HttpServlet
 			case 4:
 				this.forward("/participant.jsp", request, response);
 				break;
+			case 5:
+				this.forward("/datafield.jsp", request, response);
+				break;
+			case 6:
+				this.forward("/extendedattribute.jsp", request, response);
+				break;
+			case 7:
+				this.forward("/formalparameter.jsp", request, response);
+				break;
+			case 8:
+				this.forward("/transition.jsp", request, response);
+				break;
+
 			default:
 				writer.println("<html><body>");
 				writer.println("<a href=\"Afficheur?action=doParse\">Lancer le parsing du fichier XPDL</a><br>");
@@ -105,6 +118,10 @@ public class Afficheur extends HttpServlet
 		map.put("doGetWorkflow", 2);
 		map.put("doGetActivity", 3);
 		map.put("doGetParticipant", 4);
+		map.put("doGetDataField", 5);
+		map.put("doGetExtendedAttribute", 6);
+		map.put("doGetFormalParameter", 7);
+		map.put("doGetTransition", 8);
 		
 		return (map.get(action)!=null)?map.get(action):-1;
 	}
