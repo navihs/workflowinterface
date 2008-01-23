@@ -96,6 +96,13 @@ public class Activity{
 		this.implementation = implementation;
 	}
 	
+	public Activity(String activityId, Boolean implementation)
+	{
+		this.id = id;
+		this.name = name;
+		this.implementation = implementation;
+	}
+	
 	public boolean isSubflow()
 	{
 		if(implementation)

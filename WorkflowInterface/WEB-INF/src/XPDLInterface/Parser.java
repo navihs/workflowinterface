@@ -99,7 +99,8 @@ public class Parser {
 		{
 			a=(Element)it.next();
 			type = a.getChild("ParticipantType").getAttribute("Type").getValue();
-			desc = a.getChild("Description").getText();
+			if(a.getChild("Description")!=null)
+				desc = a.getChild("Description").getText();
 			/*if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
 			//if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue()!=null)
 				//type = participant.getAttribute("Type").getvalue());
@@ -269,12 +270,10 @@ public class Parser {
 				{
 					//on recupère le workflow à parser
 					String workflowId =a.getAttribute("Id").getValue();
-					w = workflowPackage.getWorkflowById(workflowId);
 					
 					//----------------------------------------------------------------------------------//
 					//il faut identifier l'élément workflow lié au SubFlow
 					//----------------------------------------------------------------------------------//
-					String id = w.getId();
 					
 					Element wkf;
 					List<Activity> listWkf = new ArrayList();
@@ -286,7 +285,7 @@ public class Parser {
 					{
 						wkf = (Element)it2.next();
 						//Si l'attribut id de l'element Workflow est égal à l'attribut du Worflow à parser
-						if(wkf.getAttribute("Id").getValue()==id)
+						if(wkf.getAttribute("Id").getValue()==workflowId)
 							wRecup = parseWorkflow(wkf);
 						else
 							wRecup=null;
@@ -326,20 +325,27 @@ public class Parser {
 		
 		if (a.getChild("Implementation").getChild("SubFlow")!=null)
 			impl = true;
-			
-		Activity act = new Activity(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(),impl);
+		
+		Activity act;
+
+		if(a.getAttribute("Name")==null)
+			act = new Activity(a.getAttribute("Id").getValue(),impl);
+		else
+			act = new Activity(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(),impl);
 		
 		if(a.getChild("Performer")!=null)
 		{
 			p=workflowPackage.getParticipantById(a.getChild("Performer").getText());
 			act.setPerformer(p); 
 		}
+		if(a.getChild("TransitionRestrictions")!=null)
+		{
+			if(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split")!=null)
+				act.setTransitionRestrictionSplit(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split").getAttributeValue("Type"));
 		
-		if(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split")!=null)
-			act.setTransitionRestrictionSplit(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split").getAttributeValue("Type"));
-		
-		if(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join")!=null)
-			act.setTransitionRestrictionJoin(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join").getAttributeValue("Type"));
+			if(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join")!=null)
+				act.setTransitionRestrictionJoin(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join").getAttributeValue("Type"));
+		}
 		
 		if(a.getChild("ExtendedAttributes")!=null)
 			act.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes")));
