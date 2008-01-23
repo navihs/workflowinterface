@@ -34,8 +34,8 @@ public class TestXPath
       while(it.hasNext())
       {
         Element elem = (Element)it.next();
-        Element parent = (Element)elem.getParent();
-        System.out.println("Element : " + elem.getAttributeValue("Name") + "   -> parent = " + parent.getAttributeValue("Id"));
+        Element parent = (Element)elem.getParent().getParent();
+        System.out.println("ExtendedAttribute - Name =  : " + elem.getAttributeValue("Name") + "   -> parent = " + parent.getName() + "(Id = " + parent.getAttributeValue("Id") + ")");
       }
     }
     catch (JDOMException e)
