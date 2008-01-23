@@ -16,6 +16,11 @@ public class ModeleTexte{
 		return p;
 	}
 
+	public static String activity(Activity a)
+	{
+		return "";
+	}
+	
 	public static String participant(Participant p)
 	{
 		String s=" ";
