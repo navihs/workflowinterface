@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/jasper.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/jsp-api.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/jaxen-full.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/saxpath.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>
