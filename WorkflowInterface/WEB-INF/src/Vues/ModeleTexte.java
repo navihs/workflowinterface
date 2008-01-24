@@ -300,7 +300,7 @@ public class ModeleTexte{
 		while(it.hasNext())
 		{
 			Activity ac = it.next();
-			s+="<a href='Afficheur?action=doGetDataField"+args+"id="+ac.getId()+"'>"+ac.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur?action=doGetActivity"+args+"id="+ac.getId()+"'>"+ac.getName()+"</a><br>\n";	
 		}
 		return s;
 	}
