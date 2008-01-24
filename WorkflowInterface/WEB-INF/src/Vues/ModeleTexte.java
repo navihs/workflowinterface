@@ -266,8 +266,8 @@ public class ModeleTexte{
 		s+="<td>"+((wf.getCreated()!=null)?wf.getCreated().toString():"?")+"</td>";
 		s+="</tr>";
 		s+="<tr>";
-		s+="<td>Activities ("+wf.getDataFields().size()+")</td>";
-		s+="<td> </td>";
+		s+="<td>Activities ("+wf.getActivities().size()+")</td>";
+		s+="<td> "+ModeleTexte.listeActivity(wf.getActivities(), "&workflow='"+wf.getId()+"'")+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>ExtendedAttributes ("+wf.getExtendedAttributes().size()+")</td>";
@@ -287,6 +287,20 @@ public class ModeleTexte{
 		{
 			DataField df = it.next();
 			s+="<a href='Afficheur?action=doGetDataField"+args+"id="+df.getId()+"'>"+df.getName()+"</a><br>\n";	
+		}
+		return s;
+	}
+	
+	public static String listeActivity(List<Activity> activities, String args)
+	{
+		String s=" ";
+		
+		Iterator<Activity> it = activities.iterator();
+		if(activities.size()==0) return "&nbsp";
+		while(it.hasNext())
+		{
+			Activity ac = it.next();
+			s+="<a href='Afficheur?action=doGetDataField"+args+"id="+ac.getId()+"'>"+ac.getName()+"</a><br>\n";	
 		}
 		return s;
 	}
