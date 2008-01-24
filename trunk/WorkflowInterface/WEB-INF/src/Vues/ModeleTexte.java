@@ -35,7 +35,7 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>ExtendedAttributes ("+a.getExtendedAttributes().size()+")</td>";
-		s+="<td>"+ModeleTexte.listeExtendedAttributes(a.getExtendedAttributes(),"workflow='"+a.getWorkflowParent().getId()+"&activity='"+a.getId()+"'")+"</td>";
+		s+="<td>"+ModeleTexte.listeExtendedAttributes(a.getExtendedAttributes(),"workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId()+"'")+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Implementation</td>";
@@ -47,7 +47,7 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Performer</td>";
-		s+="<td><a href='Afficheur?action=doGetParticipant&id="+a.getPerformer().getId()+"'"+a.getPerformer().getName()+"</td>";
+		s+="<td><a href='Afficheur?action=doGetParticipant&id="+a.getPerformer().getId()+"'>"+a.getPerformer().getName()+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Route</td>";
@@ -57,7 +57,7 @@ public class ModeleTexte{
 		{
 			s+="<tr>";
 			s+="<td>Subflow</td>";
-			s+="<td><a href='Afficheur.action=doGetWorkflow&id="+a.getSubflow().getId()+"'"+a.getSubflow().getName()+"</td>";
+			s+="<td><a href='Afficheur.action=doGetWorkflow&id="+a.getSubflow().getId()+"'>"+a.getSubflow().getName()+"</td>";
 			s+="</tr>";
 		}
 		s+="<tr>";
@@ -164,7 +164,7 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Extended Attributes</td>";
-		s+="<td>"+ModeleTexte.listeExtendedAttributes(t.getExtendedAttributes(),"&transition='"+t.getId()+"'")+"</td>";
+		s+="<td>"+ModeleTexte.listeExtendedAttributes(t.getExtendedAttributes(),"&transition="+t.getId()+"")+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>From</td>";
@@ -271,7 +271,7 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>ExtendedAttributes ("+wf.getExtendedAttributes().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeExtendedAttributes(wf.getExtendedAttributes(),"&workflow='"+wf.getId()+"'")+"</td>";
+		s+="<td> "+ModeleTexte.listeExtendedAttributes(wf.getExtendedAttributes(),"&workflow="+wf.getId()+"")+"</td>";
 		s+="</tr>";
 		s+="</table>";
 		return s;
@@ -286,7 +286,7 @@ public class ModeleTexte{
 		while(it.hasNext())
 		{
 			DataField df = it.next();
-			s+="<a href='Afficheur?action=doGetDataField"+args+"id="+df.getId()+"'>"+df.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur?action=doGetDataField"+args+"&id="+df.getId()+"'>"+df.getName()+"</a><br>\n";	
 		}
 		return s;
 	}
@@ -300,13 +300,14 @@ public class ModeleTexte{
 		while(it.hasNext())
 		{
 			Activity ac = it.next();
-			s+="<a href='Afficheur?action=doGetActivity"+args+"id="+ac.getId()+"'>"+ac.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur?action=doGetActivity"+args+"&id="+ac.getId()+"'>"+ac.getName()+"</a><br>\n";	
 		}
 		return s;
 	}
 	
 	public static String listeExtendedAttributes(List<ExtendedAttribute> extendedAttributes,String args)
 	{
+		System.out.println(args);
 		String s=" ";
 		
 		Iterator<ExtendedAttribute> it = extendedAttributes.iterator();
@@ -314,7 +315,8 @@ public class ModeleTexte{
 		while(it.hasNext())
 		{
 			ExtendedAttribute ea = it.next();
-			s+="<a href='Afficheur?action=doGetExtendedAttributes"+args+"&id="+ea.getName()+"'>"+ea.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur?action=doGetExtendedAttributes"+args+"&name="+ea.getName()+"'>"+ea.getName()+"</a><br>\n";	
+			System.out.println(s);
 		}
 		return s;
 	}

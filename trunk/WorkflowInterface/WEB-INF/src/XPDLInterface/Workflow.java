@@ -76,4 +76,16 @@ public class Workflow{
 		}
 		return null;
 	}
+	
+	public ExtendedAttribute getExtendedAttributeByName(String name)
+	{
+		Iterator<ExtendedAttribute> it = extendedAttributes.iterator();
+		while(it.hasNext())
+		{
+			ExtendedAttribute ea = it.next();
+			if(ea.getName().equals(id))
+				return ea;
+		}
+		return null;
+	}
 }
