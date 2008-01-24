@@ -7,6 +7,12 @@ import java.util.*;
 public class Activity{
 
 	/***
+	 * Permet de connaitre le workflow parent de l'activity (l'identifiant de l'activity n'étant pas unique)
+	 */
+	private Workflow workflowParent;
+	public Workflow getWorkflowParent(){return this.workflowParent;}
+		
+	/***
 	 * <!ELEMENT Performer (#PCDATA)>
 	 */
 	private Participant performer;
@@ -89,18 +95,20 @@ public class Activity{
 	public void setTransitionRestrictionSplit(String activityTransitionRestrictionSplit){this.transitionRestrictionSplit=activityTransitionRestrictionSplit;}
 	public String getTransitionRestrictionSplit(){return this.transitionRestrictionSplit;}
 	
-	public Activity(String activityId, String activityName, Boolean implementation)
+	public Activity(Workflow parent, String activityId, String activityName, Boolean implementation)
 	{
 		this.id = id;
 		this.name = name;
 		this.implementation = implementation;
+		this.workflowParent = parent;
 	}
 	
-	public Activity(String activityId, Boolean implementation)
+	public Activity(Workflow parent, String activityId, Boolean implementation)
 	{
 		this.id = id;
-		this.name = name;
+		this.name = "";
 		this.implementation = implementation;
+		this.workflowParent = parent;
 	}
 	
 	public boolean isSubflow()

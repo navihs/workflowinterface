@@ -213,7 +213,7 @@ public class Parser {
 		Workflow w = new Workflow(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(), created);
 		
 		if(a.getChild("Activities")!=null)
-			w.setActivities(parseActivities(a.getChild("Activities")));
+			w.setActivities(parseActivities(a.getChild("Activities"),w));
 		if(a.getChild("DataFields")!=null)
 			w.setDataFields(parseDataFields(a.getChild("DataFields")));
 		if(a.getChild("FormalParameters")!=null)
@@ -226,7 +226,7 @@ public class Parser {
 		return w;
 	}
 	
-	private List parseActivities(Element activities)
+	private List parseActivities(Element activities,Workflow workflowParent)
 	{
 		/*Tant qui existe des activities (noeud Activities, balise Activity)
 		 * 	on lance parseActivity("Activity")
@@ -253,7 +253,7 @@ public class Parser {
 		while(it.hasNext())
 		{
 			a = (Element)it.next();
-			act = parseActivity(a);
+			act = parseActivity(a,workflowParent);
 			//on test si l'activitée implemente un subflow
 			if (act.isSubflow())
 			{	
@@ -301,7 +301,7 @@ public class Parser {
 	
 	
 	
-	private Activity parseActivity(Element activity)
+	private Activity parseActivity(Element activity,Workflow workflowParent)
 	{
 		/* on créé un objet Activity
 		 * <Activity Id="temps_scolaire" dans Activity.id
@@ -329,9 +329,9 @@ public class Parser {
 		Activity act;
 
 		if(a.getAttribute("Name")==null)
-			act = new Activity(a.getAttribute("Id").getValue(),impl);
+			act = new Activity(workflowParent,a.getAttribute("Id").getValue(),impl);
 		else
-			act = new Activity(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(),impl);
+			act = new Activity(workflowParent,a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(),impl);
 		
 		if(a.getChild("Performer")!=null)
 		{
