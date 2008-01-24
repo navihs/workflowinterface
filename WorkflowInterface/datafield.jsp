@@ -6,7 +6,16 @@
 <body>
 <% 
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
-DataField df = wp.getDataFieldById(request.getParameter("id"));
+DataField df;
+if(session.getAttribute("LastObject").getClass().toString()=="WorkflowPackage")
+{
+	df = wp.getDataFieldById(request.getParameter("id"));
+}else
+	if(session.getAttribute("LastObject").getClass().toString()=="Workflow");
+	{
+		Workflow wf = (Workflow)session.getAttribute("LastObject");
+		df = wf.getDataFieldById(request.getParameter("id"));
+	}
 %>
 <%=ModeleTexte.dataField(df) %>
 </body>

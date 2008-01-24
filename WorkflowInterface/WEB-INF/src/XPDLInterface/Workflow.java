@@ -65,4 +65,15 @@ public class Workflow{
 		return null;
 	}
 		
+	public DataField getDataFieldById(String id)
+	{
+		Iterator<DataField> it = dataFields.iterator();
+		while(it.hasNext())
+		{
+			DataField df = it.next();
+			if(df.getId().equals(id))
+				return df;
+		}
+		return null;
+	}
 }
