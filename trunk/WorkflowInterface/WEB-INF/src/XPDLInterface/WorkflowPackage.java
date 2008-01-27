@@ -86,7 +86,7 @@ public class WorkflowPackage {
 		while(it.hasNext())
 		{
 			ExtendedAttribute eA = it.next();
-			if(eA.getName().equals(id))
+			if(eA.getName().equals(name))
 				return eA;
 		}
 		return null;

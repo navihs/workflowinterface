@@ -315,7 +315,7 @@ public class ModeleTexte{
 		while(it.hasNext())
 		{
 			ExtendedAttribute ea = it.next();
-			s+="<a href='Afficheur?action=doGetExtendedAttributes"+args+"&name="+ea.getName()+"'>"+ea.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur?action=doGetExtendedAttribute"+args+"&name="+ea.getName()+"'>"+ea.getName()+"</a><br>\n";	
 			System.out.println(s);
 		}
 		return s;

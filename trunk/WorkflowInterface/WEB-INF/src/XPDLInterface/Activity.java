@@ -126,7 +126,7 @@ public class Activity{
 		while(it.hasNext())
 		{
 			ExtendedAttribute ea = it.next();
-			if(ea.getName().equals(id))
+			if(ea.getName().equals(name))
 				return ea;
 		}
 		return null;
