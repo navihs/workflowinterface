@@ -97,15 +97,15 @@ public class Activity{
 	
 	public Activity(Workflow parent, String activityId, String activityName, Boolean implementation)
 	{
-		this.id = id;
-		this.name = name;
+		this.id = activityId;
+		this.name = activityName;
 		this.implementation = implementation;
 		this.workflowParent = parent;
 	}
 	
 	public Activity(Workflow parent, String activityId, Boolean implementation)
 	{
-		this.id = id;
+		this.id = activityId;
 		this.name = "";
 		this.implementation = implementation;
 		this.workflowParent = parent;

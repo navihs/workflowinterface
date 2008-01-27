@@ -244,15 +244,15 @@ public class Parser {
 		 * On renvoit une liste d'Activity
 		 */
 		List<Activity> activitiesReturn = new ArrayList();
-		List<Activity> activity = activities.getChildren("Activity");
-		Iterator it = activity.iterator();
+		List<Element> activity = activities.getChildren("Activity");
+		Iterator<Element> it = activity.iterator();
 		Element a;
 		Workflow w, wRecup = null;
 		Activity act;
 			
 		while(it.hasNext())
 		{
-			a = (Element)it.next();
+			a = it.next();
 			act = parseActivity(a,workflowParent);
 			//on test si l'activitée implemente un subflow
 			if (act.isSubflow())
@@ -295,6 +295,7 @@ public class Parser {
 					act.setSubflow(wRecup);
 				}
 			}
+			activitiesReturn.add(act);
 		}
 		return activitiesReturn;
 	}
@@ -319,36 +320,35 @@ public class Parser {
 		 * On renvoit une Activity
 		 */
 		
-		Element a = activity;
 		boolean impl=false;
 		Participant p;
 		
-		if (a.getChild("Implementation").getChild("SubFlow")!=null)
+		if (activity.getChild("Implementation").getChild("SubFlow")!=null)
 			impl = true;
 		
 		Activity act;
 
-		if(a.getAttribute("Name")==null)
-			act = new Activity(workflowParent,a.getAttribute("Id").getValue(),impl);
+		if(activity.getAttribute("Name")==null)
+			act = new Activity(workflowParent,activity.getAttribute("Id").getValue(),impl);
 		else
-			act = new Activity(workflowParent,a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(),impl);
+			act = new Activity(workflowParent,activity.getAttribute("Id").getValue(),activity.getAttribute("Name").getValue(),impl);
 		
-		if(a.getChild("Performer")!=null)
+		if(activity.getChild("Performer")!=null)
 		{
-			p=workflowPackage.getParticipantById(a.getChild("Performer").getText());
+			p=workflowPackage.getParticipantById(activity.getChild("Performer").getText());
 			act.setPerformer(p); 
 		}
-		if(a.getChild("TransitionRestrictions")!=null)
+		if(activity.getChild("TransitionRestrictions")!=null)
 		{
-			if(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split")!=null)
-				act.setTransitionRestrictionSplit(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split").getAttributeValue("Type"));
+			if(activity.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split")!=null)
+				act.setTransitionRestrictionSplit(activity.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split").getAttributeValue("Type"));
 		
-			if(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join")!=null)
-				act.setTransitionRestrictionJoin(a.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join").getAttributeValue("Type"));
+			if(activity.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join")!=null)
+				act.setTransitionRestrictionJoin(activity.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join").getAttributeValue("Type"));
 		}
 		
-		if(a.getChild("ExtendedAttributes")!=null)
-			act.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes")));
+		if(activity.getChild("ExtendedAttributes")!=null)
+			act.setExtendedAttributes(parseExtendedAttributes(activity.getChild("ExtendedAttributes")));
 		
 		return act;
 	}

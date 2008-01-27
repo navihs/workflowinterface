@@ -35,7 +35,7 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>ExtendedAttributes ("+a.getExtendedAttributes().size()+")</td>";
-		s+="<td>"+ModeleTexte.listeExtendedAttributes(a.getExtendedAttributes(),"workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId()+"'")+"</td>";
+		s+="<td>"+ModeleTexte.listeExtendedAttributes(a.getExtendedAttributes(),"&workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId())+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Implementation</td>";
@@ -47,13 +47,13 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Performer</td>";
-		s+="<td><a href='Afficheur?action=doGetParticipant&id="+a.getPerformer().getId()+"'>"+a.getPerformer().getName()+"</td>";
+		s+="<td>"+((a.getPerformer()!=null)?"<a href='Afficheur?action=doGetParticipant&id="+a.getPerformer().getId()+"'>"+a.getPerformer().getName()+"</td>":"</td>");
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Route</td>";
 		s+="<td>"+a.getRoute()+"</td>";
 		s+="</tr>";
-		if(a.isSubflow())
+		if(a.getSubflow()!=null)
 		{
 			s+="<tr>";
 			s+="<td>Subflow</td>";
@@ -267,11 +267,11 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Activities ("+wf.getActivities().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeActivity(wf.getActivities(), "&workflow='"+wf.getId()+"'")+"</td>";
+		s+="<td> "+ModeleTexte.listeActivity(wf.getActivities(), "&workflow="+wf.getId())+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>ExtendedAttributes ("+wf.getExtendedAttributes().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeExtendedAttributes(wf.getExtendedAttributes(),"&workflow="+wf.getId()+"")+"</td>";
+		s+="<td> "+ModeleTexte.listeExtendedAttributes(wf.getExtendedAttributes(),"&workflow="+wf.getId())+"</td>";
 		s+="</tr>";
 		s+="</table>";
 		return s;
@@ -300,14 +300,13 @@ public class ModeleTexte{
 		while(it.hasNext())
 		{
 			Activity ac = it.next();
-			s+="<a href='Afficheur?action=doGetActivity"+args+"&id="+ac.getId()+"'>"+ac.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur?action=doGetActivity"+args+"&id="+ac.getId()+"'>"+((ac.getName()!=null)?ac.getId():ac.getName())+"</a><br>\n";	
 		}
 		return s;
 	}
 	
 	public static String listeExtendedAttributes(List<ExtendedAttribute> extendedAttributes,String args)
 	{
-		System.out.println(args);
 		String s=" ";
 		
 		Iterator<ExtendedAttribute> it = extendedAttributes.iterator();
@@ -316,7 +315,6 @@ public class ModeleTexte{
 		{
 			ExtendedAttribute ea = it.next();
 			s+="<a href='Afficheur?action=doGetExtendedAttribute"+args+"&name="+ea.getName()+"'>"+ea.getName()+"</a><br>\n";	
-			System.out.println(s);
 		}
 		return s;
 	}
