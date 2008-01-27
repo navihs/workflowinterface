@@ -69,7 +69,6 @@ public class Afficheur extends HttpServlet
 			case 8:
 				this.forward("/transition.jsp", request, response);
 				break;
-
 			default:
 				writer.println("<html><body>");
 				writer.println("<a href=\"Afficheur?action=doParse\">Lancer le parsing du fichier XPDL</a><br>");
