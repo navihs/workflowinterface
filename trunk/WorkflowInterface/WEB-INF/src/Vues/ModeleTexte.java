@@ -53,11 +53,11 @@ public class ModeleTexte{
 		s+="<td>Route</td>";
 		s+="<td>"+a.getRoute()+"</td>";
 		s+="</tr>";
-		if(a.getSubflow()!=null)
+		if(a.isSubflow())
 		{
 			s+="<tr>";
 			s+="<td>Subflow</td>";
-			s+="<td><a href='Afficheur.action=doGetWorkflow&id="+a.getSubflow().getId()+"'>"+a.getSubflow().getName()+"</td>";
+			s+="<td><a href='Afficheur?action=doGetWorkflow&id="+a.getSubflow().getId()+"'>"+a.getSubflow().getName()+"</td>";
 			s+="</tr>";
 		}
 		s+="<tr>";

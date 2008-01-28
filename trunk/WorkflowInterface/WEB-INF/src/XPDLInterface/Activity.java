@@ -23,7 +23,12 @@ public class Activity{
 	 * <!ELEMENT SubFlow (ActualParameters?)>
 	 */
 	private Workflow subflow;
-	public void setSubflow(Workflow activitySubflow){this.subflow=activitySubflow;}
+	public void setSubflow(Workflow activitySubflow)
+	{
+		System.out.println(this.workflowParent.getName()+" / "+this.id+" / ISSubflow");
+		System.out.println(activitySubflow.getId());
+		this.subflow=activitySubflow;
+	}
 	public Workflow getSubflow(){return this.subflow;}
 	
 	/***
@@ -113,11 +118,7 @@ public class Activity{
 	
 	public boolean isSubflow()
 	{
-		if(implementation)
-			return true;
-		else
-			return false;
-		//return (subflow!=null);
+		return implementation;
 	}
 	
 	public ExtendedAttribute getExtendedAttributeByName(String name)
