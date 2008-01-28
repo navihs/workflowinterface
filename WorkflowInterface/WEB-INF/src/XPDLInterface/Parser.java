@@ -257,8 +257,10 @@ public class Parser {
 			//on test si l'activitée implemente un subflow
 			if (act.isSubflow())
 			{	
+				String workflowId = a.getChild("Implementation").getChild("SubFlow").getAttribute("Id").getValue();
+				
 				//on test si un Workflow avec le même ID que l'Activité existe 
-				w = workflowPackage.workflowExist(a.getAttribute("Id").getValue());
+				w = workflowPackage.workflowExist(workflowId);
 				//si un workflow existe avec le meme id que l'activité
 				if(w!=null)
 				{
@@ -269,15 +271,13 @@ public class Parser {
 				else
 				{
 					//on recupère le workflow à parser
-					String workflowId =a.getAttribute("Id").getValue();
 					
 					//----------------------------------------------------------------------------------//
 					//il faut identifier l'élément workflow lié au SubFlow
 					//----------------------------------------------------------------------------------//
 					
 					Element wkf;
-					List<Activity> listWkf = new ArrayList();
-					listWkf = racine.getChild("WorkflowProcesses").getChildren("WorkflowProcess");
+					List listWkf = racine.getChild("WorkflowProcesses").getChildren("WorkflowProcess");
 					Iterator it2 = listWkf.iterator();
 					
 					//parcours des Workflows
@@ -285,10 +285,13 @@ public class Parser {
 					{
 						wkf = (Element)it2.next();
 						//Si l'attribut id de l'element Workflow est égal à l'attribut du Worflow à parser
-						if(wkf.getAttribute("Id").getValue()==workflowId)
+						System.out.println(wkf.getAttribute("Id").getValue()+"     "+workflowId);
+						if(wkf.getAttribute("Id").getValue().equals(workflowId))
+						{
+							System.out.println("OK");
 							wRecup = parseWorkflow(wkf);
-						else
-							wRecup=null;
+							break;
+						}
 						
 					}				
 					//----------------------------------------------------------------------------------//
