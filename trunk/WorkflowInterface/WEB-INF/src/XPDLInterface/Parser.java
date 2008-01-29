@@ -14,7 +14,7 @@ public class Parser {
 	private org.jdom.Element racine;
 	private org.jdom.Document document;
 	private WorkflowPackage workflowPackage;
-	
+	private Namespace ns = Namespace.getNamespace("http://www.wfmc.org/2002/XPDL1.0");
 	public Parser()
 	{
 		initParser();
@@ -25,8 +25,7 @@ public class Parser {
 		 SAXBuilder sxb = new SAXBuilder();
 	     try
 	     {
-	    	 document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/soumission_article_sans.xpdl"));
-	    	 //document.setBaseURI("http://www.wfmc.org/2002/XPDL1.0");
+	    	 document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/soumission_article.xpdl"));
 	     }
 	     catch(Exception e){}
 	     racine = document.getRootElement();
@@ -51,25 +50,25 @@ public class Parser {
 		
 		this.workflowPackage = new WorkflowPackage(racine.getAttribute("Id").getValue(),racine.getAttribute("Name").getValue());
 		
-		Element packageHeader = racine.getChild("PackageHeader");
+		Element packageHeader = racine.getChild("PackageHeader",ns);
 		
 		DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
 		try{
-				Element created = packageHeader.getChild("Created");
+				Element created = packageHeader.getChild("Created",ns);
 				workflowPackage.setCreated(dateFormat.parse(created.getValue()));
 		}catch(Exception err){}
 		
-		if(racine.getChild("Participants")!=null)
-			workflowPackage.setParticipants(parseParticipants(racine.getChild("Participants")));
+		if(racine.getChild("Participants",ns)!=null)
+			workflowPackage.setParticipants(parseParticipants(racine.getChild("Participants",ns)));
 		
-		if(racine.getChild("DataFields")!=null)
-			workflowPackage.setDataFields(parseDataFields(racine.getChild("DataFields")));
+		if(racine.getChild("DataFields",ns)!=null)
+			workflowPackage.setDataFields(parseDataFields(racine.getChild("DataFields",ns)));
 		
-		if(racine.getChild("WorkflowProcesses")!=null)
-			workflowPackage.setWorkflows(parseWorkflowProcesses(racine.getChild("WorkflowProcesses")));
+		if(racine.getChild("WorkflowProcesses",ns)!=null)
+			workflowPackage.setWorkflows(parseWorkflowProcesses(racine.getChild("WorkflowProcesses",ns)));
 		
-		if(racine.getChild("ExtendedAttributes")!=null)
-			workflowPackage.setExtendedAttributes(parseExtendedAttributes(racine.getChild("ExtendedAttributes")));
+		if(racine.getChild("ExtendedAttributes",ns)!=null)
+			workflowPackage.setExtendedAttributes(parseExtendedAttributes(racine.getChild("ExtendedAttributes",ns)));
 	
 		return workflowPackage;
 	}
@@ -86,7 +85,7 @@ public class Parser {
 		 */
 		
 		List<Participant> participantsReturn= new ArrayList();
-		List<Participant> participant = participants.getChildren("Participant");
+		List<Participant> participant = participants.getChildren("Participant",ns);
 		Iterator it = participant.iterator();
 		Element a;
 		//.getChild("Participant");
@@ -102,9 +101,9 @@ public class Parser {
 		while (it.hasNext())
 		{
 			a=(Element)it.next();
-			type = a.getChild("ParticipantType").getAttribute("Type").getValue();
-			if(a.getChild("Description")!=null)
-				desc = a.getChild("Description").getText();
+			type = a.getChild("ParticipantType",ns).getAttribute("Type").getValue();
+			if(a.getChild("Description",ns)!=null)
+				desc = a.getChild("Description",ns).getText();
 			/*if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
 			//if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue()!=null)
 				//type = participant.getAttribute("Type").getvalue());
@@ -132,7 +131,7 @@ public class Parser {
 		 */
 		
 		List<DataField> datafieldsReturn=new ArrayList();
-		List<DataField> datafield = datafields.getChildren("Datafield");//datafields.getChild("DataField");
+		List<DataField> datafield = datafields.getChildren("Datafield",ns);//datafields.getChild("DataField");
 		Iterator it = datafield.iterator();
 		Element a;
 		
@@ -166,7 +165,7 @@ public class Parser {
 		 * 		
 		 */
 		List<Workflow> workflowProcessesReturn= new ArrayList();
-		List<Workflow> workflowProcess = workflowProcesses.getChildren("WorkflowProcess");
+		List<Workflow> workflowProcess = workflowProcesses.getChildren("WorkflowProcess",ns);
 		Iterator it = workflowProcess.iterator();
 		Element a;
 		Workflow w, newW;
@@ -213,21 +212,21 @@ public class Parser {
 		String created;
 		Element a = workflowProcess;
 		
-		created= a.getChild("ProcessHeader").getChild("Created").getText();
+		created= a.getChild("ProcessHeader",ns).getChild("Created",ns).getText();
 		Workflow w = new Workflow(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(), created);
 		
-		if(a.getChild("Activities")!=null)
-			w.setActivities(parseActivities(a.getChild("Activities"),w));
-		if(a.getChild("Participants")!=null)
-			this.workflowPackage.setParticipants(parseParticipants(a.getChild("Participants")));
-		if(a.getChild("DataFields")!=null)
-			w.setDataFields(parseDataFields(a.getChild("DataFields")));
-		if(a.getChild("FormalParameters")!=null)
-			w.setFormalParameters(parseFormalParameters(a.getChild("FormalParameters")));
-		if(a.getChild("Transitions")!=null)
-			w.setTransitions(parseTransitions(a.getChild("Transitions"),w));
-		if(a.getChild("ExtendedAttributes")!=null)
-			w.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes")));
+		if(a.getChild("Activities",ns)!=null)
+			w.setActivities(parseActivities(a.getChild("Activities",ns),w));
+		if(a.getChild("Participants",ns)!=null)
+			this.workflowPackage.setParticipants(parseParticipants(a.getChild("Participants",ns)));
+		if(a.getChild("DataFields",ns)!=null)
+			w.setDataFields(parseDataFields(a.getChild("DataFields",ns)));
+		if(a.getChild("FormalParameters",ns)!=null)
+			w.setFormalParameters(parseFormalParameters(a.getChild("FormalParameters",ns)));
+		if(a.getChild("Transitions",ns)!=null)
+			w.setTransitions(parseTransitions(a.getChild("Transitions",ns),w));
+		if(a.getChild("ExtendedAttributes",ns)!=null)
+			w.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes",ns)));
 		
 		return w;
 	}
@@ -250,7 +249,7 @@ public class Parser {
 		 * On renvoit une liste d'Activity
 		 */
 		List<Activity> activitiesReturn = new ArrayList();
-		List<Element> activity = activities.getChildren("Activity");
+		List<Element> activity = activities.getChildren("Activity",ns);
 		Iterator<Element> it = activity.iterator();
 		Element a;
 		Workflow w, wRecup = null;
@@ -263,7 +262,7 @@ public class Parser {
 			//on test si l'activitée implemente un subflow
 			if (act.isSubflow())
 			{	
-				String workflowId = a.getChild("Implementation").getChild("SubFlow").getAttribute("Id").getValue();
+				String workflowId = a.getChild("Implementation",ns).getChild("SubFlow",ns).getAttribute("Id").getValue();
 				
 				//on test si un Workflow avec le même ID que l'Activité existe 
 				w = workflowPackage.workflowExist(workflowId);
@@ -283,7 +282,7 @@ public class Parser {
 					//----------------------------------------------------------------------------------//
 					
 					Element wkf;
-					List listWkf = racine.getChild("WorkflowProcesses").getChildren("WorkflowProcess");
+					List listWkf = racine.getChild("WorkflowProcesses",ns).getChildren("WorkflowProcess",ns);
 					Iterator it2 = listWkf.iterator();
 					
 					//parcours des Workflows
@@ -332,7 +331,7 @@ public class Parser {
 		boolean impl=false;
 		Participant p;
 		
-		if (activity.getChild("Implementation").getChild("SubFlow")!=null)
+		if (activity.getChild("Implementation",ns).getChild("SubFlow",ns)!=null)
 			impl = true;
 		
 		Activity act;
@@ -342,22 +341,22 @@ public class Parser {
 		else
 			act = new Activity(workflowParent,activity.getAttribute("Id").getValue(),activity.getAttribute("Name").getValue(),impl);
 		
-		if(activity.getChild("Performer")!=null)
+		if(activity.getChild("Performer",ns)!=null)
 		{
-			p=workflowPackage.getParticipantById(activity.getChild("Performer").getText());
+			p=workflowPackage.getParticipantById(activity.getChild("Performer",ns).getText());
 			act.setPerformer(p); 
 		}
-		if(activity.getChild("TransitionRestrictions")!=null)
+		if(activity.getChild("TransitionRestrictions",ns)!=null)
 		{
-			if(activity.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split")!=null)
-				act.setTransitionRestrictionSplit(activity.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Split").getAttributeValue("Type"));
+			if(activity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Split",ns)!=null)
+				act.setTransitionRestrictionSplit(activity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Split",ns).getAttributeValue("Type"));
 		
-			if(activity.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join")!=null)
-				act.setTransitionRestrictionJoin(activity.getChild("TransitionRestrictions").getChild("TransitionRestriction").getChild("Join").getAttributeValue("Type"));
+			if(activity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Join",ns)!=null)
+				act.setTransitionRestrictionJoin(activity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Join",ns).getAttributeValue("Type"));
 		}
 		
-		if(activity.getChild("ExtendedAttributes")!=null)
-			act.setExtendedAttributes(parseExtendedAttributes(activity.getChild("ExtendedAttributes")));
+		if(activity.getChild("ExtendedAttributes",ns)!=null)
+			act.setExtendedAttributes(parseExtendedAttributes(activity.getChild("ExtendedAttributes",ns)));
 		
 		return act;
 	}
@@ -375,7 +374,7 @@ public class Parser {
 		 */
 		
 		List<FormalParameter> formalParametersReturn=new ArrayList();
-		List formalParameter = formalParameters.getChildren("FormalParameter"); //.getChild("FormalParameter");
+		List formalParameter = formalParameters.getChildren("FormalParameter",ns); //.getChild("FormalParameter");
 		Iterator<Element> it = formalParameter.iterator();
 		Element a;
 		String dataType;
@@ -387,8 +386,8 @@ public class Parser {
 			desc=null;
 			a = (Element)it.next();
 			
-			dataType = a.getChild("DataType").getChild("BasicType").getAttribute("Type").getValue();
-			desc = a.getChild("Description").getText();
+			dataType = a.getChild("DataType",ns).getChild("BasicType",ns).getAttribute("Type").getValue();
+			desc = a.getChild("Description",ns).getText();
 			
 			FormalParameter f = new FormalParameter(a.getAttribute("Id").getValue(), a.getAttribute("Mode").getValue(), dataType, desc);
 			formalParametersReturn.add(f);	
@@ -402,7 +401,7 @@ public class Parser {
 		 * Parse dans parseWorkflowProcess
 		 */
 		List<Transition> transitionsReturn=new ArrayList();
-		List<Element> transition = transitions.getChildren("Transition");
+		List<Element> transition = transitions.getChildren("Transition",ns);
 		Iterator<Element> it = transition.iterator();
 		Element a;
 		
@@ -414,10 +413,10 @@ public class Parser {
 			a = it.next();
 			conditionType=null;
 			condition=null;
-			if(a.getChild("Condition")!=null)
+			if(a.getChild("Condition",ns)!=null)
 			{
-				conditionType= a.getChild("Condition").getAttribute("Type").getValue();
-				condition = a.getChild("Condition").getText();
+				conditionType= a.getChild("Condition",ns).getAttribute("Type").getValue();
+				condition = a.getChild("Condition",ns).getText();
 			}
 			Activity from =workflow.getActivityById(a.getAttribute("From").getValue());
 			Activity to = workflow.getActivityById(a.getAttribute("To").getValue());
@@ -436,7 +435,7 @@ public class Parser {
 		 * On renvoit une liste de ExtendedAttribute
 		 */
 		List<ExtendedAttribute> extendedAttributesReturn = new ArrayList();
-		List<Element> extendedAttribute = extendedAttributes.getChildren("ExtendedAttribute");
+		List<Element> extendedAttribute = extendedAttributes.getChildren("ExtendedAttribute",ns);
 		Iterator it = extendedAttribute.iterator();
 		Element a;
 					
