@@ -1,6 +1,7 @@
 package XPDLInterface;
 
-public class DataField {
+public class DataField 
+{
 	
 	private String initialValue;
 	public String getInitialValue(){return this.initialValue;}
