@@ -1,5 +1,6 @@
 package XPDLInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Transition {
@@ -12,7 +13,7 @@ public class Transition {
 	public Activity getTo(){return this.to;}
 	public void setTo(Activity tTo){this.to = tTo;}
 	
-	private List<ExtendedAttribute> extendedAttributes;
+	private List<ExtendedAttribute> extendedAttributes=new ArrayList<ExtendedAttribute>();;
 	public List<ExtendedAttribute> getExtendedAttributes(){return this.extendedAttributes;}
 	public void setExtendedAttributes(List<ExtendedAttribute> tExtendedAttributes){this.extendedAttributes = tExtendedAttributes;}
 	
