@@ -69,10 +69,9 @@ public class Activity{
 	
 	/***
 	 * <!ELEMENT Implementation (No | Tool+ | SubFlow | Loop)>
+	 * Permet de savoir si il y a une implémentation ou pas
 	 */
 	private boolean implementation;
-	//public void setImplementation(String activityImplementation){this.implementation=activityImplementation;}
-	//public String getImplementation(){return this.implementation;}
 	public void setImplementation(boolean activityImplementation){this.implementation=activityImplementation;}
 	public Boolean getImplementation(){return this.implementation;}
 	
@@ -93,14 +92,29 @@ public class Activity{
 	//private String Split 	//XOR ou AND
 	//TransitionRefs ? 
 	
+	/***
+	 * <!ELEMENT TransitionRestriction
+	 * <!ELEMENT Join Type=
+	 */
 	private String transitionRestrictionJoin;
 	public void setTransitionRestrictionJoin(String activityTransitionRestrictionJoin){this.transitionRestrictionJoin=activityTransitionRestrictionJoin;}
 	public String getTransitionRestrictionJoin(){return this.transitionRestrictionJoin;}
 	
+	/***
+	 * <!ELEMENT TransitionRestriction
+	 * <!ELEMENT Split Type=
+	 */
 	private String transitionRestrictionSplit;
 	public void setTransitionRestrictionSplit(String activityTransitionRestrictionSplit){this.transitionRestrictionSplit=activityTransitionRestrictionSplit;}
 	public String getTransitionRestrictionSplit(){return this.transitionRestrictionSplit;}
 	
+	/***
+	 * Constructeur quand l'attribut Name existe
+	 * @param parent workflow qui détient l'activité
+	 * @param activityId <!ATTLIST Activity Id
+	 * @param activityName <!ATTLIST Activity Name
+	 * @param implementation <!ELEMENT Implementation
+	 */
 	public Activity(Workflow parent, String activityId, String activityName, Boolean implementation)
 	{
 		this.id = activityId;
@@ -109,19 +123,34 @@ public class Activity{
 		this.workflowParent = parent;
 	}
 	
+	/***
+	 * Constructeur quand il n'y a pas d'attribut name
+	 * @param parent workflow qui détient l'activité
+	 * @param activityId <!ATTLIST Activity Id
+	 * @param implementation <!ELEMENT Implementation
+	 */
 	public Activity(Workflow parent, String activityId, Boolean implementation)
 	{
 		this.id = activityId;
-		this.name = "";
+		this.name = this.id;
 		this.implementation = implementation;
 		this.workflowParent = parent;
 	}
 	
+	/***
+	 * Retourne si l'activity est liée à un workflow
+	 * @return
+	 */
 	public boolean isSubflow()
 	{
 		return implementation;
 	}
 	
+	/***
+	 * Retourne l'ExtendedAttribute recherché dans l'activité
+	 * @param name attribut name de l'ExtendedAttribute recherché
+	 * @return
+	 */
 	public ExtendedAttribute getExtendedAttributeByName(String name)
 	{
 		Iterator<ExtendedAttribute> it = extendedAttributes.iterator();

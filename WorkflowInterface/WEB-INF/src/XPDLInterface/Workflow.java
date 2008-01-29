@@ -55,7 +55,7 @@ public class Workflow{
 	
 	public Activity getActivityById(String id)
 	{
-		Iterator<Activity> it = activities.iterator();
+		Iterator<Activity> it = this.activities.iterator();
 		while(it.hasNext())
 		{
 			Activity act = it.next();
@@ -67,7 +67,7 @@ public class Workflow{
 		
 	public DataField getDataFieldById(String id)
 	{
-		Iterator<DataField> it = dataFields.iterator();
+		Iterator<DataField> it = this.dataFields.iterator();
 		while(it.hasNext())
 		{
 			DataField df = it.next();
@@ -79,7 +79,7 @@ public class Workflow{
 	
 	public ExtendedAttribute getExtendedAttributeByName(String name)
 	{
-		Iterator<ExtendedAttribute> it = extendedAttributes.iterator();
+		Iterator<ExtendedAttribute> it = this.extendedAttributes.iterator();
 		while(it.hasNext())
 		{
 			ExtendedAttribute ea = it.next();
@@ -87,5 +87,32 @@ public class Workflow{
 				return ea;
 		}
 		return null;
+	}
+	
+	public List<Participant> getActivityPerformers()
+	{
+		List<Participant> performers=new ArrayList<Participant>();
+		Iterator<Activity> itA = this.activities.iterator();
+		while(itA.hasNext())
+		{
+			Activity act = itA.next();
+			if(act.getPerformer()!=null)
+				performers.add(act.getPerformer());
+		}
+		return performers;
+	}
+	
+	public List<Activity> getActivitiesByPerformer(Participant p)
+	{
+		List<Activity> performerActivities=new ArrayList<Activity>();
+		
+		Iterator<Activity> itA = this.activities.iterator();
+		while(itA.hasNext())
+		{
+			Activity act = itA.next();
+			if(act.getPerformer()==p)
+				performerActivities.add(act);
+		}
+		return performerActivities;
 	}
 }
