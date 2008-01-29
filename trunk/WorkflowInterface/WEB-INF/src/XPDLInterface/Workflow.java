@@ -96,7 +96,7 @@ public class Workflow{
 		while(itA.hasNext())
 		{
 			Activity act = itA.next();
-			if(act.getPerformer()!=null && performers.contains(act.getPerformer()))
+			if(act.getPerformer()!=null && !performers.contains(act.getPerformer()))
 				performers.add(act.getPerformer());
 		}
 		return performers;
