@@ -47,7 +47,7 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Performer</td>";
-		s+="<td>"+((a.getPerformer()!=null)?"<a href='Afficheur?action=doGetParticipant&id="+a.getPerformer().getId()+"'>"+a.getPerformer().getName()+"</td>":"</td>");
+		s+="<td>"+((a.getPerformer()!=null)?"<a href='Afficheur?action=doGetParticipant&id="+a.getPerformer().getId()+"'>"+a.getPerformer().getName()+"</td>":"&nbsp</td>");
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Route</td>";
@@ -69,8 +69,8 @@ public class ModeleTexte{
 		s+="<td>"+a.getTransitionRestrictionSplit()+"</td>";
 		s+="</tr>";
 		s+="<tr>";
-		s+="<td>Transitions</td>";
-		s+="<td>Pas implemente</td>";
+		s+="<td>Transitions ("+a.getTranstions().size()+")</td>";
+		s+="<td>"+((a.getTranstions()!=null)?listeTransitions(a.getTranstions()):":&nbsp")+"</td>";
 		s+="</table>";
 		return s;
 	}
@@ -287,6 +287,20 @@ public class ModeleTexte{
 		{
 			DataField df = it.next();
 			s+="<a href='Afficheur?action=doGetDataField"+args+"&id="+df.getId()+"'>"+df.getName()+"</a><br>\n";	
+		}
+		return s;
+	}
+	
+	public static String listeTransitions(List<Transition> transitions)
+	{
+		String s=" ";
+		
+		Iterator<Transition> it = transitions.iterator();
+		if(transitions.size()==0) return "&nbsp";
+		while(it.hasNext())
+		{
+			Transition tr = it.next();
+			s+="<a href='Afficheur?action=doGetTransition&id="+tr.getId()+"'>"+tr.getId()+"</a><br>\n";	
 		}
 		return s;
 	}
