@@ -33,6 +33,13 @@ public class FormalParameter {
 	private String dataType;
 	public String getDataType(){return this.dataType;}
 	
+	/***
+	 * Constructeur d'un FormalParameter
+	 * @param fpId <!ATTLIST FormalParameter Id
+	 * @param fpMode <!ATTLIST FormalParameter Mode
+	 * @param fpDataType <!ELEMENT DataType (%Type;)> 
+	 * @param fpDescription <!ELEMENT Description (#PCDATA)>
+	 */
 	public FormalParameter(String fpId, String fpMode,String fpDataType, String fpDescription)
 	{
 		this.id =fpId;
