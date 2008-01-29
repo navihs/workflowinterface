@@ -15,7 +15,20 @@
 	<RedefinableHeader PublicationStatus="UNDER_TEST" />
 	<ConformanceClass GraphConformance="NON_BLOCKED" />
 	<Script Type="text/javascript" />
-
+<Participants>
+				<Participant Id="auteur" Name="Auteur">
+					<ParticipantType Type="ROLE" />
+				</Participant>
+				<Participant Id="valideur_interne"
+					Name="Valideur interne">
+					<ParticipantType Type="ROLE" />
+				</Participant>
+				<Participant Id="valideur_conference"
+					Name="Valideur conférence">
+					<ParticipantType Type="ROLE" />
+				</Participant>
+			</Participants>
+	
 	<WorkflowProcesses>
 
 		<WorkflowProcess AccessLevel="PUBLIC"
@@ -80,19 +93,6 @@ accepté ou refisé) est stocké dans la variable
 
 			</DataFields>
 			
-			<Participants>
-				<Participant Id="auteur" Name="Auteur">
-					<ParticipantType Type="ROLE" />
-				</Participant>
-				<Participant Id="valideur_interne"
-					Name="Valideur interne">
-					<ParticipantType Type="ROLE" />
-				</Participant>
-				<Participant Id="valideur_conference"
-					Name="Valideur conférence">
-					<ParticipantType Type="ROLE" />
-				</Participant>
-			</Participants>
 			
 			<Activities>
 			
