@@ -35,7 +35,6 @@ public class Afficheur2 extends HttpServlet
 			case 0:
 				Parser parser = new Parser();
 				WorkflowPackage wp = parser.parsePackage();
-				
 				session.setAttribute("workflowPackage", wp);
 				this.forward("/package2.jsp", request, response);
 				break;
