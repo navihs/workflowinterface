@@ -168,11 +168,11 @@ public class ModeleTexte{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>From</td>";
-		s+="<td><a href='Afficheur?action=doGetActivity&id="+t.getFrom().getId()+"'>"+t.getFrom().getName()+"</a></td>";
+		s+="<td><a href='Afficheur?action=doGetActivity&workflow="+t.getFrom().getWorkflowParent().getId()+"&id="+t.getFrom().getId()+"'>"+t.getFrom().getName()+"</a></td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>To</td>";
-		s+="<td><a href='Afficheur?action=doGetActivity&id="+t.getTo().getId()+"'>"+t.getTo().getName()+"</a></td>";
+		s+="<td><a href='Afficheur?action=doGetActivity&workflow="+t.getFrom().getWorkflowParent().getId()+"&id="+t.getTo().getId()+"'>"+t.getTo().getName()+"</a></td>";
 		s+="</tr>";
 		s+="</table>";
 		return s;
