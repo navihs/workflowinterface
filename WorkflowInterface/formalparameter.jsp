@@ -8,6 +8,6 @@
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
 FormalParameter fp = wp.get(request.getParameter("id"));
 %>
-<%=ModeleTexte.participant(fp) %>
+<%=ModeleTexte.formalParameter(fp) %>
 </body>
 </html>

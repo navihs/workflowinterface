@@ -1,10 +1,13 @@
 package XPDLInterface;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.jdom.*;
 import org.jdom.input.SAXBuilder;
+
+import shark.InitComponent;
 
 public class Parser {
 	
@@ -22,7 +25,8 @@ public class Parser {
 		 SAXBuilder sxb = new SAXBuilder();
 	     try
 	     {
-	    	 document = sxb.build(new File("c:\\DAI3.1.xpdl"));
+	    	 document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/soumission_article_sans.xpdl"));
+	    	 //document.setBaseURI("http://www.wfmc.org/2002/XPDL1.0");
 	     }
 	     catch(Exception e){}
 	     racine = document.getRootElement();
@@ -50,9 +54,9 @@ public class Parser {
 		Element packageHeader = racine.getChild("PackageHeader");
 		
 		DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
-		Element created = packageHeader.getChild("Created");
 		try{
-			workflowPackage.setCreated(dateFormat.parse(created.getValue()));
+				Element created = packageHeader.getChild("Created");
+				workflowPackage.setCreated(dateFormat.parse(created.getValue()));
 		}catch(Exception err){}
 		
 		if(racine.getChild("Participants")!=null)
@@ -214,6 +218,8 @@ public class Parser {
 		
 		if(a.getChild("Activities")!=null)
 			w.setActivities(parseActivities(a.getChild("Activities"),w));
+		if(a.getChild("Participants")!=null)
+			this.workflowPackage.setParticipants(parseParticipants(a.getChild("Participants")));
 		if(a.getChild("DataFields")!=null)
 			w.setDataFields(parseDataFields(a.getChild("DataFields")));
 		if(a.getChild("FormalParameters")!=null)
@@ -222,7 +228,7 @@ public class Parser {
 			w.setTransitions(parseTransitions(a.getChild("Transitions"),w));
 		if(a.getChild("ExtendedAttributes")!=null)
 			w.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes")));
-
+		
 		return w;
 	}
 	
@@ -408,9 +414,11 @@ public class Parser {
 			a = it.next();
 			conditionType=null;
 			condition=null;
-			conditionType=a.getChild("Condition").getAttribute("Type").getValue();
-			condition = a.getChild("Condition").getText();
-			
+			if(a.getChild("Condition")!=null)
+			{
+				conditionType= a.getChild("Condition").getAttribute("Type").getValue();
+				condition = a.getChild("Condition").getText();
+			}
 			Activity from =workflow.getActivityById(a.getAttribute("From").getValue());
 			Activity to = workflow.getActivityById(a.getAttribute("To").getValue());
 			Transition t = new Transition(a.getAttribute("Id").getValue(),conditionType,condition,from,to);
