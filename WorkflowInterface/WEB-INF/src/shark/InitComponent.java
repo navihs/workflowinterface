@@ -136,4 +136,7 @@ public class InitComponent
       //WorkflowWrapper.connectUsers(users,engineName);
   }
   //-----------------------------------------------------------------------------
+public static String getFilesDir() {
+	return filesDir;
+}
 }
