@@ -115,6 +115,35 @@ public class WorkflowPackage {
 		}
 		return null;
 	}
-
+	
+	public Transition getTransitionById(String id)
+	{
+		
+		// Parcours des Workflows
+		Iterator<Workflow> itWf = workflows.iterator();
+		while(itWf.hasNext())
+		{
+			Workflow wf = itWf.next();
+			
+			//Parcours des activities
+			Iterator<Activity> itA = wf.getActivities().iterator();
+			while(itA.hasNext())
+			{
+				Activity a = itA.next();
+				
+				//Parcours des transitions
+				Iterator<Transition> itT = a.getTranstions().iterator();
+				while(itT.hasNext())
+				{
+					Transition t = itT.next();
+					if(t.getId().equals(id))
+						return t;
+				}
+					
+			}
+				
+		}
+		return null;
+	}
 
 }

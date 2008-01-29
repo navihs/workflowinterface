@@ -36,6 +36,7 @@ public class Activity{
 	 */
 	private List<Transition> transitions=new ArrayList<Transition>();
 	public void setTranstions(List<Transition> activityTranstions){this.transitions=activityTranstions;}
+	public void addTranstion(Transition activityTranstion){this.transitions.add(activityTranstion);}
 	public List<Transition> getTranstions(){return this.transitions;}
 	
 	/***

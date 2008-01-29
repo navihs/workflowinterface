@@ -412,12 +412,13 @@ public class Parser {
 			condition = a.getChild("Condition").getText();
 			
 			Transition t = new Transition(a.getAttribute("Id").getValue(),conditionType,condition);
-			System.out.println("FROM : "+a.getAttribute("From").getValue());
 			Activity from =workflow.getActivityById(a.getAttribute("From").getValue());
 			Activity to = workflow.getActivityById(a.getAttribute("To").getValue());
 			t.setFrom(from);
 			t.setTo(to);
 			transitionsReturn.add(t);
+			from.addTranstion(t);
+			to.addTranstion(t);
 		}
 		return transitionsReturn;
 	}
