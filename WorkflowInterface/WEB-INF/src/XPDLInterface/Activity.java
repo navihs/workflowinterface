@@ -34,14 +34,14 @@ public class Activity{
 	/***
 	 * <!ELEMENT TransitionRefs (TransitionRef*)>
 	 */
-	private List<Transition> transitions;
+	private List<Transition> transitions=new ArrayList<Transition>();
 	public void setTranstions(List<Transition> activityTranstions){this.transitions=activityTranstions;}
 	public List<Transition> getTranstions(){return this.transitions;}
 	
 	/***
 	 * <!ELEMENT ExtendedAttributes (ExtendedAttribute*)>
 	 */
-	private List<ExtendedAttribute> extendedAttributes;
+	private List<ExtendedAttribute> extendedAttributes=new ArrayList<ExtendedAttribute>();
 	public void setExtendedAttributes(List<ExtendedAttribute> activityExtendedAttributes){this.extendedAttributes=activityExtendedAttributes;}
 	public List<ExtendedAttribute> getExtendedAttributes(){return this.extendedAttributes;}
 	

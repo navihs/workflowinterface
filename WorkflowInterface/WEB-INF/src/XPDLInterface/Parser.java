@@ -70,7 +70,7 @@ public class Parser {
 		return workflowPackage;
 	}
 	
-	private List parseParticipants(Element participants)
+	private List<Participant> parseParticipants(Element participants)
 	{
 		/*Tant qui existe des participants (noeud Participants, balise Participant)
 		 * on créer un objet Participant
@@ -226,7 +226,7 @@ public class Parser {
 		return w;
 	}
 	
-	private List parseActivities(Element activities,Workflow workflowParent)
+	private List<Activity> parseActivities(Element activities,Workflow workflowParent)
 	{
 		/*Tant qui existe des activities (noeud Activities, balise Activity)
 		 * 	on lance parseActivity("Activity")
@@ -356,7 +356,7 @@ public class Parser {
 		return act;
 	}
 	
-	private List parseFormalParameters(Element formalParameters)
+	private List<FormalParameter> parseFormalParameters(Element formalParameters)
 	{
 		/*Tant qui existe des formalParameters (balise FormalParameters, noeud FormalParameter)
 		 * on récupère l'élément <FormalParameter Id="idEnfant" Mode="IN">
@@ -369,8 +369,8 @@ public class Parser {
 		 */
 		
 		List<FormalParameter> formalParametersReturn=new ArrayList();
-		List<FormalParameter> formalParameter = formalParameters.getChildren("FormalParameter"); //.getChild("FormalParameter");
-		Iterator it = formalParameter.iterator();
+		List formalParameter = formalParameters.getChildren("FormalParameter"); //.getChild("FormalParameter");
+		Iterator<Element> it = formalParameter.iterator();
 		Element a;
 		String dataType;
 		String desc;
@@ -390,14 +390,14 @@ public class Parser {
 		return formalParametersReturn;	
 	}
 	
-	private List parseTransitions(Element transitions,Workflow workflow)//workflow en paramètre pour rechercher l'activité
+	private List<Transition> parseTransitions(Element transitions,Workflow workflow)//workflow en paramètre pour rechercher l'activité
 	{
 		/*
 		 * Parse dans parseWorkflowProcess
 		 */
 		List<Transition> transitionsReturn=new ArrayList();
-		List<Transition> transition = transitions.getChildren("Transition");
-		Iterator it = transition.iterator();
+		List<Element> transition = transitions.getChildren("Transition");
+		Iterator<Element> it = transition.iterator();
 		Element a;
 		
 		String conditionType;
@@ -405,14 +405,14 @@ public class Parser {
 			
 		while (it.hasNext()) 
 		{
-			a = (Element)it.next();
+			a = it.next();
 			conditionType=null;
 			condition=null;
 			conditionType=a.getChild("Condition").getAttribute("Type").getValue();
 			condition = a.getChild("Condition").getText();
 			
 			Transition t = new Transition(a.getAttribute("Id").getValue(),conditionType,condition);
-			
+			System.out.println("FROM : "+a.getAttribute("From").getValue());
 			Activity from =workflow.getActivityById(a.getAttribute("From").getValue());
 			Activity to = workflow.getActivityById(a.getAttribute("To").getValue());
 			t.setFrom(from);
@@ -422,7 +422,7 @@ public class Parser {
 		return transitionsReturn;
 	}
 	
-	private List parseExtendedAttributes(Element extendedAttributes)
+	private List<ExtendedAttribute> parseExtendedAttributes(Element extendedAttributes)
 	{
 		/*Tant qui existe des ExtendedAttributes (balise ExtendedAttributes, noeud ExtendedAttribute )
 		 * <ExtendedAttribute Name="EDITING_TOOL" Value="Together Workflow Editor Community Edition"/>
@@ -431,7 +431,7 @@ public class Parser {
 		 * On renvoit une liste de ExtendedAttribute
 		 */
 		List<ExtendedAttribute> extendedAttributesReturn = new ArrayList();
-		List<ExtendedAttribute> extendedAttribute = extendedAttributes.getChildren("ExtendedAttribute");
+		List<Element> extendedAttribute = extendedAttributes.getChildren("ExtendedAttribute");
 		Iterator it = extendedAttribute.iterator();
 		Element a;
 					
