@@ -1,5 +1,6 @@
 package Vues;
 import XPDLInterface.*;
+
 import java.util.*;
 
 public class ModeleTest{
@@ -11,67 +12,24 @@ public class ModeleTest{
 		while(it.hasNext())
 		{
 			Participant part = it.next();
-			p+="<a href='Afficheur?action=doGetParticipant&id="+part.getId()+"'>"+part.getName()+"</a><br>\n";	
+			p+="<a href='Afficheur2?action=doGetParticipant&id="+part.getId()+"'>"+part.getName()+"</a><br>\n";	
 		}
 		return p;
 	}
 
-	public static String activity(Activity a)
+	public static String activity(Activity a, int x, int y)
 	{
 		String s=" ";
-		s+="<table border=1 cellspacing=0 cellspacing=0>";
-		s+="<tr><td colspan=2 align=center>Activity</td></tr>";
-		s+="<tr>";
-		s+="<td>Id</td>";
-		s+="<td>"+a.getId()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Name</td>";
-		s+="<td>"+a.getName()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Descripion</td>";
-		s+="<td>"+a.getDescription()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>ExtendedAttributes ("+a.getExtendedAttributes().size()+")</td>";
-		s+="<td>"+ModeleTexte.listeExtendedAttributes(a.getExtendedAttributes(),"&workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId())+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Implementation</td>";
-		s+="<td>"+a.getImplementation()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Limit</td>";
-		s+="<td>"+a.getLimit()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Performer</td>";
-		s+="<td>"+((a.getPerformer()!=null)?"<a href='Afficheur?action=doGetParticipant&id="+a.getPerformer().getId()+"'>"+a.getPerformer().getName()+"</td>":"</td>");
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Route</td>";
-		s+="<td>"+a.getRoute()+"</td>";
-		s+="</tr>";
-		if(a.isSubflow())
-		{
-			s+="<tr>";
-			s+="<td>Subflow</td>";
-			s+="<td><a href='Afficheur?action=doGetWorkflow&id="+a.getSubflow().getId()+"'>"+a.getSubflow().getName()+"</td>";
-			s+="</tr>";
-		}
-		s+="<tr>";
-		s+="<td>Transition Restriction Join</td>";
-		s+="<td>"+a.getTransitionRestrictionJoin()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Transition Restriction Split</td>";
-		s+="<td>"+a.getTransitionRestrictionSplit()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Transitions</td>";
-		s+="<td>Pas implemente</td>";
-		s+="</table>";
+		String html=" ";
+		
+		html = "<table border=0><tr>";
+		html += "<td>Id : </td><td>"+ a.getId()+ "</td></tr>"; 
+		html += "<tr><td> Description : </td><td>"+a.getDescription()+"</td></tr>";
+		html += "</table>";
+		s+="\n<script>";
+		s+="\nactivityWindow('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
+		s+="\n</script>";
+		
 		return s;
 	}
 	
@@ -164,15 +122,15 @@ public class ModeleTest{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Extended Attributes</td>";
-		s+="<td>"+ModeleTexte.listeExtendedAttributes(t.getExtendedAttributes(),"&transition="+t.getId()+"")+"</td>";
+		s+="<td>"+ModeleTest.listeExtendedAttributes(t.getExtendedAttributes(),"&transition="+t.getId()+"")+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>From</td>";
-		s+="<td><a href='Afficheur?action=doGetActivity&id="+t.getFrom().getId()+"'>"+t.getFrom().getName()+"</a></td>";
+		s+="<td><a href='Afficheur2?action=doGetActivity&id="+t.getFrom().getId()+"'>"+t.getFrom().getName()+"</a></td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>To</td>";
-		s+="<td><a href='Afficheur?action=doGetActivity&id="+t.getTo().getId()+"'>"+t.getTo().getName()+"</a></td>";
+		s+="<td><a href='Afficheur2?action=doGetActivity&id="+t.getTo().getId()+"'>"+t.getTo().getName()+"</a></td>";
 		s+="</tr>";
 		s+="</table>";
 		return s;
@@ -231,19 +189,19 @@ public class ModeleTest{
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>DataFields ("+wp.getDataFields().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeDataFields(wp.getDataFields(),"")+"</td>";
+		s+="<td> "+ModeleTest.listeDataFields(wp.getDataFields(),"")+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>ExtendedAttributes ("+wp.getExtendedAttributes().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeExtendedAttributes(wp.getExtendedAttributes(),"")+"</td>";
+		s+="<td> "+ModeleTest.listeExtendedAttributes(wp.getExtendedAttributes(),"")+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Participants ("+wp.getParticipants().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeParticipants(wp.getParticipants())+"</td>";
+		s+="<td> "+ModeleTest.listeParticipants(wp.getParticipants())+"</td>";
 		s+="</tr>";
 		s+="<tr>";
 		s+="<td>Workflows ("+wp.getWorkflows().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeWorkflows(wp.getWorkflows())+"</td>";
+		s+="<td> "+ModeleTest.listeWorkflows(wp.getWorkflows())+"</td>";
 		s+="</tr>";
 		s+="</table>";
 		return s;
@@ -281,51 +239,82 @@ public class ModeleTest{
 
 	public static String workflow(Workflow wf)
 	{
-		/*
+
 		String s=" ";
-		s+="<table border=1 cellspacing=0 cellspacing=0>";
-		s+="<tr><td colspan=2 align=center>Workflow</td></tr>";
-		s+="<tr>";
-		s+="<td>Id</td>";
-		s+="<td>"+wf.getId()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Name</td>";
-		s+="<td>"+wf.getName()+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Created</td>";
-		s+="<td>"+((wf.getCreated()!=null)?wf.getCreated().toString():"?")+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>Activities ("+wf.getActivities().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeActivity(wf.getActivities(), "&workflow="+wf.getId())+"</td>";
-		s+="</tr>";
-		s+="<tr>";
-		s+="<td>ExtendedAttributes ("+wf.getExtendedAttributes().size()+")</td>";
-		s+="<td> "+ModeleTexte.listeExtendedAttributes(wf.getExtendedAttributes(),"&workflow="+wf.getId())+"</td>";
-		s+="</tr>";
-		s+="</table>";
-		return s;
-		*/
-		String s=" ";
-		s+="\n<div id=\"content\" style=\"display:none\">";
+		String html =" ";
+		int x =0;
+		int y =0;
+		int dimX =0;
+		int dimY =0;
+	//	s+="\n<div id=\"content\" style=\"display:none\">";
+		s+="<script>";
 		//s+="\n<a href=\"#\" onclick=\"insideWindow()\">open a window inside this window</a>";
 		
+		/*fenetre principal
 		s+="\n</div>";
 		s+="<script>";
-		s+="\nfunction openPopup(){";
 		s+="\nvar master = new Window(\"master\", {className: \"alphacube\", width:1000, height:300,title:\""+wf.getName()+"\"});";
+		s+="\nfunction openPopup(){";
 		s+="\nmaster.setContent(\"content\");";
 		s+="\nmaster.setDestroyOnClose();";
 		s+="\nmaster.showCenter();";
 		s+="\n}";
 		
+		s+="\nopenPopup();";*/
 		
-		s+="\nopenPopup();";
-		s+=ModeleTest.listeActivity(wf.getActivities(), "&workflow="+wf.getId());
-		
+		//fenetre d'activité
+		s+="\nfunction activityWindow(name, x, y, html) {";
+		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, right:x, bottom:y, width:200, height:100,title:name,";
+		s+="\n                          maximizable: false, closable: false, minimizable: false});";
+		s+="\n   win.setLocation(x, y);";
+		s+="\n   win.setDestroyOnClose();";
+		s+="\n   win.setHTMLContent(html);";
+		s+="\n   win.show();";
+		s+="\n  }";
 		s+="\n</script>";
+		
+		//affichage tableau des participants
+		html = "<table border=1  height=\"80%\" width=\"75%\">";
+		List<Participant> performers;
+		performers = wf.getActivityPerformers();
+		Iterator<Participant> it = performers.iterator();
+		if(performers.size()==0) return "&nbsp";
+		html += "\n<tr><td width=\"25%\">"+wf.getName()+"</td></tr>";
+		while(it.hasNext())
+		{
+			y+=1;
+			x=0;
+			dimY = y*180;
+			
+			Participant pa = it.next();
+			html += "\n<tr><td width=\"25%\">"+pa.getName()+"</td>";
+			List<Activity> activities= wf.getActivitiesByPerformer(pa);
+			Iterator<Activity> it2 = activities.iterator();
+			
+			while(it2.hasNext())
+			{
+				x+=1;
+				dimX = x*260;
+				Activity ac = it2.next();
+				//System.out.println(ac.getName());
+				html += "\n		<td>";
+				html += "		" + ModeleTest.activity(ac,dimY,dimX);
+				html += "\n		</td>";
+			}
+			html += "\n</tr>";		
+			
+		}
+		
+		//html += "<tr><td></td><td></td></tr>";	
+		html += "\n</table>";	
+		s+=html;
+		
+		//s+= "\nmaster.setHTMLContent("+html+");";
+		
+
+		//s+=ModeleTest.listeActivity(wf.getActivities(), "&workflow="+wf.getId());
+		
+		//s+="\n</script>";
 		
 		return s;
 	}
@@ -339,7 +328,7 @@ public class ModeleTest{
 		while(it.hasNext())
 		{
 			DataField df = it.next();
-			s+="<a href='Afficheur?action=doGetDataField"+args+"&id="+df.getId()+"'>"+df.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur2?action=doGetDataField"+args+"&id="+df.getId()+"'>"+df.getName()+"</a><br>\n";	
 		}
 		return s;
 	}
@@ -358,14 +347,16 @@ public class ModeleTest{
 		s+="\n   win.show();";
 		s+="\n  }";
 		
-		
+
+		////Dans la box Activity
 		Iterator<Activity> it = activities.iterator();
 		if(activities.size()==0) return "&nbsp";
+		
 		while(it.hasNext())
 		{
 			Activity ac = it.next();
-			//s+="<a href='Afficheur?action=doGetActivity"+args+"&id="+ac.getId()+"'>"+((ac.getName()!=null)?ac.getId():ac.getName())+"</a><br>\n";	
 			
+			//s+="<a href='Afficheur2?action=doGetActivity"+args+"&id="+ac.getId()+"'>"+((ac.getName()!=null)?ac.getId():ac.getName())+"</a><br>\n";	
 			//+ac.isSubflow();
 			html = "<table border=0><tr>";
 			html += "<td>Id : </td><td>"+ ac.getId()+ "</td></tr>"; 
@@ -387,7 +378,7 @@ public class ModeleTest{
 		while(it.hasNext())
 		{
 			ExtendedAttribute ea = it.next();
-			s+="<a href='Afficheur?action=doGetExtendedAttribute"+args+"&name="+ea.getName()+"'>"+ea.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur2?action=doGetExtendedAttribute"+args+"&name="+ea.getName()+"'>"+ea.getName()+"</a><br>\n";	
 		}
 		return s;
 	}
@@ -403,7 +394,7 @@ public class ModeleTest{
 		{
 			Workflow wf = it.next();
 			
-			s+="<a href='Afficheur?action=doGetWorkflow&id="+wf.getId()+"'>"+wf.getName()+"</a><br>\n";	
+			s+="<a href='Afficheur2?action=doGetWorkflow&id="+wf.getId()+"'>"+wf.getName()+"</a><br>\n";	
 			//s+="insideWindow(\"" + wf.getName() + "\","+l+");";
 			//l+=120;
 		}
