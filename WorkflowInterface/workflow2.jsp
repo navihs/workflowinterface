@@ -11,19 +11,15 @@
 	<script type="text/javascript" src="scripts/debug.js"> </script>
 	<script type="text/javascript" src="scripts/effects.js"> </script>
 
+	<link rel="stylesheet" type="text/css" href="style.css" />
 	<link href="scripts/themes/default.css" rel="stylesheet" type="text/css" />
 	<link href="scripts/themes/alphacube.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" type="text/css" href="style.css" />
 	<title>Test</title>
   <style>
   #master_content {
     position:relative;
     overflow:hidden;
   }  
-  a {
-    color:#333;
-    font-size: 16px;
-  }
   </style>
   
 </head>
