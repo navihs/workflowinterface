@@ -274,9 +274,31 @@ public class ModeleTest{
 		
 		s+="<script>";
 				
-		//fenetre d'activité
+		//fenetre d'activité completed
 		s+="\nfunction activityWindow(name, x, y, html) {";
 		s+="\n    var win = new Window(name, {className: \"greenlighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
+		s+="\n   win.setLocation(x, y);";
+		s+="\n   win.setDestroyOnClose();";
+		//s+="\n   winsetContent(html, true, true);";
+		s+="\n   win.setHTMLContent(html);";
+		s+="\n   win.show();";
+		s+="\n  }";
+		
+		//fenetre d'activité en attente
+		s+="\nfunction activityWindowWaiting(name, x, y, html) {";
+		s+="\n    var win = new Window(name, {className: \"greylighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
+		s+="\n   win.setLocation(x, y);";
+		s+="\n   win.setDestroyOnClose();";
+		//s+="\n   winsetContent(html, true, true);";
+		s+="\n   win.setHTMLContent(html);";
+		s+="\n   win.show();";
+		s+="\n  }";
+		
+		//fenetre d'activité en cours
+		s+="\nfunction activityWindowCurrent(name, x, y, html) {";
+		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
 		s+="\n   win.setLocation(x, y);";
 		s+="\n   win.setDestroyOnClose();";
