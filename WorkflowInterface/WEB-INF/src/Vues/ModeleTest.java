@@ -25,6 +25,14 @@ public class ModeleTest{
 		html = "<table border=0><tr>";
 		html += "<td>Id : </td><td>"+ a.getId()+ "</td></tr>"; 
 		html += "<tr><td> Description : </td><td>"+a.getDescription()+"</td></tr>";
+		html+="<tr>";
+		html+="<td>ExtendedAttributes ("+a.getExtendedAttributes().size()+")</td>";
+		//html+="<td>"+ModeleTest.listeExtendedAttributes(a.getExtendedAttributes(),"&workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId())+"</td>";
+		html+="</tr>";
+		html+="<tr>";
+		html+="<td>Implementation</td>";
+		html+="<td>"+a.getImplementation()+"</td>";
+		html+="</tr>";
 		html += "</table>";
 		s+="\n<script>";
 		s+="\nactivityWindow('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
@@ -242,29 +250,17 @@ public class ModeleTest{
 
 		String s=" ";
 		String html =" ";
-		int x =0;
+		int x =270;
 		int y =0;
-		int dimX =0;
+		int dimX =x;
 		int dimY =0;
-	//	s+="\n<div id=\"content\" style=\"display:none\">";
+		int longTab =0;
+		
 		s+="<script>";
-		//s+="\n<a href=\"#\" onclick=\"insideWindow()\">open a window inside this window</a>";
-		
-		/*fenetre principal
-		s+="\n</div>";
-		s+="<script>";
-		s+="\nvar master = new Window(\"master\", {className: \"alphacube\", width:1000, height:300,title:\""+wf.getName()+"\"});";
-		s+="\nfunction openPopup(){";
-		s+="\nmaster.setContent(\"content\");";
-		s+="\nmaster.setDestroyOnClose();";
-		s+="\nmaster.showCenter();";
-		s+="\n}";
-		
-		s+="\nopenPopup();";*/
-		
+				
 		//fenetre d'activité
 		s+="\nfunction activityWindow(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, right:x, bottom:y, width:220, height:100,title:name,";
+		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, right:x, bottom:y, width:220, height:75,title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false});";
 		s+="\n   win.setLocation(x, y);";
 		s+="\n   win.setDestroyOnClose();";
@@ -272,20 +268,25 @@ public class ModeleTest{
 		s+="\n   win.setHTMLContent(html);";
 		s+="\n   win.show();";
 		s+="\n  }";
+		
 		s+="\n</script>";
 		
 		//affichage tableau des participants
-		html = "<table border=1  height=\"80%\" width=\"75%\">";
+		
 		List<Participant> performers;
 		performers = wf.getActivityPerformers();
 		Iterator<Participant> it = performers.iterator();
 		if(performers.size()==0) return "&nbsp";
-		html += "\n<tr><td width=\"25%\">"+wf.getName()+"</td></tr>";
+		
+		longTab=x*(performers.size()+1);
+		
+		html = "<table border=1  height=500 width="+longTab+">";
+		html += "\n<tr><td width="+dimX+">"+wf.getName()+"</td></tr>";
 		while(it.hasNext())
 		{
 			y+=1;
-			x=0;
-			dimY = y*180;
+			dimX=0;
+			dimY = y*130;
 			
 			Participant pa = it.next();
 			html += "\n<tr><td width=\"25%\">"+pa.getName()+"</td>";
@@ -294,8 +295,9 @@ public class ModeleTest{
 			
 			while(it2.hasNext())
 			{
-				x+=1;
-				dimX = x*260;
+				//x+=1;
+				//dimX = x*260;
+				dimX+=x;
 				Activity ac = it2.next();
 				//System.out.println(ac.getName());
 				html += "\n		<td>";
