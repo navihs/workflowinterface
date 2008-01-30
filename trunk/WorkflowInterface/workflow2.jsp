@@ -6,14 +6,14 @@
 
 	<title>Test</title>
 
-	<script type="text/javascript" src="../javascripts/prototype.js"> </script>
-	<script type="text/javascript" src="../javascripts/window.js"> </script>
-	<script type="text/javascript" src="../javascripts/debug.js"> </script>
-	<script type="text/javascript" src="../javascripts/effects.js"> </script>
+	<script type="text/javascript" src="scripts/prototype.js"> </script>
+	<script type="text/javascript" src="scripts/window.js"> </script>
+	<script type="text/javascript" src="scripts/debug.js"> </script>
+	<script type="text/javascript" src="scripts/effects.js"> </script>
 
-	<link href="../themes/default.css" rel="stylesheet" type="text/css" >	 </link>
-	<link href="../themes/alphacube.css" rel="stylesheet" type="text/css" >	 </link>
-	<link rel="stylesheet" type="text/css" href="style.css" />	</link>
+	<link href="scripts/themes/default.css" rel="stylesheet" type="text/css" />
+	<link href="scripts/themes/alphacube.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
 	<title>Test</title>
   <style>
   #master_content {
