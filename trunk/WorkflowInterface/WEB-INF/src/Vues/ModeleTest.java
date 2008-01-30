@@ -21,23 +21,23 @@ public class ModeleTest{
 	{
 		String s=" ";
 		String html=" ";
-		
-		//rectification du décalage
-		//x+=15;
-		//y+=10;
-		
-		html = "<table border=0><tr>";
-		html += "<td>Id : </td><td>"+ a.getId()+ "</td></tr>"; 
-		html += "<tr><td> Description : </td><td>"+a.getDescription()+"</td></tr>";
+			
+		html= "<table border=0 cellpadding=0 cellspacing=5>";
 		html+="<tr>";
-		html+="<td>ExtendedAttributes ("+a.getExtendedAttributes().size()+")</td>";
-		//html+="<td>"+ModeleTest.listeExtendedAttributes(a.getExtendedAttributes(),"&workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId())+"</td>";
+		html+="   <td align=right><b>Name :</b></td><td>"+ a.getName()+ "</td>"; 
 		html+="</tr>";
 		html+="<tr>";
-		html+="<td>Implementation</td>";
-		html+="<td>"+a.getImplementation()+"</td>";
+		html+="   <td align=right><b>Descripion :</b></td><td>"+a.getDescription()+"</td>";
 		html+="</tr>";
-		html += "</table>";
+		html+="<tr>";
+		html+="   <td align=center><b>Extended<br>Attributes ("+a.getExtendedAttributes().size()+")</td>";
+		html+="   <td>"+ModeleTest.listeExtendedAttributes(a.getExtendedAttributes(),"&workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId())+"</td>";
+		html+="</tr>";
+		html+="<tr>";
+		html+="   <td align=right><b>Implementation</b></td>";
+		html+="   <td>"+a.getImplementation()+"</td>";
+		html+="</tr>";
+		html+="</table>";
 		s+="\n<script>";
 		s+="\nactivityWindow('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
 		s+="\n</script>";
@@ -260,25 +260,26 @@ public class ModeleTest{
 		int largTab =0;
 		int boxWidth =300;
 		int boxHeight=120;
-		//int x =270;
-		//int y =130;
-		int x =boxWidth+50;
-		int y =boxHeight+35;
 		
-		int performersWidth = 150;
+		int spacingWidth =50;
+		int spacingHeight =45;
+		
+		int x =boxWidth+spacingWidth;
+		int y =boxHeight+spacingHeight;
+		
+		int performersWidth = 200;
 		int worflowHeight = 30;
 		
-		int dimX =x-performersWidth;
-		int dimY =y-worflowHeight;
-		
+		int dimX =performersWidth + spacingWidth;
+		int dimY =worflowHeight + 15; //+spacingHeight;
 		
 		
 		s+="<script>";
 				
 		//fenetre d'activité
 		s+="\nfunction activityWindow(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
-		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false});";
+		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:40, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
 		s+="\n   win.setLocation(x, y);";
 		s+="\n   win.setDestroyOnClose();";
 		//s+="\n   winsetContent(html, true, true);";
@@ -300,14 +301,18 @@ public class ModeleTest{
 			Participant pa = it.next();
 			List<Activity> activities= wf.getActivitiesByPerformer(pa);
 			if (activities.size()>longTab)
-				longTab=(x*activities.size())+ performersWidth;
+				longTab=(x*activities.size())+ performersWidth + spacingWidth;
 		}
 		//Calcul de la Largeur du tableau en fonction du nombre de participants
-		largTab=(y*performers.size())+worflowHeight;
+		largTab=(y*performers.size())+worflowHeight+spacingHeight;;
+		
+		//Calcul de la largeur d'une ligne
+		y=(largTab-worflowHeight)/performers.size();
 		
 		//initialisation du tableau
 		html = "<table border=1  height="+largTab+" width="+longTab+">";
 		html += "\n<tr><td width="+performersWidth+" height="+worflowHeight+">"+wf.getName()+"</td></tr>";
+		
 		
 		it = performers.iterator();
 		while(it.hasNext())
@@ -329,21 +334,16 @@ public class ModeleTest{
 			html += "\n</tr>";	
 			
 			dimY+=y;
-			//remise à la ligne des activités des autres participants
-			dimX=x-performersWidth;
 			
+			//remise à la ligne des activités des autres participants
+			//dimX=x-performersWidth;
+			dimX=performersWidth+ spacingWidth;;
 		}
-		
-		//html += "<tr><td></td><td></td></tr>";	
+
 		html += "\n</table>";	
 		s+=html;
 		
-		//s+= "\nmaster.setHTMLContent("+html+");";
-		
 
-		//s+=ModeleTest.listeActivity(wf.getActivities(), "&workflow="+wf.getId());
-		
-		//s+="\n</script>";
 		
 		return s;
 	}
@@ -369,7 +369,7 @@ public class ModeleTest{
 		int l= 0;
 		
 		s+="\nfunction activityWindow(name, l, html) {";
-		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, left:l, width:100, height:50,title:name,";
+		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:40, left:l, width:100, height:50,title:name,";
 		s+="\n                          maximizable: false, closable: false, minimizable: false, parent: Windows.getWindow(\"master\").getContent()});";
 		s+="\n   win.setDestroyOnClose();";
 		s+="\n   win.setHTMLContent(html);";
@@ -407,7 +407,7 @@ public class ModeleTest{
 		while(it.hasNext())
 		{
 			ExtendedAttribute ea = it.next();
-			s+="<a href='Afficheur2?action=doGetExtendedAttribute"+args+"&name="+ea.getName()+"'>"+ea.getName()+"</a><br>\n";	
+			s+="<a href=Afficheur2?action=doGetExtendedAttribute"+args+"&name="+ea.getName()+">"+ea.getName()+"</a><br>";	
 		}
 		return s;
 	}
