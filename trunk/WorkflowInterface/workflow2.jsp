@@ -13,6 +13,7 @@
 
 	<link href="../themes/default.css" rel="stylesheet" type="text/css" >	 </link>
 	<link href="../themes/alphacube.css" rel="stylesheet" type="text/css" >	 </link>
+	<link rel="stylesheet" type="text/css" href="style.css" />	</link>
 	<title>Test</title>
   <style>
   #master_content {
@@ -24,6 +25,7 @@
     font-size: 16px;
   }
   </style>
+  
 </head>
 <body>
 <% 
