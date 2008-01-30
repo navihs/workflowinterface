@@ -264,10 +264,11 @@ public class ModeleTest{
 		
 		//fenetre d'activité
 		s+="\nfunction activityWindow(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, right:x, bottom:y, width:200, height:100,title:name,";
-		s+="\n                          maximizable: false, closable: false, minimizable: false});";
+		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, right:x, bottom:y, width:220, height:100,title:name,";
+		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false});";
 		s+="\n   win.setLocation(x, y);";
 		s+="\n   win.setDestroyOnClose();";
+		//s+="\n   winsetContent(html, true, true);";
 		s+="\n   win.setHTMLContent(html);";
 		s+="\n   win.show();";
 		s+="\n  }";
