@@ -958,3 +958,236 @@
 	background:#020EBA;
 }
 
+
+.overlay_orangelighting {
+	background-color:#FFF;
+	filter:alpha(opacity=60);
+	-moz-opacity:0.6;
+	opacity:0.6;
+}
+
+.orangelighting_wired_frame {
+	background:#FFF;
+	filter:alpha(opacity=60);
+	-moz-opacity:0.6;
+	opacity:0.6;	
+}
+
+.orangelighting_nw {
+	background:transparent url(lighting/top-left-orange.png) no-repeat 0 0;			
+	width:9px;
+	height:28px;
+}
+
+.orangelighting_n {
+	background:transparent url(lighting/top-middle-orange.png) repeat-x 0 0;			
+	height:28px;
+}
+
+.orangelighting_ne {
+	background:transparent url(lighting/top-right-orange.png) no-repeat 0 0;			
+	width:15px;	  
+	height:28px;
+}
+
+.orangelighting_w {
+	background:transparent url(lighting/left-orange.png) repeat-y top left;			
+	width:9px;
+}
+
+.orangelighting_e {
+	background:transparent url(lighting/right-orange.png) repeat-y top right;			
+	width:15px;	  
+}
+
+.orangelighting_sw {
+	background:transparent url(lighting/bottom-left-orange.png) no-repeat 0 0;			
+	width:9px;
+	height:15px;
+}
+
+.orangelighting_s {
+	background:transparent url(lighting/bottom-middle-orange.png) repeat-x 0 0;			
+	height:15px;
+}
+
+.orangelighting_se, .orangelighting_sizer  {
+	background:transparent url(lighting/bottom-right-orange.png) no-repeat 0 0;			
+	width:15px;
+	height:15px;
+}
+
+.orangelighting_sizer {
+	cursor:se-resize;	
+}
+
+.orangelighting_close {
+	width:15px;
+	height:9px;
+	background:transparent url(lighting/button-close-orange.png) no-repeat 0 0;			
+	position:absolute;
+	top:11px;
+	right:10px;
+	cursor:pointer;
+	z-index:1000;
+}
+
+.orangelighting_maximize {
+	width:15px;
+	height:9px;
+	background:transparent url(lighting/button-maximize-orange.png) no-repeat 0 0;			
+	position:absolute;
+	top:11px;
+	right:25px;
+	cursor:pointer;
+	z-index:1000;
+}
+
+.orangelighting_minimize {
+	width:15px;
+	height:9px;
+	background:transparent url(lighting/button-minimize-orange.png) no-repeat 0 0;			
+	position:absolute;
+	top:11px;
+	right:40px;
+	cursor:pointer;
+	z-index:1000;
+}
+
+.orangelighting_title {
+	float:left;
+	height:14px;
+	font-size:14px;
+	font-weight:bold;
+	font-family:Verdana, Arial, sans-serif;
+	text-align:center;
+	margin-top:2px;
+	width:100%;
+	color:#17385B;
+}
+
+.orangelighting_content {
+	overflow:auto;
+	color:#000;
+	font-family:Verdana, Arial, sans-serif;
+	font-size:12px;
+	background:#fde1bd;
+}
+
+/* For alert/confirm dialog */
+.orangelighting_window {
+	border:1px solid #F00;	
+	background:#FFF;
+	padding:20px;
+	margin-left:auto;
+	margin-right:auto;
+	width:400px;
+}
+
+.orangelighting_message {
+  	font-size:12px;
+	text-align:center;
+	width:100%;
+	padding-bottom:10px;
+}
+
+.orangelighting_buttons {
+	text-align:center;
+	width:100%;
+}
+
+.orangelighting_buttons input {
+	border:1px solid #999;
+	border-top-color:#CCC;
+	border-left-color:#CCC;
+	padding:2px;
+	background-color:#FFF;
+	color:#333;
+	background-image:url(lighting/background_buttons.gif);
+	background-repeat:repeat-x;
+	font-family:Verdana, Arial, sans-serif;
+	font-size:10px;
+	font-weight:bold;
+	text-align:center;
+}
+
+.orangelighting_progress {
+	float:left;
+	margin:auto;
+	text-align:center;
+	width:100%;
+	height:16px;
+	background:transparent url('lighting/spinner.gif') no-repeat center center
+}
+
+/* FOR IE */
+* html .orangelighting_nw {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/top-left-orange.png", sizingMethod="crop");
+}
+
+* html .orangelighting_n {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/top-middle-orange.png", sizingMethod="scale");
+}
+
+* html .orangelighting_ne {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/top-right-orange.png", sizingMethod="crop");
+}
+
+* html .orangelighting_w {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/left-orange.png", sizingMethod="scale");
+}
+
+* html .orangelighting_e {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/right-orange.png", sizingMethod="scale");
+}
+
+* html .orangelighting_sw {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/bottom-left-orange.png", sizingMethod="crop");
+}
+
+* html .orangelighting_s {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/bottom-middle-orange.png", sizingMethod="scale");
+}
+
+* html .orangelighting_se, * html .orangelighting_sizer {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/bottom-right-orange.png", sizingMethod="crop");
+}
+
+* html .orangelighting_close {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/button-close-orange.png", sizingMethod="crop");
+}
+
+* html .orangelighting_minimize {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/button-minimize-orange.png", sizingMethod="crop");
+}
+
+* html .orangelighting_maximize {
+	background-color: transparent;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/lighting/button-maximize-orange.png", sizingMethod="crop");
+}
+
+* html .orangelighting_content {
+	background:#fde1bd;
+}
+
