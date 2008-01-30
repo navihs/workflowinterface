@@ -1,0 +1,1777 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="dossier_accueil_individualise" Name="Dossier d'accueil individualisé" xsi:schemaLocation="http://www.wfmc.org/2002/XPDL1.0 http://wfmc.org/standards/docs/TC-1025_schema_10_xpdl.xsd">
+<PackageHeader>
+<XPDLVersion>1.0</XPDLVersion>
+<Vendor>Together</Vendor>
+<Created>2006-07-24 13:57:13</Created>
+</PackageHeader>
+<Script Type="text/javascript"/>
+<Participants>
+<Participant Id="responsable_legal" Name="Responsable légal">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="directeur_etablissement_scolaire" Name="Directeur établissement scolaire">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="mairie" Name="Mairie">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="periscolaire" Name="Périscolaire">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="medecin_traitant" Name="Médecin traitant">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="medecin_institutionnel" Name="Médecin institutionnel">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="clsh" Name="CLSH">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="restauration_scolaire" Name="Restauration scolaire">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="institut_rattachement_clsh" Name="Institut de rattachement CLSH">
+<ParticipantType Type="ROLE"/>
+</Participant>
+<Participant Id="restauration_clsh" Name="Restauration CLSH">
+<ParticipantType Type="ROLE"/>
+</Participant>
+</Participants>
+<WorkflowProcesses>
+<WorkflowProcess Id="processus_global" Name="Processus global">
+<ProcessHeader>
+<Created>2006-07-24 14:34:42</Created>
+</ProcessHeader>
+<FormalParameters>
+<FormalParameter Id="idEnfant" Mode="IN">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<Description>Fait le lien entre la base de données et l'instance du processus créé. idDAI est la clé primaire du DAI nouvellement créé au sein de la table DAI.</Description>
+</FormalParameter>
+</FormalParameters>
+<DataFields>
+<DataField Id="temps_scolaire" IsArray="FALSE" Name="Temps scolaire">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="temps_restauration_scolaire" IsArray="FALSE" Name="Temps restauration scolaire">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="temps_periscolaire" IsArray="FALSE" Name="Temps periscolaire">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="temps_CLSH" IsArray="FALSE" Name="Temps CLSH">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="etat_processus_pre-initialisation" IsArray="FALSE" Name="Etat processus pre-initialisation">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="etat_processus_initialisation" IsArray="FALSE" Name="Etat processus initialisation">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="etat_processus_temps_restauration_scolaire" IsArray="FALSE" Name="Etat processus temps restauration scolaire">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="etat_processus_temps_periscolaire" IsArray="FALSE" Name="Etat processus temps periscolaire">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="etat_processus_temps_scolaire" IsArray="FALSE" Name="Etat processus temps scolaire">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="n0" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="etat_processus_temps_CLSH" IsArray="FALSE" Name="Etat processus temps CLSH">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+</DataField>
+<DataField Id="n1" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="publi_partielle_temps_scolaire" IsArray="FALSE" Name="Publication partielle temps scolaire">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+<DataField Id="publi_partielle_temps_restauration_scolaire" IsArray="FALSE" Name="Publication partielle temps restauration scolaire">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+<DataField Id="publi_partielle_temps_periscolaire" IsArray="FALSE" Name="Publication partielle temps periscolaire">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+<DataField Id="publi_partielle_temps_CLSH" IsArray="FALSE" Name="Publication partielle temps CLSH">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+</DataFields>
+<Activities>
+<Activity Id="preinit-DAI">
+<Implementation>
+<SubFlow Execution="SYNCHR" Id="pre_initialisation"/>
+</Implementation>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="directeur_etablissement_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="150,37"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="init_DAI">
+<Implementation>
+<SubFlow Execution="SYNCHR" Id="initialisation"/>
+</Implementation>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_traitant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="307,46"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="G_recommandations" Name="G Recommandations">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<SimulationInformation Instantiation="ONCE">
+<Cost></Cost>
+<TimeEstimation/>
+</SimulationInformation>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="DAI_Proces_tra7"/>
+<TransitionRef Id="DAI_Proces_tra10"/>
+<TransitionRef Id="DAI_Proces_tra8"/>
+<TransitionRef Id="DAI_Proces_tra3"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="490,51"/>
+<ExtendedAttribute Name="action_NAME" Value="Redaction des recommandations"/>
+<ExtendedAttribute Name="action_URL" Value="G_Recommandations.jsp"/>
+<ExtendedAttribute Name="notification" Value="n0"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="temps_periscolaire" Name="Temps périscolaire">
+<Implementation>
+<SubFlow Execution="SYNCHR" Id="temps_periscolaire"/>
+</Implementation>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="periscolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="764,41"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="temps_scolaire" Name="Temps scolaire">
+<Implementation>
+<SubFlow Execution="SYNCHR" Id="temps_scolaire"/>
+</Implementation>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="directeur_etablissement_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="764,33"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="G_publication_finale_DAI" Name="G Publication finale DAI">
+<Description>possibilité de pulier dès qu'n temps est achevé.</Description>
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="1205,48"/>
+<ExtendedAttribute Name="action_URL" Value="G_PublicationDAI.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Publication finale du DAI"/>
+<ExtendedAttribute Name="notification" Value="n1"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="temps_CLSH" Name="Temps CLSH">
+<Implementation>
+<SubFlow Execution="SYNCHR" Id="temps_CLSH"/>
+</Implementation>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="clsh"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="764,44"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="temps_restauration_scolaire" Name="Temps restauration scolaire">
+<Implementation>
+<SubFlow Execution="SYNCHR" Id="temps_restauration_scolaire"/>
+</Implementation>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="restauration_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="764,46"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="G_synchro_publication_DAI" Name="G Synchro publication DAI">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="1036,48"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="preinit-DAI" Id="DAI_Proces_tra1" To="init_DAI">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="266,363-266,224"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="G_recommandations" Id="DAI_Proces_tra7" To="temps_periscolaire">
+<Condition Type="CONDITION">temps_periscolaire == true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="627,80-627,665"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="init_DAI" Id="DAI_Proces_tra2" To="G_recommandations">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="425,215-425,78"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="G_recommandations" Id="DAI_Proces_tra10" To="temps_scolaire">
+<Condition Type="CONDITION">temps_scolaire == true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="644,64-644,360"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="G_recommandations" Id="DAI_Proces_tra8" To="temps_CLSH">
+<Condition Type="CONDITION">temps_CLSH == true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="617,89-617,817"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="G_recommandations" Id="DAI_Proces_tra3" To="temps_restauration_scolaire">
+<Condition Type="CONDITION">temps_restauration_scolaire==true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="636,71-636,518"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="temps_scolaire" Id="processus_global_tra1" To="G_synchro_publication_DAI">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="938,348-938,54"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="temps_restauration_scolaire" Id="processus_global_tra2" To="G_synchro_publication_DAI">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="949,522-949,65"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="temps_periscolaire" Id="processus_global_tra3" To="G_synchro_publication_DAI">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="959,671-959,78"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="temps_CLSH" Id="processus_global_tra4" To="G_synchro_publication_DAI">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="970,820-970,89"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="G_synchro_publication_DAI" Id="processus_global_tra5" To="G_publication_finale_DAI">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="medecin_institutionnel;medecin_traitant;directeur_etablissement_scolaire;restauration_scolaire;periscolaire;clsh"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=directeur_etablissement_scolaire,CONNECTING_ACTIVITY_ID=preinit-DAI,X_OFFSET=59,Y_OFFSET=48,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=medecin_institutionnel,CONNECTING_ACTIVITY_ID=G_publication_finale_DAI,X_OFFSET=1358,Y_OFFSET=59,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="pre_initialisation" Name="Pré-initialisation DAI">
+<ProcessHeader>
+<Created>2006-07-24 14:54:19</Created>
+</ProcessHeader>
+<DataFields>
+<DataField Id="n0" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+<DataField Id="n1" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+</DataFields>
+<Activities>
+<Activity Id="PRE_IN_saisie_infos_administratives" Name="PRE_IN Saisie infos administratives">
+<Description>Il saisit les informations administratives du responsable légal et de l'enfant allérgique. Les parents choisissent les temps à appliquer au DAI, l'allergologue ainsi que les structures d'accueil (CLSH,garderie)</Description>
+<Implementation>
+<No/>
+</Implementation>
+<Performer>directeur_etablissement_scolaire</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="directeur_etablissement_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="164,29"/>
+<ExtendedAttribute Name="notification" Value="n0"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="PRE_IN_confirmation_pre_initialisation" Name="PRE_IN Confirmation pre-initialisation">
+<Description>Il confime son souhait d'iitialiser le DAI.</Description>
+<Implementation>
+<No/>
+</Implementation>
+<Performer>responsable_legal</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="responsable_legal"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="339,25"/>
+<ExtendedAttribute Name="action_URL" Value="PI_Confirmation.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Confitmation de la pré-initialisation du DAI"/>
+<ExtendedAttribute Name="notification" Value="n1"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="PRE_IN_saisie_infos_administratives" Id="pre_initialisation_tra1" To="PRE_IN_confirmation_pre_initialisation">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="300,56-300,200"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="directeur_etablissement_scolaire;responsable_legal"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=directeur_etablissement_scolaire,CONNECTING_ACTIVITY_ID=PRE_IN_saisie_infos_administratives,X_OFFSET=59,Y_OFFSET=40,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=responsable_legal,CONNECTING_ACTIVITY_ID=PRE_IN_confirmation_pre_initialisation,X_OFFSET=496,Y_OFFSET=36,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="initialisation" Name="Initialisation DAI">
+<ProcessHeader>
+<Created>2006-07-24 15:10:03</Created>
+</ProcessHeader>
+<DataFields>
+<DataField Id="in_validation_dossier_medical" IsArray="FALSE" Name="IN Validation dossier médical">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n0" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+<DataField Id="n1" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+<DataField Id="n2" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+<DataField Id="n3" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+<InitialValue>false</InitialValue>
+</DataField>
+<DataField Id="IN_commentaire_modif_dossier_medical" IsArray="FALSE" Name="IN Commentaire modif dossier médical">
+<DataType>
+<BasicType Type="STRING"/>
+</DataType>
+<Description>Commentaire justifiant la non validation du dossier médical par le médecin institutionnel.</Description>
+</DataField>
+</DataFields>
+<Activities>
+<Activity Id="IN_saisie_Dossier_medical" Name="IN Saisie du dossier médical">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_traitant</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_traitant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="164,34"/>
+<ExtendedAttribute Name="notification" Value="n0"/>
+<ExtendedAttribute Name="action_NAME" Value="Saisie du dossier médical"/>
+<ExtendedAttribute Name="action_URL" Value="IN_SaisieDossierMedical.jsp"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="IN_validation_transfert_dossier_médical" Name="IN Validation transfert dossier medical">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>responsable_legal</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="responsable_legal"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="298,25"/>
+<ExtendedAttribute Name="action_URL" Value="IN_ValidationTransfertDossiermedical.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="validation du transfert du dossier médical"/>
+<ExtendedAttribute Name="notification" Value="n1"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="IN_validation_dossier_médical_et_diffusion" Name="IN Validation dossier medical et diffusion">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="initialisation_tra7"/>
+<TransitionRef Id="initialisation_tra4"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="472,32"/>
+<ExtendedAttribute Name="action_URL" Value="IN_ValidationDossierMedical.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Validation du dossier médical"/>
+<ExtendedAttribute Name="notification" Value="n2"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="IN_adaptation_dossier_medical" Name="IN Adaptation dossier médical">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_traitant</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_traitant"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="448,34"/>
+<ExtendedAttribute Name="action_URL" Value="IN_AdaptationDossierMedical.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Adaptation du dossier médical"/>
+<ExtendedAttribute Name="notification" Value="n3"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="IN_fin_initialisation" Name="IN Fin initialisation">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="651,32"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="IN_saisie_Dossier_medical" Id="initialisation_tra1" To="IN_validation_transfert_dossier_médical">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="270,64-270,208"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="IN_validation_transfert_dossier_médical" Id="initialisation_tra3" To="IN_validation_dossier_médical_et_diffusion">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="419,202-419,356"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="IN_validation_dossier_médical_et_diffusion" Id="initialisation_tra7" To="IN_fin_initialisation">
+<Condition Type="CONDITION">in_validation_dossier_medical==true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="IN_validation_dossier_médical_et_diffusion" Id="initialisation_tra4" To="IN_adaptation_dossier_medical">
+<Condition Type="CONDITION">in_validation_dossier_medical==false</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="617,345-617,122-397,122-397,65"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="IN_adaptation_dossier_medical" Id="initialisation_tra2" To="IN_validation_transfert_dossier_médical">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="588,64-588,137-246,137-246,191"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="medecin_traitant;responsable_legal;medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=medecin_traitant,CONNECTING_ACTIVITY_ID=IN_saisie_Dossier_medical,X_OFFSET=67,Y_OFFSET=45,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=medecin_institutionnel,CONNECTING_ACTIVITY_ID=IN_fin_initialisation,X_OFFSET=790,Y_OFFSET=43,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="temps_scolaire" Name="Temps scolaire">
+<ProcessHeader>
+<Created>2006-07-24 15:29:05</Created>
+</ProcessHeader>
+<DataFields>
+<DataField Id="TS_validation_proposition_medecin_institutionnel" IsArray="FALSE" Name="TS validation proposition medecin institutionel">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n0" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n1" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n2" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n3" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n4" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+</DataFields>
+<Activities>
+<Activity Id="TS_proposition_directeur" Name="TS Proposition directeur">
+<Description>Le directeur fait une propositio suivant les recommandation du médecin scolaire ou de PMI. Pour la  valider , il doit choisir les acteurs concernés qui devront donner leur avis sur cette  proposition.</Description>
+<Implementation>
+<No/>
+</Implementation>
+<Performer>directeur_etablissement_scolaire</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="temps_scolaire_tra6"/>
+<TransitionRef Id="temps_scolaire_tra1"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="directeur_etablissement_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="136,37"/>
+<ExtendedAttribute Name="action_URL" Value="TS_PropositionsDirecteur.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Propositions d'aménagements du directeur pour la prise en charge sur le temps scolaire"/>
+<ExtendedAttribute Name="notification" Value="n0"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TS_avis_mairie" Name="TS Avis mairie">
+<Description>étant donnée que je ne connais pas encore les acteurs concernés j'ai choisi de mettre arbitrary expression.</Description>
+<Implementation>
+<No/>
+</Implementation>
+<Performer>mairie</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="mairie"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="338,48"/>
+<ExtendedAttribute Name="notification" Value="n1"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis de la mairie sur les aménagements de la prise en charge sur le temps scolaire"/>
+<ExtendedAttribute Name="action_URL" Value="TS_AvisMairie.jsp"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TS_validation_amenagements_temps_scolaire" Name="TS Validation aménagements temps scolaire">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="AND"/>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="temps_scolaire_tra3"/>
+<TransitionRef Id="temps_scolaire_tra5"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="613,55"/>
+<ExtendedAttribute Name="notification" Value="n3"/>
+<ExtendedAttribute Name="action_NAME" Value="Validation de la proposition  du directeur pour la prise en charge sur le temps scolaire"/>
+<ExtendedAttribute Name="action_URL" Value="TS_ValidationTempsScolaire.jsp"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TS_adaptation_proposition_amenagements_temps_scolaire" Name="TS Adaptation proposition amenagements temps scolaire">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>directeur_etablissement_scolaire</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="temps_scolaire_tra4"/>
+<TransitionRef Id="temps_scolaire_tra8"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="directeur_etablissement_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="338,36"/>
+<ExtendedAttribute Name="action_NAME" Value="Adaptation de la proposition du directeur pour la prise en charge sur le temps scolaire"/>
+<ExtendedAttribute Name="action_URL" Value="TS_AdaptationPropositionTempsScolaire.jsp"/>
+<ExtendedAttribute Name="notification" Value="n4"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TS_fin_TS" Name="TS Fin TS">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="754,55"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TS_avis_responsable_legal" Name="TS Avis responsable legal">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>responsable_legal</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="responsable_legal"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="338,39"/>
+<ExtendedAttribute Name="notification" Value="n2"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis du responsable légal sur les aménagements de la prise en charge sur le temps scolaire"/>
+<ExtendedAttribute Name="action_URL" Value="TS_AvisResponsableLegal.jsp"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="TS_proposition_directeur" Id="temps_scolaire_tra1" To="TS_avis_mairie">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="279,57-280,229"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TS_avis_mairie" Id="temps_scolaire_tra2" To="TS_validation_amenagements_temps_scolaire">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="554,231-556,521"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TS_validation_amenagements_temps_scolaire" Id="temps_scolaire_tra3" To="TS_adaptation_proposition_amenagements_temps_scolaire">
+<Condition Type="CONDITION">TS_validation_proposition_medecin_institutionnel==false</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="734,544-735,573-193,573-193,107-307,105-306,65"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TS_adaptation_proposition_amenagements_temps_scolaire" Id="temps_scolaire_tra4" To="TS_avis_mairie">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="475,50-475,134-245,133-245,213"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TS_validation_amenagements_temps_scolaire" Id="temps_scolaire_tra5" To="TS_fin_TS">
+<Condition Type="CONDITION">TS_validation_proposition_medecin_institutionnel==true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TS_proposition_directeur" Id="temps_scolaire_tra6" To="TS_avis_responsable_legal">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="259,70-259,185-259,365"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TS_avis_responsable_legal" Id="temps_scolaire_tra7" To="TS_validation_amenagements_temps_scolaire">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="479,367-479,539"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TS_adaptation_proposition_amenagements_temps_scolaire" Id="temps_scolaire_tra8" To="TS_avis_responsable_legal">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="457,72-457,119-224,119-224,348"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="directeur_etablissement_scolaire;mairie;responsable_legal;medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=directeur_etablissement_scolaire,CONNECTING_ACTIVITY_ID=TS_proposition_directeur,X_OFFSET=58,Y_OFFSET=48,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=medecin_institutionnel,CONNECTING_ACTIVITY_ID=TS_fin_TS,X_OFFSET=884,Y_OFFSET=66,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="temps_periscolaire" Name="Temps périscolaire">
+<ProcessHeader>
+<Created>2006-07-24 15:29:52</Created>
+</ProcessHeader>
+<DataFields>
+<DataField Id="TPS_validation_proposition_medecin_institutionnel" IsArray="FALSE" Name="TPS Validation proposition médecin institutionnel">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n0" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n1" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n2" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n3" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n4" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+</DataFields>
+<Activities>
+<Activity Id="TPS_proposition_periscolaire" Name="TPS Proposition periscolaire">
+<Description>il fait une proposition suite aux recommandations du médecin scolaire ou de PMI. Pour la valider, il doit choisir les acteurs concernés qui devrons valider cette proposition.</Description>
+<Implementation>
+<No/>
+</Implementation>
+<Performer>periscolaire</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="temps_garderie_tra1"/>
+<TransitionRef Id="temps_garderie_tra6"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="periscolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="144,46"/>
+<ExtendedAttribute Name="notification" Value="n0"/>
+<ExtendedAttribute Name="action_URL" Value="TPS_PropositionPeriscolaire.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Propositions d'aménagements de la structure d'accueil périscolaire pour la prise en charge sur le temps périscolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TPS_avis_responsable_legal" Name="TPS Avis responsable légal">
+<Description>acteurs à préciser</Description>
+<Implementation>
+<No/>
+</Implementation>
+<Performer>responsable_legal</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="responsable_legal"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="295,37"/>
+<ExtendedAttribute Name="notification" Value="n1"/>
+<ExtendedAttribute Name="action_URL" Value="TPS_AvisResponsableLegal.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis du responsable légal sur les aménagements de la prise en charge sur le temps périscolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TPS_Validation_amenagement_temps_periscolaire" Name="TPS Validation aménagement temps périscolaire">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="AND"/>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="temps_garderie_tra3"/>
+<TransitionRef Id="temps_garderie_tra5"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="473,36"/>
+<ExtendedAttribute Name="notification" Value="n3"/>
+<ExtendedAttribute Name="action_URL" Value="TPS_ValidationTempsPeriscolaire.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Validation de la proposition de la structure d'accueil périscolaire pour la prise en charge sur le temps périscolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TPS_adaptation_proposition_amenagement_temps_periscolaire" Name="TPS Adaptation proposition aménagement temps périscolaire">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>periscolaire</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="temps_garderie_tra4"/>
+<TransitionRef Id="temps_garderie_tra8"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="periscolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="295,51"/>
+<ExtendedAttribute Name="notification" Value="n4"/>
+<ExtendedAttribute Name="action_URL" Value="TPS_AdaptationPropositionTempsPeriscolaire.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Adaptation de la proposition de la structure d'accueil périscolaire pour la prise en charge sur le temps périscolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TPS_fin_TPS" Name="TPS Fin TPS">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="614,36"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TPS_avis_mairie" Name="TPS Avis mairie">
+<Description>acteurs à préciser</Description>
+<Implementation>
+<No/>
+</Implementation>
+<Performer>mairie</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="mairie"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="295,38"/>
+<ExtendedAttribute Name="notification" Value="n2"/>
+<ExtendedAttribute Name="action_URL" Value="TPS_AvisMairie.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis de la mairie sur les aménagements de la prise en charge sur le temps périscolaire"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="TPS_proposition_periscolaire" Id="temps_garderie_tra1" To="TPS_avis_responsable_legal">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="258,65-258,225"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TPS_avis_responsable_legal" Id="temps_garderie_tra2" To="TPS_Validation_amenagement_temps_periscolaire">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="419,215-419,502"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TPS_Validation_amenagement_temps_periscolaire" Id="temps_garderie_tra3" To="TPS_adaptation_proposition_amenagement_temps_periscolaire">
+<Condition Type="CONDITION">TPS_validation_proposition_medecin_institutionnel==false</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="593,527-593,567-172,567-172,126-273,126-273,72"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TPS_adaptation_proposition_amenagement_temps_periscolaire" Id="temps_garderie_tra4" To="TPS_avis_responsable_legal">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="414,66-414,174-213,174-213,202"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TPS_proposition_periscolaire" Id="temps_garderie_tra6" To="TPS_avis_mairie">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="246,85-246,375"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TPS_avis_mairie" Id="temps_garderie_tra7" To="TPS_Validation_amenagement_temps_periscolaire">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="395,369-395,521"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TPS_adaptation_proposition_amenagement_temps_periscolaire" Id="temps_garderie_tra8" To="TPS_avis_mairie">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="403,82-403,158-197,158-197,354"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TPS_Validation_amenagement_temps_periscolaire" Id="temps_garderie_tra5" To="TPS_fin_TPS">
+<Condition Type="CONDITION">TPS_validation_proposition_medecin_institutionnel==true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="periscolaire;responsable_legal;mairie;medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=periscolaire,CONNECTING_ACTIVITY_ID=TPS_proposition_periscolaire,X_OFFSET=68,Y_OFFSET=57,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=medecin_institutionnel,CONNECTING_ACTIVITY_ID=TPS_fin_TPS,X_OFFSET=749,Y_OFFSET=47,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="temps_CLSH" Name="Temps CLSH">
+<ProcessHeader>
+<Created>2006-07-24 15:33:13</Created>
+</ProcessHeader>
+<DataFields>
+<DataField Id="TCLSH_validation_proposition_medecin_institutionnel" IsArray="FALSE" Name="TCLSH validation proposition medecin institutionnel">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n0" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n1" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n2" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n3" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n4" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n5" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+</DataFields>
+<Activities>
+<Activity Id="TCLSH_proposition_CLSH" Name="TCLSH Proposition CLSH">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>clsh</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="temps_CLSH1_tra1"/>
+<TransitionRef Id="temps_CLSH1_tra2"/>
+<TransitionRef Id="temps_CLSH1_tra7"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="clsh"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="146,50"/>
+<ExtendedAttribute Name="notification" Value="n0"/>
+<ExtendedAttribute Name="action_URL" Value="TCLSH_PropositionCLSH.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Propositions d'aménagements du CLSH pour la prise en charge sur le temps CLSH"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TCLSH_adaptation_proposition_amenagement_temps_CLSH" Name="TCLSH Adaptation proposition aménagement temps CLSH">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>clsh</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="temps_CLSH1_tra6"/>
+<TransitionRef Id="temps_CLSH1_tra5"/>
+<TransitionRef Id="temps_CLSH1_tra9"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="clsh"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="319,51"/>
+<ExtendedAttribute Name="notification" Value="n5"/>
+<ExtendedAttribute Name="action_URL" Value="TCLSH_AdaptationPropositionTempsCLSH.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Adaptation de la proposition du CLSH pour la prise en charge sur le temps CLSH"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TCLSH_Validation_amenagement_temps_CLSH" Name="TCLSH Validation aménagement temps CLSH">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="AND"/>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="temps_CLSH_tra3"/>
+<TransitionRef Id="temps_CLSH_tra5"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="494,43"/>
+<ExtendedAttribute Name="notification" Value="n4"/>
+<ExtendedAttribute Name="action_URL" Value="TCLSH_ValidationTempsCLSH.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Validation de la proposition  du CLSH pour la prise en charge sur le temps CLSH"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TCLSH_fin_TCLSH" Name="TCLSH Fin TCLSH">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="666,43"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TCLSH_avis_responsable_legal" Name="TCLSH Avis responsable légal">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>responsable_legal</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="responsable_legal"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="319,51"/>
+<ExtendedAttribute Name="notification" Value="n1"/>
+<ExtendedAttribute Name="action_URL" Value="TCLSH_AvisResponsableLegal.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis du responsable légal sur les aménagements de la prise en charge sur le temps CLSH"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TCLSH_avis_inst_rattachement_CLSH" Name="TCLSH Avis institution rattachement CLSH">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>institut_rattachement_clsh</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="institut_rattachement_clsh"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="319,42"/>
+<ExtendedAttribute Name="notification" Value="n2"/>
+<ExtendedAttribute Name="action_URL" Value="TCLSH_AvisInstRattachement.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis de l'institution de rattachement CLSH sur les aménagements de la prise en charge sur le temps CLSH"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TCLSH_avis_restauration_CLSH" Name="TCLSH Avis restauration CLSH">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>restauration_clsh</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="restauration_clsh"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="319,41"/>
+<ExtendedAttribute Name="notification" Value="n3"/>
+<ExtendedAttribute Name="action_URL" Value="TCLSH_AvisRestaurationCLSH.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis de la restauration CLSH sur les aménagements de la prise en charge sur le temps CLSH"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="TCLSH_Validation_amenagement_temps_CLSH" Id="temps_CLSH_tra3" To="TCLSH_adaptation_proposition_amenagement_temps_CLSH">
+<Condition Type="CONDITION">TCLSH_validation_proposition_medecin_institutionnel==false</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="635,683-634,723-188,722-188,117-300,117-300,73"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_Validation_amenagement_temps_CLSH" Id="temps_CLSH_tra5" To="TCLSH_fin_TCLSH">
+<Condition Type="CONDITION">TCLSH_validation_proposition_medecin_institutionnel==true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_proposition_CLSH" Id="temps_CLSH1_tra1" To="TCLSH_avis_responsable_legal">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="280,62-280,231"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_proposition_CLSH" Id="temps_CLSH1_tra2" To="TCLSH_avis_inst_rattachement_CLSH">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="270,75-270,374"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_avis_responsable_legal" Id="temps_CLSH1_tra3" To="TCLSH_Validation_amenagement_temps_CLSH">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="464,225-464,656"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_avis_inst_rattachement_CLSH" Id="temps_CLSH1_tra4" To="TCLSH_Validation_amenagement_temps_CLSH">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="450,366-450,668"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_adaptation_proposition_amenagement_temps_CLSH" Id="temps_CLSH1_tra5" To="TCLSH_avis_responsable_legal">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="455,64-455,188-237,187-237,213"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_adaptation_proposition_amenagement_temps_CLSH" Id="temps_CLSH1_tra6" To="TCLSH_avis_inst_rattachement_CLSH">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="444,79-444,172-228,172-228,357"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_proposition_CLSH" Id="temps_CLSH1_tra7" To="TCLSH_avis_restauration_CLSH">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="257,91-257,517"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_avis_restauration_CLSH" Id="temps_CLSH1_tra8" To="TCLSH_Validation_amenagement_temps_CLSH">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="434,521-434,681"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TCLSH_adaptation_proposition_amenagement_temps_CLSH" Id="temps_CLSH1_tra9" To="TCLSH_avis_restauration_CLSH">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="430,93-430,161-214,161-214,502"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="clsh;responsable_legal;institut_rattachement_clsh;restauration_clsh;medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=clsh,CONNECTING_ACTIVITY_ID=TCLSH_proposition_CLSH,X_OFFSET=59,Y_OFFSET=61,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=medecin_institutionnel,CONNECTING_ACTIVITY_ID=TCLSH_fin_TCLSH,X_OFFSET=791,Y_OFFSET=54,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+<WorkflowProcess Id="temps_restauration_scolaire" Name="Temps restauration scolaire">
+<ProcessHeader>
+<Created>2006-07-26 14:13:47</Created>
+</ProcessHeader>
+<DataFields>
+<DataField Id="TRS_validation_proposition_medecin_institutionnel" IsArray="FALSE" Name="TRS Validation proposition medecin institutionnel">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n0" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n1" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n2" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n3" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n4" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+<DataField Id="n5" IsArray="FALSE">
+<DataType>
+<BasicType Type="BOOLEAN"/>
+</DataType>
+</DataField>
+</DataFields>
+<Activities>
+<Activity Id="TRS_proposition_restauration_scolaire" Name="TRS Proposition restauration scolaire">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>restauration_scolaire</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="tps_cantine_tra1"/>
+<TransitionRef Id="tps_cantine_tra2"/>
+<TransitionRef Id="tps_cantine_tra3"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="restauration_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="146,32"/>
+<ExtendedAttribute Name="notification" Value="n0"/>
+<ExtendedAttribute Name="action_NAME" Value="Propositions d'aménagements de la restauration scolaire pour la prise en charge sur le temps restauration scolaire"/>
+<ExtendedAttribute Name="action_URL" Value="TRS_PropositionsRestaurationScolaire.jsp"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TRS_adaptation_proposition_amenagement_temps_restauration_scolaire" Name="TRS Adaptation proposition aménagement temps restauration scolaire">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>restauration_scolaire</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Split Type="AND">
+<TransitionRefs>
+<TransitionRef Id="tps_cantine_tra9"/>
+<TransitionRef Id="tps_cantine_tra10"/>
+<TransitionRef Id="tps_cantine_tra11"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="restauration_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="307,34"/>
+<ExtendedAttribute Name="notification" Value="n5"/>
+<ExtendedAttribute Name="action_URL" Value="TRS_AdaptationPropositionTempsRestaurationScolaire.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Adaptation de la proposition de la restauration scolaire pour la prise en charge sur le temps restauration scolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TRS_avis_mairie" Name="TRS Avis mairie">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>mairie</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="mairie"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="307,42"/>
+<ExtendedAttribute Name="notification" Value="n1"/>
+<ExtendedAttribute Name="action_URL" Value="TRS_AvisMairie.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis de la mairie sur les aménagements de la prise en charge sur le temps restauration scolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TRS_avis_directeur" Name="TRS Avis directeur">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>directeur_etablissement_scolaire</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="directeur_etablissement_scolaire"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="307,41"/>
+<ExtendedAttribute Name="notification" Value="n2"/>
+<ExtendedAttribute Name="action_URL" Value="TRS_AvisDirecteur.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis du directeur d'établissement sur les aménagements de la prise en charge sur le temps restauration scolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TRS_avis_responsable_legal" Name="TRS Avis responsable legal">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>responsable_legal</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="XOR"/>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="responsable_legal"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="307,32"/>
+<ExtendedAttribute Name="notification" Value="n3"/>
+<ExtendedAttribute Name="action_URL" Value="TRS_AvisResponsableLegal.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Avis du responsable légal sur les aménagements de la prise en charge sur le temps restauration scolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TRS_validation_aménagement_temps_restauration_scolaire" Name="TRS Validation aménagement temps restauration scolaire">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<TransitionRestrictions>
+<TransitionRestriction>
+<Join Type="AND"/>
+<Split Type="XOR">
+<TransitionRefs>
+<TransitionRef Id="tps_cantine_tra7"/>
+<TransitionRef Id="tps_cantine_tra8"/>
+</TransitionRefs>
+</Split>
+</TransitionRestriction>
+</TransitionRestrictions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="466,41"/>
+<ExtendedAttribute Name="notification" Value="n4"/>
+<ExtendedAttribute Name="action_URL" Value="TRS_ValidationTempsRestaurationScolaire.jsp"/>
+<ExtendedAttribute Name="action_NAME" Value="Validation de la proposition de la restauration scolaire pour la prise en charge sur le temps restauration scolaire"/>
+</ExtendedAttributes>
+</Activity>
+<Activity Id="TRS_fin_TRS" Name="TRS Fin TRS">
+<Implementation>
+<No/>
+</Implementation>
+<Performer>medecin_institutionnel</Performer>
+<StartMode>
+<Automatic/>
+</StartMode>
+<FinishMode>
+<Automatic/>
+</FinishMode>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_PARTICIPANT_ID" Value="medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_OFFSET" Value="625,42"/>
+</ExtendedAttributes>
+</Activity>
+</Activities>
+<Transitions>
+<Transition From="TRS_proposition_restauration_scolaire" Id="tps_cantine_tra1" To="TRS_avis_mairie">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="280,47-280,226"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_proposition_restauration_scolaire" Id="tps_cantine_tra2" To="TRS_avis_directeur">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="270,62-270,377"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_proposition_restauration_scolaire" Id="tps_cantine_tra3" To="TRS_avis_responsable_legal">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="256,78-256,519"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_avis_responsable_legal" Id="tps_cantine_tra4" To="TRS_validation_aménagement_temps_restauration_scolaire">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="404,509-404,682"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_avis_directeur" Id="tps_cantine_tra5" To="TRS_validation_aménagement_temps_restauration_scolaire">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="420,369-420,669"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_avis_mairie" Id="tps_cantine_tra6" To="TRS_validation_aménagement_temps_restauration_scolaire">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="435,209-435,654"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_validation_aménagement_temps_restauration_scolaire" Id="tps_cantine_tra8" To="TRS_adaptation_proposition_amenagement_temps_restauration_scolaire">
+<Condition Type="CONDITION">TRS_validation_proposition_medecin_institutionnel==false</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="596,685-596,718-170,718-171,124-291,124-291,63"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_adaptation_proposition_amenagement_temps_restauration_scolaire" Id="tps_cantine_tra9" To="TRS_avis_mairie">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="444,49-445,171-225,171-225,209"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_adaptation_proposition_amenagement_temps_restauration_scolaire" Id="tps_cantine_tra10" To="TRS_avis_directeur">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="436,63-436,163-212,163-212,354"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_adaptation_proposition_amenagement_temps_restauration_scolaire" Id="tps_cantine_tra11" To="TRS_avis_responsable_legal">
+<Condition Type="CONDITION"/>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_BREAK_POINTS" Value="429,77-428,157-200,157-201,497"/>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_ORTHOGONAL"/>
+</ExtendedAttributes>
+</Transition>
+<Transition From="TRS_validation_aménagement_temps_restauration_scolaire" Id="tps_cantine_tra7" To="TRS_fin_TRS">
+<Condition Type="CONDITION">TRS_validation_proposition_medecin_institutionnel==true</Condition>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_TRANSITION_STYLE" Value="NO_ROUTING_SPLINE"/>
+</ExtendedAttributes>
+</Transition>
+</Transitions>
+<ExtendedAttributes>
+<ExtendedAttribute Name="JaWE_GRAPH_WORKFLOW_PARTICIPANT_ORDER" Value="restauration_scolaire;mairie;directeur_etablissement_scolaire;responsable_legal;medecin_institutionnel"/>
+<ExtendedAttribute Name="JaWE_GRAPH_START_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=restauration_scolaire,CONNECTING_ACTIVITY_ID=TRS_proposition_restauration_scolaire,X_OFFSET=65,Y_OFFSET=43,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=START_DEFAULT"/>
+<ExtendedAttribute Name="JaWE_GRAPH_END_OF_WORKFLOW" Value="JaWE_GRAPH_PARTICIPANT_ID=medecin_institutionnel,CONNECTING_ACTIVITY_ID=TRS_fin_TRS,X_OFFSET=791,Y_OFFSET=53,JaWE_GRAPH_TRANSITION_STYLE=NO_ROUTING_ORTHOGONAL,TYPE=END_DEFAULT"/>
+</ExtendedAttributes>
+</WorkflowProcess>
+</WorkflowProcesses>
+<ExtendedAttributes>
+<ExtendedAttribute Name="EDITING_TOOL" Value="Together Workflow Editor Community Edition"/>
+<ExtendedAttribute Name="EDITING_TOOL_VERSION" Value="2.0-1-C-20060130-1601"/>
+</ExtendedAttributes>
+</Package>
