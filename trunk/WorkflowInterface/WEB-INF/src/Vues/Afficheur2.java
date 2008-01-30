@@ -64,7 +64,7 @@ public class Afficheur2 extends HttpServlet
 				break;
 			default:
 				writer.println("<html><body>");
-				writer.println("<a href=\"Afficheur2?action=doParse\">Lancer le parsing du fichier XPDL</a><br>");
+				writer.println("<a href=\"Afficheur2?action=doParse\">Lancer le parsing du fichier XPDL Afficheur2</a><br>");
 				writer.println("</body></html>");
 		}
 		
