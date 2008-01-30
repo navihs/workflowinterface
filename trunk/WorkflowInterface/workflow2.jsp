@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="scripts/window.js"> </script>
 	<script type="text/javascript" src="scripts/debug.js"> </script>
 	<script type="text/javascript" src="scripts/effects.js"> </script>
+	<script type="text/javascript" src="scripts/wz_jsgraphics.js"> </script>
 
 	<link href="scripts/themes/default.css" rel="stylesheet" type="text/css" >	 </link>
 	<link href="scripts/themes/lighting.css" rel="stylesheet" type="text/css" >	 </link>
@@ -28,10 +29,21 @@
 <% 
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
 Workflow w = wp.getWorkflowById(request.getParameter("id"));
+
+//	List<Transition> transitions = w.getTransitions();
+//	Iterator<Transition> it= tansitions.iterator();
+//	while (it.hasNext())
+//	{
+//		ModeleTest.displayTransition(t);
+//	}
+//
+//
 //List boxes=new ArrayList<Box>();
 //Box boite=new Box(a.getName(),x,y);
 //boxes.add(boite);
 %>
-<%=ModeleTest.workflow(w) %>
+<%=ModeleTest.workflow(w)%>
+<%=ModeleTest.transition()%>
+
 </body>
 </html>
