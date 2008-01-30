@@ -2,6 +2,7 @@
 <head>
 <%@ page import="XPDLInterface.*" %>
 <%@page import="Vues.ModeleTest;"%>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
 	<title>Test</title>
@@ -27,6 +28,9 @@
 <% 
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
 Workflow w = wp.getWorkflowById(request.getParameter("id"));
+//List boxes=new ArrayList<Box>();
+//Box boite=new Box(a.getName(),x,y);
+//boxes.add(boite);
 %>
 <%=ModeleTest.workflow(w) %>
 </body>

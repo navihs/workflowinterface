@@ -25,7 +25,7 @@ public class Parser {
 		 SAXBuilder sxb = new SAXBuilder();
 	     try
 	     {
-	    	 document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/soumission_article.xpdl"));
+	    	 document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/DAI3.1.xpdl"));
 	     }
 	     catch(Exception e){}
 	     racine = document.getRootElement();
