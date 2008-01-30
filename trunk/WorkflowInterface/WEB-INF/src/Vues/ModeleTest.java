@@ -3,6 +3,21 @@ import XPDLInterface.*;
 
 import java.util.*;
 
+class Box{
+	
+	String name;
+	int positionX;
+	int positionY;
+
+	public Box(String name,int x,int y)
+	{
+		this.name=name;
+		this.positionX=x;
+		this.positionY=y;
+	}
+	
+}
+
 public class ModeleTest{
 	
 	public static String listeParticipants(List<Participant> participants)
@@ -21,6 +36,7 @@ public class ModeleTest{
 	{
 		String s=" ";
 		String html=" ";
+		
 			
 		html= "<table border=0 cellpadding=0 cellspacing=5>";
 		html+="<tr>";
@@ -278,7 +294,7 @@ public class ModeleTest{
 				
 		//fenetre d'activité
 		s+="\nfunction activityWindow(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:40, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n    var win = new Window(name, {className: \"greenlighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
 		s+="\n   win.setLocation(x, y);";
 		s+="\n   win.setDestroyOnClose();";
@@ -427,6 +443,20 @@ public class ModeleTest{
 			//s+="insideWindow(\"" + wf.getName() + "\","+l+");";
 			//l+=120;
 		}
+		return s;
+	}
+	public static String transition()
+	{
+		String s=" ";
+		
+		s="\n<script>";
+		s+="\nvar jg = new jsGraphics(\"myCanvas\");";
+		s+="\njg.setColor(\"#ff0000\"); ";
+		s+="\njg.drawLine(10, 113, 220, 55); ";
+		s+="\njg.setColor(\"#0000ff\");";
+		s+="\njg.fillRect(110, 120, 30, 60);";
+		s+="\njg.paint();";
+		s+="\n</script>";
 		return s;
 	}
 }
