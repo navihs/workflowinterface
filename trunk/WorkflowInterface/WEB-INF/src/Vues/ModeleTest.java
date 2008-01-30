@@ -331,14 +331,14 @@ public class ModeleTest{
 		
 		//initialisation du tableau
 		html = "<table border=1  height="+largTab+" width="+longTab+">";
-		html += "\n<tr><td width="+performersWidth+" height="+worflowHeight+">"+wf.getName()+"</td></tr>";
+		html += "\n<tr><td width="+performersWidth+" height="+worflowHeight+"><b>"+wf.getName()+"<b></td></tr>";
 		
 		
 		it = performers.iterator();
 		while(it.hasNext())
 		{			
 			Participant pa = it.next();
-			html += "\n<tr><td width="+performersWidth+">"+pa.getName()+"</td>";
+			html += "\n<tr><td width="+performersWidth+"><b>"+pa.getName()+"</b></td>";
 			List<Activity> activities= wf.getActivitiesByPerformer(pa);
 			Iterator<Activity> it2 = activities.iterator();
 			
