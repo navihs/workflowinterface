@@ -22,6 +22,10 @@ public class ModeleTest{
 		String s=" ";
 		String html=" ";
 		
+		//rectification du décalage
+		//x+=15;
+		//y+=10;
+		
 		html = "<table border=0><tr>";
 		html += "<td>Id : </td><td>"+ a.getId()+ "</td></tr>"; 
 		html += "<tr><td> Description : </td><td>"+a.getDescription()+"</td></tr>";
@@ -250,17 +254,30 @@ public class ModeleTest{
 
 		String s=" ";
 		String html =" ";
-		int x =270;
-		int y =0;
-		int dimX =x;
-		int dimY =0;
+		
+		
 		int longTab =0;
+		int largTab =0;
+		int boxWidth =300;
+		int boxHeight=120;
+		//int x =270;
+		//int y =130;
+		int x =boxWidth+50;
+		int y =boxHeight+35;
+		
+		int performersWidth = 150;
+		int worflowHeight = 30;
+		
+		int dimX =x-performersWidth;
+		int dimY =y-worflowHeight;
+		
+		
 		
 		s+="<script>";
 				
 		//fenetre d'activité
 		s+="\nfunction activityWindow(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, right:x, bottom:y, width:220, height:75,title:name,";
+		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false});";
 		s+="\n   win.setLocation(x, y);";
 		s+="\n   win.setDestroyOnClose();";
@@ -272,39 +289,48 @@ public class ModeleTest{
 		s+="\n</script>";
 		
 		//affichage tableau des participants
-		
 		List<Participant> performers;
 		performers = wf.getActivityPerformers();
 		Iterator<Participant> it = performers.iterator();
 		if(performers.size()==0) return "&nbsp";
 		
-		longTab=x*(performers.size()+1);
-		
-		html = "<table border=1  height=500 width="+longTab+">";
-		html += "\n<tr><td width="+dimX+">"+wf.getName()+"</td></tr>";
+		//Calcul de la longeur du tableau en fonction du nombre d'activités
 		while(it.hasNext())
 		{
-			y+=1;
-			dimX=0;
-			dimY = y*130;
-			
 			Participant pa = it.next();
-			html += "\n<tr><td width=\"25%\">"+pa.getName()+"</td>";
+			List<Activity> activities= wf.getActivitiesByPerformer(pa);
+			if (activities.size()>longTab)
+				longTab=(x*activities.size())+ performersWidth;
+		}
+		//Calcul de la Largeur du tableau en fonction du nombre de participants
+		largTab=(y*performers.size())+worflowHeight;
+		
+		//initialisation du tableau
+		html = "<table border=1  height="+largTab+" width="+longTab+">";
+		html += "\n<tr><td width="+performersWidth+" height="+worflowHeight+">"+wf.getName()+"</td></tr>";
+		
+		it = performers.iterator();
+		while(it.hasNext())
+		{			
+			Participant pa = it.next();
+			html += "\n<tr><td width="+performersWidth+">"+pa.getName()+"</td>";
 			List<Activity> activities= wf.getActivitiesByPerformer(pa);
 			Iterator<Activity> it2 = activities.iterator();
 			
 			while(it2.hasNext())
 			{
-				//x+=1;
-				//dimX = x*260;
-				dimX+=x;
 				Activity ac = it2.next();
 				//System.out.println(ac.getName());
 				html += "\n		<td>";
 				html += "		" + ModeleTest.activity(ac,dimY,dimX);
 				html += "\n		</td>";
+				dimX+=x;
 			}
-			html += "\n</tr>";		
+			html += "\n</tr>";	
+			
+			dimY+=y;
+			//remise à la ligne des activités des autres participants
+			dimX=x-performersWidth;
 			
 		}
 		
