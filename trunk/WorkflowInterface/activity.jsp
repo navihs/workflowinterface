@@ -2,6 +2,7 @@
 <head>
 <%@ page import="XPDLInterface.*" %>
 <%@page import="Vues.ModeleTexte;"%>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <% 

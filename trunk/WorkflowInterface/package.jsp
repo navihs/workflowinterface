@@ -2,6 +2,7 @@
 <%@page import="Vues.ModeleTexte;"%>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
 <% 
