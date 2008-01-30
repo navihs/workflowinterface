@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -38,7 +39,6 @@ import org.enhydra.shark.api.client.wfservice.PackageInvalid;
 import org.enhydra.shark.api.client.wfservice.ParticipantMappingAdministration;
 import org.enhydra.shark.api.client.wfservice.SharkConnection;
 import org.enhydra.shark.api.client.wfservice.UserGroupAdministration;
-
 
 /**
  * <b>Cette classe constitue une surcouche à l’API Shark qu’elle 
@@ -1508,6 +1508,154 @@ public class WorkflowWrapper
       }
     }
     return processes;
+  }
+  //-----------------------------------------------------------------------------
+  /**
+   * Renvoie la liste des processus quel que soit leur état : "open.running",
+   * "open.not_running.not_started", "open.not_running.suspended",
+   * "closed.completed", "closed.terminated" ou "closed.aborted".
+   * 
+   * @return
+   * @throws BaseException
+   * @throws NotConnected
+   */
+  public static ArrayList<WfProcess> processList()
+    throws BaseException, NotConnected
+  {
+    ArrayList<WfProcess> processes = new ArrayList<WfProcess>();
+    WfProcessMgr[] mgrs = executionAdministration.get_sequence_processmgr(0);
+    WfProcess[] processesTab = null;
+          
+    for (int i = 0; i<mgrs.length;i++)
+    {
+      processesTab = mgrs[i].get_sequence_process(0);
+      for (WfProcess process : processesTab)
+      {
+        processes.add(process);
+      }
+    }
+    return processes;
+  }
+  //-----------------------------------------------------------------------------
+  /**
+   * La méthode s'appelle "getAll" parce que je n'ai pas réussi à lui trouver un
+   * autre nom...<br/>
+   * 
+   * @param all true si on veut tous les processus et activités même terminés,
+   *            false si on ne veut que ceux qui sont en cours. 
+   * @return un HashMap dont les clés sont des instances de processus (WfProcess)
+   *         et les valeurs associées des tableaux d'activités (WfActivity)
+   * @throws NotConnected 
+   * @throws BaseException 
+   */
+  public static HashMap<WfProcess, WfActivity[]> getAll(boolean all)
+    throws BaseException, NotConnected
+  {
+    //HashMap<String, HashMap<String,ArrayList<String[]>>> p = new HashMap<String, HashMap<String,ArrayList<String[]>>>();
+    
+    HashMap<WfProcess,WfActivity[]> result = new HashMap<WfProcess,WfActivity[]>(); 
+
+    // Il y a un "WfProcessMgr" par processus déclaré dans le XPDL
+    WfProcessMgr[] mgrs = getProcessMgr();
+    WfProcess[] processesTab = null;
+    
+    for (WfProcessMgr mgr : mgrs)
+    {
+      processesTab = mgr.get_sequence_process(0);
+      for (WfProcess process : processesTab)
+      {
+        if(!process.state().equals("closed.completed") || all)
+        {
+          // Note 1 : pour chaque processus trouvé, la méthode "getWorkflowVariablesList(process)"
+          // de récupérer la liste des noms de variables associées à ce processus.
+          // Par la suite, la méthode "getWorkflowVariableValueCurrentProcess(process, variableName)"
+          // permet d'en récupérer la valeur.
+          
+          // Note 2 : pour chaque processus et activité, le nom et l'état peuvent être connus
+          // à l'aide des méthodes getName(...) et getState(...). La date de la dernière modif
+          // peut se trouver avec la méthode getLastStateTime(...)
+
+          WfActivity[] activities = process.get_sequence_step(0);
+          result.put(process, activities);
+        }
+      }
+    }
+    
+    return result;
+  }
+  //-----------------------------------------------------------------------------
+  /**
+   * Renvoie l'état d'un processus :
+   * <ul>
+   *   <li>open.running</li>
+   *   <li>open.not_running.not_started</li>
+   *   <li>open.not_running.suspended</li>
+   *   <li>closed.completed</li>
+   *   <li>closed.terminated</li>
+   *   <li>closed.aborted</li>
+   * </ul>
+   *  
+   * @param process le processus dont on veut connaitre l'état.
+   * @return
+   * @throws BaseException 
+   */
+  public static String getState(WfProcess process)
+    throws BaseException
+  {
+    return process.state();
+  }
+  //-----------------------------------------------------------------------------
+  /**
+   * Renvoie l'état d'une activité :
+   * <ul>
+   *   <li>open.running</li>
+   *   <li>open.not_running.not_started</li>
+   *   <li>open.not_running.suspended</li>
+   *   <li>closed.completed</li>
+   *   <li>closed.terminated</li>
+   *   <li>closed.aborted</li>
+   * </ul>
+   *  
+   * @param activity l'activité dont on veut connaitre l'état.
+   * @return
+   * @throws BaseException 
+   */
+  public static String getState(WfActivity activity)
+    throws BaseException
+  {
+    return activity.state();
+  }
+  //-----------------------------------------------------------------------------
+  /**
+   * Renvoie le nom d'un processus.
+   * 
+   * @param process le processus dont on veut connaitre le nom
+   * @return
+   * @throws BaseException 
+   */
+  public static String getName(WfProcess process)
+    throws BaseException
+  {
+    return process.name();
+  }
+  //-----------------------------------------------------------------------------
+  /**
+   * Renvoie le nom d'une activité.
+   * 
+   * @param activity l'activité dont on veut connaitre le nom
+   * @return
+   * @throws BaseException 
+   */
+  public static String getName(WfActivity activity)
+    throws BaseException
+  {
+    return activity.name();
+  }
+  //-----------------------------------------------------------------------------
+  public static Date getLastStateTime(WfProcess process)
+    throws BaseException
+  {
+    return process.last_state_time().getTimestamp();
   }
   //-----------------------------------------------------------------------------
   public static WfProcessMgr[] getProcessMgr() throws BaseException, NotConnected
