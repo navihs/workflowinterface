@@ -450,11 +450,9 @@ public class ModeleTest{
 		String s=" ";
 		
 		s="\n<script>";
-		s+="\nvar jg = new jsGraphics(\"myCanvas\");";
+		s+="\nvar jg = new jsGraphics();";
 		s+="\njg.setColor(\"#ff0000\"); ";
-		s+="\njg.drawLine(10, 113, 220, 55); ";
-		s+="\njg.setColor(\"#0000ff\");";
-		s+="\njg.fillRect(110, 120, 30, 60);";
+		s+="\njg.drawLine(100, 113, 220, 290); ";
 		s+="\njg.paint();";
 		s+="\n</script>";
 		return s;
