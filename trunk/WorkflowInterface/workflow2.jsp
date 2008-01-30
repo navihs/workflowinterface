@@ -11,9 +11,9 @@
 	<script type="text/javascript" src="scripts/debug.js"> </script>
 	<script type="text/javascript" src="scripts/effects.js"> </script>
 
-	<link rel="stylesheet" type="text/css" href="style.css" />
-	<link href="scripts/themes/default.css" rel="stylesheet" type="text/css" />
-	<link href="scripts/themes/alphacube.css" rel="stylesheet" type="text/css" />
+	<link href="scripts/themes/default.css" rel="stylesheet" type="text/css" >	 </link>
+	<link href="scripts/themes/lighting.css" rel="stylesheet" type="text/css" >	 </link>
+	<link rel="stylesheet" type="text/css" href="style.css" />	</link>
 	<title>Test</title>
   <style>
   #master_content {
