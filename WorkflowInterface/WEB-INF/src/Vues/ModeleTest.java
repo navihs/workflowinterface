@@ -232,37 +232,19 @@ public class ModeleTest{
 		s+="<td> "+ModeleTest.listeWorkflows(wp.getWorkflows())+"</td>";
 		s+="</tr>";
 		s+="</table>";
-		return s;
 		
-		
-		/* Test WorflowPackage dans une box /*
-		/* 
-		String s=" ";
-		s+="\n<div id=\"content\" style=\"display:none\">";
-		//s+="\n<a href=\"#\" onclick=\"insideWindow()\">open a window inside this window</a>";
-		
+		/*pour s'amuser
 		s+="\n</div>";
 		s+="<script>";
 		s+="\nfunction openPopup(){";
-		s+="\nvar master = new Window(\"master\", {className: \"alphacube\", width:1000, height:300,title:\"WorkflowPackage\"});";
-		s+="\nmaster.setContent(\"content\");";
+		s+="\nvar master = new Window(\"master\", {className: \"alphacube\", width:700, height:500,title:\"WorkflowPackage\", top:200, right:700, url:\"http://en.wikipedia.org/wiki/Workflow/\", showEffectOptions: {duration:1.5}});";
 		s+="\nmaster.setDestroyOnClose();";
 		s+="\nmaster.showCenter();";
 		s+="\n}";
-		
-		s+="\nfunction insideWindow(name, l) {";
-		s+="\n    var win = new Window(name, {className: \"alphacube\", top:40, left:l, width:100, height:50,title:name,";
-		s+="\n                          maximizable: false, minimizable: false, parent: Windows.getWindow(\"master\").getContent()});";
-		s+="\n   win.setDestroyOnClose();";
-		s+="\n   win.show();";
-		s+="\n  }";
 		s+="\nopenPopup();";
-		s+=ModeleTest.listeWorkflows(wp.getWorkflows());
 		s+="\n</script>";
-		
-		return s; */
-		 
-		 
+		*/
+		return s;		 
 	}
 
 	public static String workflow(Workflow wf)
