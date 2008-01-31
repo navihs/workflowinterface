@@ -20,14 +20,14 @@ public class Participant {
 	public String getName(){return this.name;}
 
 	/**
-	 * <!ELEMENT Participant>
+	 * <!ELEMENT Participant
 	 * <!ELEMENT ParticipantType
 	 */
 	private String type;
 	public String getType(){return this.type;}
 	
 	/**
-	 * <!ELEMENT Participant>
+	 * <!ELEMENT Participant
 	 * <!ELEMENT Description
 	 */
 	private String description;
