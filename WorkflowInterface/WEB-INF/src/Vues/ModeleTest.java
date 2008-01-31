@@ -233,7 +233,7 @@ public class ModeleTest{
 		s+="</tr>";
 		s+="</table>";
 		
-		/*pour s'amuser
+		/*pour s'amuser*/
 		s+="\n</div>";
 		s+="<script>";
 		s+="\nfunction openPopup(){";
@@ -243,7 +243,7 @@ public class ModeleTest{
 		s+="\n}";
 		s+="\nopenPopup();";
 		s+="\n</script>";
-		*/
+		
 		return s;		 
 	}
 
