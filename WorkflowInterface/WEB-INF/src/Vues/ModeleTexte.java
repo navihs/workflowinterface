@@ -1,6 +1,10 @@
 package Vues;
 import XPDLInterface.*;
+import shark.WorkflowWrapper;
 import java.util.*;
+
+import org.enhydra.shark.api.client.wfmodel.WfActivity;
+import org.enhydra.shark.api.client.wfmodel.WfProcess;
 
 public class ModeleTexte{
 	
@@ -18,9 +22,13 @@ public class ModeleTexte{
 
 	public static String activity(Activity a)
 	{
+		HashMap<Activity,String> mapEtats = ModeleTexte.getWorkflowState(a.getWorkflowParent());
+		
 		String s=" ";
 		s+="<table border=1 cellspacing=0 cellspacing=0>";
-		s+="<tr><td colspan=2 align=center>Activity</td></tr>";
+		s+="<tr><td colspan=2 align=center>Activity</font>";
+		s+="</td></tr>";
+		s+="<tr><td>Etat</td><td>"+mapEtats.get(a)+"</td></tr>";
 		s+="<tr>";
 		s+="<td>Id</td>";
 		s+="<td>"+a.getId()+"</td>";
@@ -345,5 +353,53 @@ public class ModeleTexte{
 			s+="<a href='Afficheur?action=doGetWorkflow&id="+wf.getId()+"'>"+wf.getName()+"</a><br>\n";	
 		}
 		return s;
+	}
+	
+	/**
+	 * Permet d'obtenir un map faisant correspondre une Activity à une String donnant son état Shark à partir d'un Workflow donné
+	 * @param w Workflow dont on veut connaitre l'état des activités;
+	 * @return Map ou une Activity correspond à un état sous formede String
+	 */
+	public static HashMap<Activity, String> getWorkflowState(Workflow w)
+	{
+		HashMap<Activity, String> activitiesMap = new HashMap<Activity, String>();
+		
+		try{
+			System.out.println("AllActivities");
+			//On lit le map de toutes les activités et workflow de shark
+			HashMap<WfProcess, WfActivity[]> allActivities = WorkflowWrapper.getAll(true);
+			System.out.println(allActivities.size());
+			Set<WfProcess> s = allActivities.keySet();
+			Iterator<WfProcess> it = s.iterator();
+			
+			//On parcourt chacun des WfProcess à la recherche de celui qui nous interesse
+			while(it.hasNext())
+			{
+				WfProcess wf = it.next();
+				//Si on a trouvé le bon WfProcess
+				if(WorkflowWrapper.getName(wf)==w.getName())
+				{
+					//On récupère le tableau de WfActivity correspondant et on le parcourt
+					WfActivity[] wfA = allActivities.get(wf);
+					for(int i=0;i<wfA.length;i++)
+					{
+						WfActivity wfActivity = wfA[i];
+						Activity activity = w.getActivityByName(WorkflowWrapper.getName(wfActivity));
+						String state = WorkflowWrapper.getState(wfActivity);
+						
+						//On ajoute à notre map l'objet Activity et la String state correspondante
+						activitiesMap.put(activity, state);
+					}
+					break;
+				}
+			}
+			
+		}catch(Exception err)
+		{
+			System.out.println(err.toString());
+			System.out.println("Erreur dans la création du Map");
+		}
+		
+		return activitiesMap;
 	}
 }
