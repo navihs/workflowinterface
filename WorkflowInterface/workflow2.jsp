@@ -1,7 +1,10 @@
 <html>
 <head>
 <%@ page import="XPDLInterface.*" %>
-<%@page import="Vues.ModeleTest;"%>
+<%@ page import="java.util.*" %>
+<%@ page import="Vues.ModeleTest" %>
+<%@ page import="Vues.Box" %>
+
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -26,24 +29,20 @@
   
 </head>
 <body>
-<% 
+<%
+int x1=0;
+int y1=0;
+int x2=0;
+int y2=0;
+String s=" ";
+
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
 Workflow w = wp.getWorkflowById(request.getParameter("id"));
-
-//	List<Transition> transitions = w.getTransitions();
-//	Iterator<Transition> it= tansitions.iterator();
-//	while (it.hasNext())
-//	{
-//		ModeleTest.displayTransition(t);
-//	}
-//
-//
-//List boxes=new ArrayList<Box>();
-//Box boite=new Box(a.getName(),x,y);
-//boxes.add(boite);
+List<Box> boxes=ModeleTest.createBox(w);
 %>
-<%=ModeleTest.workflow(w)%>
-<%=ModeleTest.transition()%>
+<%=ModeleTest.displayBox(boxes,w)%>
+
+<%//=ModeleTest.transitionTest(100, 113, 220, 290)%>
 
 </body>
 </html>
