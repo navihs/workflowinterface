@@ -77,8 +77,8 @@ public class ModeleTexte{
 		s+="<td>"+a.getTransitionRestrictionSplit()+"</td>";
 		s+="</tr>";
 		s+="<tr>";
-		s+="<td>Transitions ("+a.getTranstions().size()+")</td>";
-		s+="<td>"+((a.getTranstions()!=null)?listeTransitions(a.getTranstions()):":&nbsp")+"</td>";
+		s+="<td>Transitions ("+a.getTransitions().size()+")</td>";
+		s+="<td>"+((a.getTransitions()!=null)?listeTransitions(a.getTransitions()):":&nbsp")+"</td>";
 		s+="</table>";
 		return s;
 	}
@@ -372,12 +372,20 @@ public class ModeleTexte{
 	public static HashMap<Activity, String> getWorkflowState(Workflow w)
 	{
 		HashMap<Activity, String> activitiesMap = new HashMap<Activity, String>();
+		
 		/*Iterator<Activity> itA = w.getActivities().iterator();
+		int i=0;
 		while(itA.hasNext())
 		{
-			activitiesMap.put(itA.next(), "open.running");
-		}*/
-		
+			i++;
+			switch(i%3)
+			{
+				case 0 : activitiesMap.put(itA.next(), "open.running");break;
+				case 1 : activitiesMap.put(itA.next(), "open.not_running");break;
+				case 2 : activitiesMap.put(itA.next(), "open.terminated");break;
+			}
+		}
+		*/
 		try{
 			System.out.println("AllActivities");
 			
@@ -394,7 +402,7 @@ public class ModeleTexte{
 			{
 				WfProcess wf = it.next();
 				//Si on a trouvé le bon WfProcess
-				if(WorkflowWrapper.getName(wf)==w.getName())
+				if(WorkflowWrapper.getName(wf).equals(w.getName()))
 				{
 					//On récupère le tableau de WfActivity correspondant et on le parcourt
 					WfActivity[] wfA = allActivities.get(wf);
