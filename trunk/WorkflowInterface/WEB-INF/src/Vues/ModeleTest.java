@@ -54,14 +54,30 @@ public class ModeleTest{
 		html+="   <td align=center><b>Extended<br>Attributes ("+a.getExtendedAttributes().size()+")</td>";
 		html+="   <td>"+ModeleTest.listeExtendedAttributes(a.getExtendedAttributes(),"&workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId())+"</td>";
 		html+="</tr>";
-		html+="<tr>";
-		html+="   <td align=right><b>Implementation</b></td>";
-		html+="   <td>"+a.getImplementation()+"</td>";
-		html+="</tr>";
+		if(a.getImplementation())
+		{
+			html+="<tr>";
+			html+="   <td align=right><b>Implementation</b></td>";
+			html+="	  <td><a href='Afficheur2?action=doGetWorkflow&id="+a.getSubflow().getId()+"'>"+a.getSubflow().getName()+"</td>";
+			html+="</tr>";
+		}
 		html+="</table>";
 		s+="\n<script>";
 		
-		s+="\nactivityWindowTerminated('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
+		String status="Default";
+		String activityStatus = WorkflowPackage.getWorkflowState(a.getWorkflowParent()).get(a);
+		if(activityStatus!=null)
+		{
+			if(activityStatus.equals("open.running"))
+				status="Running";
+			if(activityStatus.equals("open.not_running.not_started")||activityStatus.equals("open.not_running.suspended"))
+				status="Waiting";
+			if(activityStatus.equals("closed.terminated")||activityStatus.equals("closed.completed"))
+				status="Terminated";
+		}
+
+		
+		s+="\nactivityWindow"+status+"('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
 		s+="\n</script>";
 		
 		return s;
@@ -327,9 +343,20 @@ public class ModeleTest{
 		s+="\n   win.show();";
 		s+="\n  }";
 		
+		//fenetre d'activité non démarrable
+		s+="\nfunction activityWindowDefault(name, x, y, html) {";
+		s+="\n    var win = new Window(name, {className: \"greylighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
+		s+="\n   win.setLocation(x, y);";
+		s+="\n   win.setDestroyOnClose();";
+		//s+="\n   winsetContent(html, true, true);";
+		s+="\n   win.setHTMLContent(html);";
+		s+="\n   win.show();";
+		s+="\n  }";
+		
 		//fenetre d'activité en attente
 		s+="\nfunction activityWindowWaiting(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"greylighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
 		s+="\n   win.setLocation(x, y);";
 		s+="\n   win.setDestroyOnClose();";
@@ -340,7 +367,7 @@ public class ModeleTest{
 		
 		//fenetre d'activité en cours
 		s+="\nfunction activityWindowRunning(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n    var win = new Window(name, {className: \"orangelighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
 		s+="\n   win.setLocation(x, y);";
 		s+="\n   win.setDestroyOnClose();";
@@ -348,8 +375,8 @@ public class ModeleTest{
 		s+="\n   win.setHTMLContent(html);";
 		s+="\n   win.show();";
 		s+="\n  }";
-		
 		s+="\n</script>";
+
 		
 		//affichage tableau des participants
 		List<Participant> performers;
