@@ -357,18 +357,35 @@ public class ModeleTexte{
 	
 	/**
 	 * Permet d'obtenir un map faisant correspondre une Activity à une String donnant son état Shark à partir d'un Workflow donné
-	 * @param w Workflow dont on veut connaitre l'état des activités;
+	 * liste des états possibles :	 
+	 * <ul>
+	 *   <li>open.running</li>
+	 *   <li>open.not_running.not_started</li>
+	 *   <li>open.not_running.suspended</li>
+	 *   <li>closed.completed</li>
+	 *   <li>closed.terminated</li>
+	 *   <li>closed.aborted</li>
+   	 * </ul>
+   	 * @param w Workflow dont on veut connaitre l'état des activités;
 	 * @return Map ou une Activity correspond à un état sous formede String
 	 */
 	public static HashMap<Activity, String> getWorkflowState(Workflow w)
 	{
 		HashMap<Activity, String> activitiesMap = new HashMap<Activity, String>();
+		/*Iterator<Activity> itA = w.getActivities().iterator();
+		while(itA.hasNext())
+		{
+			activitiesMap.put(itA.next(), "open.running");
+		}*/
 		
 		try{
 			System.out.println("AllActivities");
+			
 			//On lit le map de toutes les activités et workflow de shark
 			HashMap<WfProcess, WfActivity[]> allActivities = WorkflowWrapper.getAll(true);
+			
 			System.out.println(allActivities.size());
+			
 			Set<WfProcess> s = allActivities.keySet();
 			Iterator<WfProcess> it = s.iterator();
 			
@@ -399,6 +416,7 @@ public class ModeleTexte{
 			System.out.println(err.toString());
 			System.out.println("Erreur dans la création du Map");
 		}
+		
 		
 		return activitiesMap;
 	}
