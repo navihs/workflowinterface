@@ -135,7 +135,7 @@ public class Parser {
 		List<DataField> datafieldsReturn = new ArrayList<DataField>();
 		
 		//Liste des noeuds DataField à parser
-		List<Element> noeudsDataField = datafields.getChildren("Datafield",ns);//datafields.getChild("DataField");
+		List<Element> noeudsDataField = datafields.getChildren("DataField",ns);
 		Iterator<Element> itDataField = noeudsDataField.iterator();
 			
 		//Parcourt et parsing des noeuds DataField
@@ -143,7 +143,9 @@ public class Parser {
 		{
 			Element dataField = itDataField.next();
 			DataField d = new DataField(dataField.getAttribute("Id").getValue(), dataField.getAttribute("Name").getValue(), dataField.getAttribute("IsArray").getValue());
-			datafieldsReturn.add(d);			
+			if(dataField.getChild("Description")!=null)
+				d.setInitialValue(dataField.getChild("Description").getText());
+			datafieldsReturn.add(d);		
 		}
 		
 		return datafieldsReturn;	
