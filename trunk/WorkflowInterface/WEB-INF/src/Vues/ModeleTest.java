@@ -55,7 +55,8 @@ public class ModeleTest{
 		html+="</tr>";
 		html+="</table>";
 		s+="\n<script>";
-		s+="\nactivityWindow('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
+		
+		s+="\nactivityWindowTerminated('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
 		s+="\n</script>";
 		
 		return s;
@@ -275,7 +276,7 @@ public class ModeleTest{
 		s+="<script>";
 				
 		//fenetre d'activité completed
-		s+="\nfunction activityWindow(name, x, y, html) {";
+		s+="\nfunction activityWindowTerminated(name, x, y, html) {";
 		s+="\n    var win = new Window(name, {className: \"greenlighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
 		s+="\n   win.setLocation(x, y);";
@@ -297,7 +298,7 @@ public class ModeleTest{
 		s+="\n  }";
 		
 		//fenetre d'activité en cours
-		s+="\nfunction activityWindowCurrent(name, x, y, html) {";
+		s+="\nfunction activityWindowRunning(name, x, y, html) {";
 		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
 		s+="\n   win.setLocation(x, y);";
