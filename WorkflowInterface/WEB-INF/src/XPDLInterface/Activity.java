@@ -2,7 +2,7 @@ package XPDLInterface;
 import java.util.*;
 
 /**
- * <!ELEMENT Activity>
+ * <!ELEMENT Activity
  */
 public class Activity{
 
@@ -13,14 +13,14 @@ public class Activity{
 	public Workflow getWorkflowParent(){return this.workflowParent;}
 		
 	/**
-	 * <!ELEMENT Performer (#PCDATA)>
+	 * <!ELEMENT Performer (#PCDATA)
 	 */
 	private Participant performer;
 	public void setPerformer(Participant activityPerformer){this.performer=activityPerformer;}
 	public Participant getPerformer(){return this.performer;}
 	
 	/**
-	 * <!ELEMENT SubFlow (ActualParameters?)>
+	 * <!ELEMENT SubFlow (ActualParameters?)
 	 */
 	private Workflow subflow;
 	public void setSubflow(Workflow activitySubflow)
@@ -32,7 +32,7 @@ public class Activity{
 	public Workflow getSubflow(){return this.subflow;}
 	
 	/**
-	 * <!ELEMENT TransitionRefs (TransitionRef*)>
+	 * <!ELEMENT TransitionRefs (TransitionRef*)
 	 */
 	private List<Transition> transitions=new ArrayList<Transition>();
 	public void setTranstions(List<Transition> activityTranstions){this.transitions=activityTranstions;}
@@ -40,35 +40,35 @@ public class Activity{
 	public List<Transition> getTranstions(){return this.transitions;}
 	
 	/**
-	 * <!ELEMENT ExtendedAttributes (ExtendedAttribute*)>
+	 * <!ELEMENT ExtendedAttributes (ExtendedAttribute*)
 	 */
 	private List<ExtendedAttribute> extendedAttributes=new ArrayList<ExtendedAttribute>();
 	public void setExtendedAttributes(List<ExtendedAttribute> activityExtendedAttributes){this.extendedAttributes=activityExtendedAttributes;}
 	public List<ExtendedAttribute> getExtendedAttributes(){return this.extendedAttributes;}
 	
 	/**
-	 * <!ELEMENT Description (#PCDATA)>
+	 * <!ELEMENT Description (#PCDATA)
 	 */
 	private String description;
 	public void setDescription(String activityDescription){this.description=activityDescription;}
 	public String getDescription(){return this.description;}
 	
 	/**
-	 * <!ELEMENT Limit (#PCDATA)>
+	 * <!ELEMENT Limit (#PCDATA)
 	 */
 	private String limit;
 	public void setLimit(String activityLimit){this.limit=activityLimit;}
 	public String getLimit(){return this.limit;}
 	
 	/**
-	 * <!ELEMENT Route EMPTY>
+	 * <!ELEMENT Route EMPTY
 	 */
 	private String route;
 	public void setRoute(String activityRoute){this.route=activityRoute;}
 	public String getRoute(){return this.route;}
 	
 	/**
-	 * <!ELEMENT Implementation (No | Tool+ | SubFlow | Loop)>
+	 * <!ELEMENT Implementation (No | Tool+ | SubFlow | Loop)
 	 * Permet de savoir si il y a une implémentation ou pas
 	 */
 	private boolean implementation;
@@ -147,6 +147,7 @@ public class Activity{
 	}
 	
 	/**
+	 * Permet d'obtenir un extended attribute par son nom
 	 * @param name attribut name de l'ExtendedAttribute recherché
 	 * @return Retourne l'ExtendedAttribute recherché dans l'activité
 	 */
@@ -161,4 +162,23 @@ public class Activity{
 		}
 		return null;
 	}
+	
+	/**
+	 * Permet d'obtenir la liste des transitions sortantes<BR>
+	 * Les transitions sortantes sont les transitions dont l'activity this correspond au champs from
+	 * @return Liste de transitions correspondantes
+	 */
+	public List<Transition> getTransitionsSortantes()
+	{
+		List<Transition> transitionSortantes = new ArrayList<Transition>();
+		Iterator<Transition> it = this.transitions.iterator();
+		while(it.hasNext())
+		{
+			Transition transition = it.next();
+			if(transition.getFrom()==this)
+				transitionSortantes.add(transition);
+		}
+		return transitionSortantes;
+	}
+	
 }
