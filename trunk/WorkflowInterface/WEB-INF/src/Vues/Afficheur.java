@@ -6,15 +6,12 @@ import javax.servlet.http.*;
 import XPDLInterface.*;
 
 /***
- * Servlet d'affichage d'un xpdl
+ * Servlet d'affichage d'un xpdl en mode texte.<br>
+ * Les actions possibles sont données par la méthode getActionId qui associe une action à un int.<br>
+ * L'action demandée est traitée au doGet(), selon l'action, 
+ * on redirige le servlet vers une page qui se chargera de l'affichage spécifique.<br>
+ * Une fois parsé, le WorkflowPackage est contenu dans la session. L'attribut s'apelle "workflowPackage".
  * @author Laurent
- * Les actions possibles :
- * 		action="doParse"&file="fichier"
- * 		action="doGetPackage"
- * 		action="doGetWorkflow"&id="idWorkflow"
- * 		action="doGetActivity"&id="idActivity"
- * 		action="doGetParticipant"&id="idParticipant"
- * 		...
  */
 public class Afficheur extends HttpServlet 
 {
@@ -36,12 +33,6 @@ public class Afficheur extends HttpServlet
 				Parser parser = new Parser();
 				WorkflowPackage wp = parser.parsePackage();
 				
-				/*WorkflowPackage wp = new WorkflowPackage("a","PackageTest");
-				List<Participant> l = new ArrayList<Participant>();
-				l.add(new Participant("id1","name1","Type1","Description1"));
-				l.add(new Participant("id2","name2","Type2","Description2"));
-				wp.setParticipants(l);
-				*/
 				session.setAttribute("workflowPackage", wp);
 				this.forward("/package.jsp", request, response);
 				break;
