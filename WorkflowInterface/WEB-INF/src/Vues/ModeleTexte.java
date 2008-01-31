@@ -1,10 +1,6 @@
 package Vues;
 import XPDLInterface.*;
-import shark.WorkflowWrapper;
 import java.util.*;
-
-import org.enhydra.shark.api.client.wfmodel.WfActivity;
-import org.enhydra.shark.api.client.wfmodel.WfProcess;
 
 /**
  * La classe ModeleTexte permet de générer l'affichage HTML des objets du modèle.<BR>
@@ -205,6 +201,10 @@ public class ModeleTexte{
 		s+="<td>"+df.getName()+"</td>";
 		s+="</tr>";
 		s+="<tr>";
+		s+="<td>Description</td>";
+		s+="<td>"+df.getDescription()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
 		s+="<td>DataType</td>";
 		s+="<td>"+df.getDataType()+"</td>";
 		s+="</tr>";
@@ -304,6 +304,20 @@ public class ModeleTexte{
 		{
 			DataField df = it.next();
 			s+="<a href='Afficheur?action=doGetDataField"+args+"&id="+df.getId()+"'>"+df.getName()+"</a><br>\n";	
+		}
+		return s;
+	}
+	
+	public static String listeFormalParameters(List<FormalParameter> formalParameters)
+	{
+		String s=" ";
+
+		Iterator<FormalParameter> it = formalParameters.iterator();
+		if(formalParameters.size()==0) return "&nbsp";
+		while(it.hasNext())
+		{
+			FormalParameter fp = it.next();
+			s+="<a href='Afficheur?action=doGetFormalParameter&id="+fp.getId()+"'>"+fp.getId()+"</a><br>\n";	
 		}
 		return s;
 	}
