@@ -9,441 +9,412 @@ import org.jdom.input.SAXBuilder;
 
 import shark.InitComponent;
 
+/**
+ * Classe qui parse avec JDOM le fichier XPDL et qui l'intègre au modèle objet
+ * @author Laurent
+ *
+ */
 public class Parser {
 	
+	/**
+	 * racine du domcument XPDL
+	 */
 	private org.jdom.Element racine;
+	
+	/**
+	 * Document XPDL
+	 */
 	private org.jdom.Document document;
+	
+	/**
+	 * Objet conteneur des workflow (représenté par l'élement Package dans le XPDL)
+	 */
 	private WorkflowPackage workflowPackage;
+	
 	private Namespace ns = Namespace.getNamespace("http://www.wfmc.org/2002/XPDL1.0");
+	
 	public Parser()
 	{
 		initParser();
 	}
 	
+	/**
+	 * Créé le document à partir du fichier xpdl<br>
+	 * Initialise la racine
+	 */
 	private void initParser()
 	{
 		 SAXBuilder sxb = new SAXBuilder();
 	     try
 	     {
-	    	 document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/DAI3.1.xpdl"));
+	    	 document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/soumission_article.xpdl"));
 	     }
 	     catch(Exception e){}
 	     racine = document.getRootElement();
 	}
 	
+	/**
+	 * Lance le parsing du fichier XPDL permettant de remplir le modèle objet
+	 * @return le WorkflowPackage contenant tout le modèle objet
+	 */
 	public WorkflowPackage parsePackage()
 	{
-		/* on lit le Header,
-		 * on créé un objet WorkflowPackage
-		 * on récupère l'élément <Package Id="dossier_accueil_individualise" Name="Dossier d'accueil individualisé" 
-		 * que l'on met dans WorkflowPackage.id et WorkflowPackage.name
-		 * on récupère l'élément <Created>2006-07-24 13:57:13</Created> que l'on met dans WorkflowPackage.date
-		 * on lance parseParticipants("Participants")
-		 * on récupère une liste de participant que l'on ajoute à WorkflowPackage.participants
-		 * on lance parseDatafields("DataFields")
-		 * on récupère une liste de dataFields que l'on ajoute à WorkflowPackage.dataFields
-		 * on lance parseWorkflowProcesses("WorkflowProcesses")
-		 * on récupère une liste de Worflow que l'on ajoute à WorkflowPackage.workflows
-		 * on lance parseExtendedAttributes("ExtendedAttributes")
-		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à WorkflowPackage.extendedAttributes
-		 */
-		
+		//Création de l'objet WorkflowPackage
 		this.workflowPackage = new WorkflowPackage(racine.getAttribute("Id").getValue(),racine.getAttribute("Name").getValue());
 		
+		//Lecture du header
 		Element packageHeader = racine.getChild("PackageHeader",ns);
 		
+		//Lecture de la date de l'élément CREATED
 		DateFormat dateFormat = new SimpleDateFormat("yy-MM-dd hh:mm:ss");
 		try{
 				Element created = packageHeader.getChild("Created",ns);
 				workflowPackage.setCreated(dateFormat.parse(created.getValue()));
 		}catch(Exception err){}
 		
+		//Parsing de l'élément Participants
 		if(racine.getChild("Participants",ns)!=null)
 			workflowPackage.setParticipants(parseParticipants(racine.getChild("Participants",ns)));
-		
+
+		//Parsing de l'élément DataFields
 		if(racine.getChild("DataFields",ns)!=null)
 			workflowPackage.setDataFields(parseDataFields(racine.getChild("DataFields",ns)));
 		
+		//Parsing de l'élément WorkflowProcesses
 		if(racine.getChild("WorkflowProcesses",ns)!=null)
 			workflowPackage.setWorkflows(parseWorkflowProcesses(racine.getChild("WorkflowProcesses",ns)));
 		
+		//Parsing de l'élément ExtendedAttributes
 		if(racine.getChild("ExtendedAttributes",ns)!=null)
 			workflowPackage.setExtendedAttributes(parseExtendedAttributes(racine.getChild("ExtendedAttributes",ns)));
 	
 		return workflowPackage;
 	}
 	
+	/**
+	 * Lance le parsing d'un noeud "Participants"<br>
+	 * Celui-ci peut-être contenu dans un noeud "Package" ou "WorkflowProcess"
+	 * @param participants Element XML "Participants" à parser
+	 * @return Liste des "Participant" parsés
+	 */
 	private List<Participant> parseParticipants(Element participants)
 	{
-		/*Tant qui existe des participants (noeud Participants, balise Participant)
-		 * on créer un objet Participant
-		 * on récupère l'élément <Participant Id="responsable_legal" dans Participant.id
-		 * Name="Responsable légal"> dans Participant.name
-		 * <ParticipantType Type="ROLE"/> </Participant> que l'on met dans Participant.type
-		 * fin tant_ue
-		 * On renvoit une liste de participant
-		 */
-		
+		//Liste des participants à retourner
 		List<Participant> participantsReturn= new ArrayList();
-		List<Participant> participant = participants.getChildren("Participant",ns);
-		Iterator it = participant.iterator();
-		Element a;
-		//.getChild("Participant");
-		String type=null;
-		String desc=null;
 		
-		/*
-		//Pour parcourir tous les noeuds
-		NodeList listeParticipants = participants.getChildNodes();
-		int tailleListParticipants = listeParticipants.getLength();
-		int i =0;*/
+		//Liste des noeuds XML "Participant" sous le noeud "Participants"
+		List<Element> noeudsParticipant = participants.getChildren("Participant",ns);
+		Iterator<Element> itParticipant = noeudsParticipant.iterator();
 		
-		while (it.hasNext())
+		//Parcourt de tous les noeuds "Participant"
+		while (itParticipant.hasNext())
 		{
-			a=(Element)it.next();
-			type = a.getChild("ParticipantType",ns).getAttribute("Type").getValue();
-			if(a.getChild("Description",ns)!=null)
-				desc = a.getChild("Description",ns).getText();
-			/*if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue())!=null)
-			//if((type = participant.getChild("ParticipantType").getAttribute("Type").getvalue()!=null)
-				//type = participant.getAttribute("Type").getvalue());
-			if((desc = participant.getChild("Description").getTextContent())!=null)
-			//if(participant.getChild("Description")!=null)
-				//desc = participant.getTextContent();
-			 */
-			Participant p = new Participant(a.getAttribute("Id").getValue(), a.getAttribute("Name").getValue(), type, desc);
+			Element participant = itParticipant.next();
+			String type = participant.getChild("ParticipantType",ns).getAttribute("Type").getValue();
+			String desc="";
+			if(participant.getChild("Description",ns)!=null)
+				desc = participant.getChild("Description",ns).getText();
+			
+			Participant p = new Participant(participant.getAttribute("Id").getValue(), participant.getAttribute("Name").getValue(), type, desc);
+			
 			participantsReturn.add(p);			
 		}
+		
 		return participantsReturn;
 	}
-	
-	private List parseDataFields(Element datafields)
+
+	/**
+	 * Lance le parsing d'un noeud "DataFields"<br>
+	 * Celui-ci peut-être contenu dans un noeud "Package" ou "WorkflowProcess"
+	 * @param datafields Element XML "DataFields" à parser
+	 * @return Liste des "DataField" parsés
+	 */
+	private List<DataField> parseDataFields(Element datafields)
 	{
-		/*Tant qui existe des datafields (balise Datafields, balise Datafield)
-		 * on créé un objet DataField
-		 * on récupère l'élément <DataField Id="TRS_validation_proposition_medecin_institutionnel" dans DataField.id
-		 * IsArray="FALSE" dans DataField.isArray
-		 * Name="TRS Validation proposition medecin institutionnel"> dans DataField.name
-		 * InitialValue dans DataField.initialValue
-		 * 	<DataType> <BasicType Type="BOOLEAN"/> </DataType> </DataField> dans DataField.dataType
-		 * fin tant_que
-		 * On renvoit une liste de datafield
-		 */
+		//Liste des DataField à retourner
+		List<DataField> datafieldsReturn = new ArrayList<DataField>();
 		
-		List<DataField> datafieldsReturn=new ArrayList();
-		List<DataField> datafield = datafields.getChildren("Datafield",ns);//datafields.getChild("DataField");
-		Iterator it = datafield.iterator();
-		Element a;
-		
-		/*//Pour parcourir tous les noeuds
-		NodeList listeDatafields = datafields.getChildNodes();
-		int tailleListDatafields = listeDatafields.getLength();
-		int i =0;
-		//Element dataType = datafields.getChild("DataType");
-		*/
+		//Liste des noeuds DataField à parser
+		List<Element> noeudsDataField = datafields.getChildren("Datafield",ns);//datafields.getChild("DataField");
+		Iterator<Element> itDataField = noeudsDataField.iterator();
 			
-		while (it.hasNext()) 
+		//Parcourt et parsing des noeuds DataField
+		while (itDataField.hasNext()) 
 		{
-			a = (Element)it.next();
-			DataField d = new DataField(a.getAttribute("Id").getValue(), a.getAttribute("Name").getValue(), a.getAttribute("IsArray").getValue());
+			Element dataField = itDataField.next();
+			DataField d = new DataField(dataField.getAttribute("Id").getValue(), dataField.getAttribute("Name").getValue(), dataField.getAttribute("IsArray").getValue());
 			datafieldsReturn.add(d);			
 		}
+		
 		return datafieldsReturn;	
 	}
 	
-	private List parseWorkflowProcesses(Element workflowProcesses)
+	/**
+	 * Lance le parsing d'un noeud "WorkflowProcesses"<br>
+	 * Celui-ci est contenu dans un noeud "Package" (racine)
+	 * @param workflowProcesses Noeud XML "WorkflowProcesses" à parser
+	 * @return Liste de "Workflow" parsés
+	 */
+	private List<Workflow> parseWorkflowProcesses(Element workflowProcesses)
 	{
-		/*Tant qu'il existe des workflows (noeud WorkflowProcesses, balise WorkflowProcess)
-		 * 	Tant que WorkflowPackage.workflows[i] =! null) // ou .isnext();
-		 * 		id = <WorkflowProcess Id="initialisation"
-		 * 		si (!WorkflowPackage.workflowExist(id))
-		 * 				parseWorkflow(Element workflowProcess);
-		 * 		finsi
-		 * 		i++;
-		 * 	fin tant_que
-		 * On renvoit une liste de Workflow
-		 * 		
-		 */
-		List<Workflow> workflowProcessesReturn= new ArrayList();
-		List<Workflow> workflowProcess = workflowProcesses.getChildren("WorkflowProcess",ns);
-		Iterator it = workflowProcess.iterator();
-		Element a;
-		Workflow w, newW;
+		//Liste des Workflowà retourner
+		List<Workflow> workflowProcessesReturn = new ArrayList<Workflow>();
+		
+		//Liste des noeuds WorkflowProcess à parser
+		List<Element> noeudsWorkflowProcess = workflowProcesses.getChildren("WorkflowProcess",ns);
+		Iterator<Element> itWorkflowProcess = noeudsWorkflowProcess.iterator();
 			
-		while(it.hasNext())
+		//Parcourt de tous les noeuds "WorkflowProcess"
+		while(itWorkflowProcess.hasNext())
 		{
-			a=(Element)it.next();
-			w= workflowPackage.workflowExist(a.getAttribute("Id").getValue());
-			//si le workflow n'existe pas
-			if (w==null)
+			Element workflowProcess = itWorkflowProcess.next();
+			
+			Workflow workflow = workflowPackage.workflowExist(workflowProcess.getAttribute("Id").getValue());
+			
+			//Si le workflow n'existe pas, on le parse
+			if (workflow==null)
 			{
-				newW = parseWorkflow(a);
+				workflow = parseWorkflow(workflowProcess);
+				workflowProcessesReturn.add(workflow);
 			}
-			//sinon on renvoi le Worflow;
-			else
-			{
-				newW=w;
-			}
-			workflowProcessesReturn.add(newW);
+			//Si le workflow existe déjà , on ne l'ajoute pas à la liste des workflow du package;
 		}
 		
 		return workflowProcessesReturn;
 	}
 	
+	/**
+	 * Lance le parsing d'un noeud "WorkflowProcess"<br>
+	 * Celui-ci est contenu dans un noeud "WorkflowProcesses"
+	 * @param workflowProcess Noeud XML "WorkflowProcess" à parser
+	 * @return Retourne un Workflow parsé et construit
+	 */
 	private Workflow parseWorkflow(Element workflowProcess)
 	{
-		 /* on créé un objet Workflow
-		 * <WorkflowProcess Id="initialisation"  dans Workflow.id
-		 * Name="Initialisation DAI"> dans Workflow.name
-		 * 	<ProcessHeader> <Created>2006-07-24 15:10:03</Created> </ProcessHeader> dans Workflow.created
-		 * on lance parseActivities("Activities")
-		 * on récupère une liste d'Activity que l'on ajoute à Workflow.activities
-		 * on lance parseDataFields("DataFields")
-		 * on récupère une liste de DataFields que l'on ajoute à Workflow.dataFields
-		 * on lance parseFormalParameters("FormalParameters")
-		 * on récupère une liste de FormalParameters que l'on ajoute à Workflow.dataFields
-		 * on lance parseTransitions("Transitions")
-		 * on récupère une liste de Transitions que l'on ajoute à Workflow.transitions
-		 * on lance parseExtendedAttributes("ExtendedAttributes")
-		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à WorkflowPackage.extendedAttributes
-		 * On renvoit un Workflow
-		 * 
-		 */
-		String created;
-		Element a = workflowProcess;
+		//Attribute created du workflow
+		String created= workflowProcess.getChild("ProcessHeader",ns).getChild("Created",ns).getText();
 		
-		created= a.getChild("ProcessHeader",ns).getChild("Created",ns).getText();
-		Workflow w = new Workflow(a.getAttribute("Id").getValue(),a.getAttribute("Name").getValue(), created);
+		//Création du nouvel objet Workflow
+		Workflow workflow = new Workflow(workflowProcess.getAttribute("Id").getValue(),workflowProcess.getAttribute("Name").getValue(), created);
 		
-		if(a.getChild("Activities",ns)!=null)
-			w.setActivities(parseActivities(a.getChild("Activities",ns),w));
-		if(a.getChild("Participants",ns)!=null)
-			this.workflowPackage.setParticipants(parseParticipants(a.getChild("Participants",ns)));
-		if(a.getChild("DataFields",ns)!=null)
-			w.setDataFields(parseDataFields(a.getChild("DataFields",ns)));
-		if(a.getChild("FormalParameters",ns)!=null)
-			w.setFormalParameters(parseFormalParameters(a.getChild("FormalParameters",ns)));
-		if(a.getChild("Transitions",ns)!=null)
-			w.setTransitions(parseTransitions(a.getChild("Transitions",ns),w));
-		if(a.getChild("ExtendedAttributes",ns)!=null)
-			w.setExtendedAttributes(parseExtendedAttributes(a.getChild("ExtendedAttributes",ns)));
+		//Parsing des Activities si le noeud existe
+		if(workflowProcess.getChild("Activities",ns)!=null)
+			workflow.setActivities(parseActivities(workflowProcess.getChild("Activities",ns),workflow));
 		
-		return w;
+		//Parsing des Participants si le noeud existe
+		if(workflowProcess.getChild("Participants",ns)!=null)
+			this.workflowPackage.setParticipants(parseParticipants(workflowProcess.getChild("Participants",ns)));
+		
+		//Parsing des DataFields si le noeud existe
+		if(workflowProcess.getChild("DataFields",ns)!=null)
+			workflow.setDataFields(parseDataFields(workflowProcess.getChild("DataFields",ns)));
+		
+		//Parsing des FormalParameters si le noeud existe
+		if(workflowProcess.getChild("FormalParameters",ns)!=null)
+			workflow.setFormalParameters(parseFormalParameters(workflowProcess.getChild("FormalParameters",ns)));
+		
+		//Parsing des Transitions si le noeud existe
+		if(workflowProcess.getChild("Transitions",ns)!=null)
+			workflow.setTransitions(parseTransitions(workflowProcess.getChild("Transitions",ns),workflow));
+		
+		//Parsing des ExtendedAttributes si le noeud existe
+		if(workflowProcess.getChild("ExtendedAttributes",ns)!=null)
+			workflow.setExtendedAttributes(parseExtendedAttributes(workflowProcess.getChild("ExtendedAttributes",ns)));
+		
+		return workflow;
 	}
 	
+	/**
+	 * Lance le parsing d'un noeud "Activities"<br>
+	 * Celui-ci est contenu dans un noeud "WorkflowProcess"
+	 * @param activities Noeud XML "Activities" à parser
+	 * @param workflowParent Workflow conteneur des activités à parser
+	 * @return Liste des "Activity" du workflow donné
+	 */
 	private List<Activity> parseActivities(Element activities,Workflow workflowParent)
 	{
-		/*Tant qui existe des activities (noeud Activities, balise Activity)
-		 * 	on lance parseActivity("Activity")
-		 * 	on récupère une Activity
-		 *  si l'activité implemente un subflow
-		 *  	si (WorkflowPackage.workflowExist =! null)
-		 *  		Activity.subflow=WorkflowPackage.workflowExist;
-		 * 		sinon
-		 * 			workflowProcess = recupérer l'element avec getWorkflowById(id)
-		 * 			parseWorkflow(Element workflowProcess);
-		 * 		finsi
-		 * 	si
-		 *  
-		 * fin tant_que
-		 * On renvoit une liste d'Activity
-		 */
-		List<Activity> activitiesReturn = new ArrayList();
-		List<Element> activity = activities.getChildren("Activity",ns);
-		Iterator<Element> it = activity.iterator();
-		Element a;
-		Workflow w, wRecup = null;
-		Activity act;
-			
-		while(it.hasNext())
+		//Liste des Activity à retourner
+		List<Activity> activitiesReturn = new ArrayList<Activity>();
+		
+		//Liste des noeuds Activity
+		List<Element> noeudsActivity = activities.getChildren("Activity",ns);
+		Iterator<Element> itActivity = noeudsActivity.iterator();
+		
+		//Parcourt des noeuds Activities
+		while(itActivity.hasNext())
 		{
-			a = it.next();
-			act = parseActivity(a,workflowParent);
-			//on test si l'activitée implemente un subflow
-			if (act.isSubflow())
+			Element noeudActivity = itActivity.next();
+			
+			//On parse le noeud activity passé en paramètre
+			Activity activity = parseActivity(noeudActivity,workflowParent);
+			
+			//On test si l'Activity implemente un subflow
+			if (activity.isSubflow())
 			{	
-				String workflowId = a.getChild("Implementation",ns).getChild("SubFlow",ns).getAttribute("Id").getValue();
+				String workflowId = noeudActivity.getChild("Implementation",ns).getChild("SubFlow",ns).getAttribute("Id").getValue();
 				
-				//on test si un Workflow avec le même ID que l'Activité existe 
-				w = workflowPackage.workflowExist(workflowId);
-				//si un workflow existe avec le meme id que l'activité
-				if(w!=null)
-				{
-					//le subflow de l'activité est le workflow avec le meme id
-					act.setSubflow(w);
-				}
-				//sinon le workflow lié à l'activité n'existe pas encore
-				else
+				//On test si un Workflow avec le même ID que celui de l'Activity existe 
+				Workflow workflow = workflowPackage.workflowExist(workflowId);
+				
+				//Si le workflow lié à l'activité n'existe pas encore, il faut le trouver et le parser
+				if(workflow==null)
 				{
 					//on recupère le workflow à parser
-					
-					//----------------------------------------------------------------------------------//
-					//il faut identifier l'élément workflow lié au SubFlow
-					//----------------------------------------------------------------------------------//
-					
-					Element wkf;
-					List listWkf = racine.getChild("WorkflowProcesses",ns).getChildren("WorkflowProcess",ns);
-					Iterator it2 = listWkf.iterator();
+					List<Element> listeWPs = racine.getChild("WorkflowProcesses",ns).getChildren("WorkflowProcess",ns);
+					Iterator<Element> itWP = listeWPs.iterator();
 					
 					//parcours des Workflows
-					while(it2.hasNext())
+					while(itWP.hasNext())
 					{
-						wkf = (Element)it2.next();
+						Element workflowProcess = itWP.next();
+						
 						//Si l'attribut id de l'element Workflow est égal à l'attribut du Worflow à parser
-						System.out.println(wkf.getAttribute("Id").getValue()+"     "+workflowId);
-						if(wkf.getAttribute("Id").getValue().equals(workflowId))
+						if(workflowProcess.getAttribute("Id").getValue().equals(workflowId))
 						{
-							System.out.println("OK");
-							wRecup = parseWorkflow(wkf);
+							workflow = parseWorkflow(workflowProcess);
 							break;
 						}
-						
 					}				
-					//----------------------------------------------------------------------------------//
-					act.setSubflow(wRecup);
 				}
+				
+				//On lie le workflow à l'activité une fois celui-ci récupéré
+				activity.setSubflow(workflow);
 			}
-			activitiesReturn.add(act);
+			activitiesReturn.add(activity);
 		}
 		return activitiesReturn;
 	}
 	
 	
-	
-	private Activity parseActivity(Element activity,Workflow workflowParent)
+	/**
+	 * Lance le parsing d'un noeud "Activity"<br>
+	 * Celui-ci est contenu dans un noeud "Activities"
+	 * @param activity Noeud XML "Activity" à parser
+	 * @param workflowParent Workflow conteneur de l'activity à parser
+	 * @return Retourne l'objet Activity parsé
+	 */
+	private Activity parseActivity(Element noeudActivity,Workflow workflowParent)
 	{
-		/* on créé un objet Activity
-		 * <Activity Id="temps_scolaire" dans Activity.id
-		 * Name="Temps scolaire">  dans Activity.name
-		 * si Implementation existe
-		 * 		<Implementation> <SubFlow Execution="SYNCHR" dans Activity.subflow
-		 * 		Id="temps_scolaire"/> </Implementation> dans Activity.subflow.id
-		 * sinon
-		 * Activity.subflow =null;
-		 * <Performer>medecin_institutionnel</Performer> Activity.performer
-		 * <TransitionRestriction> <Join Type="XOR"/>  dans Activity.join
-		 * <Split Type="XOR"> </Split> dans Activity.split
-		 * on lance parseExtendedAttributes("ExtendedAttributes")
-		 * on récupère une liste d'ExtendedAttribute que l'on ajoute à Activity.extendedAttributes
-		 * On renvoit une Activity
-		 */
-		
-		boolean impl=false;
-		Participant p;
-		
-		if (activity.getChild("Implementation",ns).getChild("SubFlow",ns)!=null)
-			impl = true;
-		
-		Activity act;
+		//Activity à retourner
+		Activity activity;
 
-		if(activity.getAttribute("Name")==null)
-			act = new Activity(workflowParent,activity.getAttribute("Id").getValue(),impl);
+		//Permet de savoir si l'activité implémente un subflow
+		boolean implementation = (noeudActivity.getChild("Implementation",ns).getChild("SubFlow",ns)!=null);
+		
+		//Création de l'objet Activity
+		if(noeudActivity.getAttribute("Name")==null)
+			activity = new Activity(workflowParent,noeudActivity.getAttribute("Id").getValue(),implementation);
 		else
-			act = new Activity(workflowParent,activity.getAttribute("Id").getValue(),activity.getAttribute("Name").getValue(),impl);
+			activity = new Activity(workflowParent,noeudActivity.getAttribute("Id").getValue(),noeudActivity.getAttribute("Name").getValue(),implementation);
 		
-		if(activity.getChild("Performer",ns)!=null)
+		//Si l'activity possède un Performer on le lui ajoute
+		if(noeudActivity.getChild("Performer",ns)!=null)
 		{
-			p=workflowPackage.getParticipantById(activity.getChild("Performer",ns).getText());
-			act.setPerformer(p); 
-		}
-		if(activity.getChild("TransitionRestrictions",ns)!=null)
-		{
-			if(activity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Split",ns)!=null)
-				act.setTransitionRestrictionSplit(activity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Split",ns).getAttributeValue("Type"));
-		
-			if(activity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Join",ns)!=null)
-				act.setTransitionRestrictionJoin(activity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Join",ns).getAttributeValue("Type"));
+			Participant p=workflowPackage.getParticipantById(noeudActivity.getChild("Performer",ns).getText());
+			activity.setPerformer(p); 
 		}
 		
-		if(activity.getChild("ExtendedAttributes",ns)!=null)
-			act.setExtendedAttributes(parseExtendedAttributes(activity.getChild("ExtendedAttributes",ns)));
+		//Si l'activity possède des TransitionRestrictions, on les lui ajoute
+		if(noeudActivity.getChild("TransitionRestrictions",ns)!=null)
+		{
+			if(noeudActivity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Split",ns)!=null)
+				activity.setTransitionRestrictionSplit(noeudActivity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Split",ns).getAttributeValue("Type"));
 		
-		return act;
+			if(noeudActivity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Join",ns)!=null)
+				activity.setTransitionRestrictionJoin(noeudActivity.getChild("TransitionRestrictions",ns).getChild("TransitionRestriction",ns).getChild("Join",ns).getAttributeValue("Type"));
+		}
+		
+		//Ajout des ExtendedAttributes s'ils existent
+		if(noeudActivity.getChild("ExtendedAttributes",ns)!=null)
+			activity.setExtendedAttributes(parseExtendedAttributes(noeudActivity.getChild("ExtendedAttributes",ns)));
+		
+		return activity;
 	}
 	
+	/**
+	 * Lance le parsing d'un noeud "FormalParameter"<br>
+	 * Celui-ci est contenu dans un noeud "WorkflowProcess"
+	 * @param formalParameters Noeud XML "FormalParameters" à parser
+	 * @return Liste des objets FormalParameter parsés
+	 */
 	private List<FormalParameter> parseFormalParameters(Element formalParameters)
 	{
-		/*Tant qui existe des formalParameters (balise FormalParameters, noeud FormalParameter)
-		 * on récupère l'élément <FormalParameter Id="idEnfant" Mode="IN">
-		 * on récupère <DataType><BasicType Type="STRING"/></DataType> le type noeud DataType
-		 * on récupère <Description> table DAI.	</Description> la description
-		 * </FormalParameter>
-		 * on créé un objet FormalParameter
-		 * fin tant_que
-		 * On renvoit une liste de FormalParameter
-		 */
+		//Liste de FormalParameter à retourner
+		List<FormalParameter> formalParametersReturn=new ArrayList<FormalParameter>();
 		
-		List<FormalParameter> formalParametersReturn=new ArrayList();
-		List formalParameter = formalParameters.getChildren("FormalParameter",ns); //.getChild("FormalParameter");
-		Iterator<Element> it = formalParameter.iterator();
-		Element a;
-		String dataType;
-		String desc;
-			
-		while (it.hasNext()) 
+		//Liste des noeuds FormalParameter
+		List<Element> noeudFormalParameters = formalParameters.getChildren("FormalParameter",ns); //.getChild("FormalParameter");
+		Iterator<Element> itFormalParameter = noeudFormalParameters.iterator();
+		
+		//Parcourt de la liste des FormalParameter
+		while (itFormalParameter.hasNext()) 
 		{
-			dataType=null;
-			desc=null;
-			a = (Element)it.next();
+			Element noeudFormalparameter = itFormalParameter.next();
 			
-			dataType = a.getChild("DataType",ns).getChild("BasicType",ns).getAttribute("Type").getValue();
-			desc = a.getChild("Description",ns).getText();
+			String dataType = noeudFormalparameter.getChild("DataType",ns).getChild("BasicType",ns).getAttribute("Type").getValue();
+			String description = noeudFormalparameter.getChild("Description",ns).getText();
 			
-			FormalParameter f = new FormalParameter(a.getAttribute("Id").getValue(), a.getAttribute("Mode").getValue(), dataType, desc);
-			formalParametersReturn.add(f);	
+			FormalParameter formalParameter = new FormalParameter(noeudFormalparameter.getAttribute("Id").getValue(), noeudFormalparameter.getAttribute("Mode").getValue(), dataType, description);
+			
+			formalParametersReturn.add(formalParameter);	
 		}
 		return formalParametersReturn;	
 	}
 	
-	private List<Transition> parseTransitions(Element transitions,Workflow workflow)//workflow en paramètre pour rechercher l'activité
+	/**
+	 * Lance le parsing d'un noeud "Transitions"<br>
+	 * Celui-ci est contenu dans un noeud "WorkflowProcess"
+	 * @param transitions Noeud XML "Transitions" à parser
+	 * @param workflow Workflow qui permettra de retrouver l'activité
+	 * @return Retourne une liste de Transitions parsées
+	 */
+	private List<Transition> parseTransitions(Element transitions,Workflow workflow)
 	{
-		/*
-		 * Parse dans parseWorkflowProcess
-		 */
-		List<Transition> transitionsReturn=new ArrayList();
-		List<Element> transition = transitions.getChildren("Transition",ns);
-		Iterator<Element> it = transition.iterator();
-		Element a;
-		
+		List<Transition> transitionsReturn=new ArrayList<Transition>();
+		List<Element> noeudsTransition = transitions.getChildren("Transition",ns);
+		Iterator<Element> itTransition = noeudsTransition.iterator();
+
 		String conditionType;
 		String condition;
 			
-		while (it.hasNext()) 
+		while (itTransition.hasNext()) 
 		{
-			a = it.next();
+			Element noeudTransition = itTransition.next();
 			conditionType=null;
 			condition=null;
-			if(a.getChild("Condition",ns)!=null)
+			if(noeudTransition.getChild("Condition",ns)!=null)
 			{
-				conditionType= a.getChild("Condition",ns).getAttribute("Type").getValue();
-				condition = a.getChild("Condition",ns).getText();
+				conditionType= noeudTransition.getChild("Condition",ns).getAttribute("Type").getValue();
+				condition = noeudTransition.getChild("Condition",ns).getText();
 			}
-			Activity from =workflow.getActivityById(a.getAttribute("From").getValue());
-			Activity to = workflow.getActivityById(a.getAttribute("To").getValue());
-			Transition t = new Transition(a.getAttribute("Id").getValue(),conditionType,condition,from,to);
-			transitionsReturn.add(t);
+			//On ajoute aux activités cibles la nouvelle transition crée
+			Activity from =workflow.getActivityById(noeudTransition.getAttribute("From").getValue());
+			Activity to = workflow.getActivityById(noeudTransition.getAttribute("To").getValue());
+			
+			Transition transition = new Transition(noeudTransition.getAttribute("Id").getValue(),conditionType,condition,from,to);
+			
+			transitionsReturn.add(transition);
 		}
 		return transitionsReturn;
 	}
 	
+	/**
+	 * Lance le parsing d'un noeud "ExtendedAttributes"<br>
+	 * Celui-ci est contenu dans un noeud "WorkflowProcess", "Activity" ou "Package"
+	 * @param extendedAttributes Noeud XML "ExtendedAttributes" à parser
+	 * @return Liste d'ExtendedAttribute parsés
+	 */
 	private List<ExtendedAttribute> parseExtendedAttributes(Element extendedAttributes)
 	{
-		/*Tant qui existe des ExtendedAttributes (balise ExtendedAttributes, noeud ExtendedAttribute )
-		 * <ExtendedAttribute Name="EDITING_TOOL" Value="Together Workflow Editor Community Edition"/>
-		 * on créé un objet ExtendedAttribute
-		 * fin tant_que
-		 * On renvoit une liste de ExtendedAttribute
-		 */
-		List<ExtendedAttribute> extendedAttributesReturn = new ArrayList();
-		List<Element> extendedAttribute = extendedAttributes.getChildren("ExtendedAttribute",ns);
-		Iterator it = extendedAttribute.iterator();
-		Element a;
+		List<ExtendedAttribute> extendedAttributesReturn = new ArrayList<ExtendedAttribute>();
+		List<Element> noeudsEAs = extendedAttributes.getChildren("ExtendedAttribute",ns);
+		Iterator<Element> itEA = noeudsEAs.iterator();
 					
-		while (it.hasNext()) 
+		while (itEA.hasNext()) 
 		{
-			a = (Element)it.next();
-			ExtendedAttribute e = new ExtendedAttribute(a.getAttribute("Name").getValue(),a.getAttribute("Value").getValue());
-			extendedAttributesReturn.add(e);
+			Element noeudEA = itEA.next();
+			ExtendedAttribute eA = new ExtendedAttribute(noeudEA.getAttribute("Name").getValue(),noeudEA.getAttribute("Value").getValue());
+			extendedAttributesReturn.add(eA);
 		}
 		return extendedAttributesReturn;
 	}
