@@ -139,9 +139,7 @@ public class WorkflowPackage {
 					if(t.getId().equals(id))
 						return t;
 				}
-					
 			}
-				
 		}
 		return null;
 	}
