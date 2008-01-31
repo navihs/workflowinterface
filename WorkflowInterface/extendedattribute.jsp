@@ -27,7 +27,8 @@ else
 /*Cas dans Transition*/
 if(request.getParameter("transition")!=null)
 {
-	
+	String pId = request.getParameter("transition");
+	ea = wp.getTransitionById(pId).getExtendedAttributeByName(eaName);
 }
 else
 {	/*Cas dans WorkflowPackage*/
