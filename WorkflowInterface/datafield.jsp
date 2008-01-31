@@ -7,16 +7,20 @@
 <body>
 <% 
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
-DataField df;
-if(session.getAttribute("LastObject").getClass().toString()=="WorkflowPackage")
+String id = request.getParameter("id");
+
+DataField df=null;
+
+/*Cas dans Workflow*/
+if(request.getParameter("workflow")!=null)
 {
-	df = wp.getDataFieldById(request.getParameter("id"));
-}else
-	if(session.getAttribute("LastObject").getClass().toString()=="Workflow");
-	{
-		Workflow wf = (Workflow)session.getAttribute("LastObject");
-		df = wf.getDataFieldById(request.getParameter("id"));
-	}
+	String wId = request.getParameter("workflow");
+	df = wp.getWorkflowById(wId).getDataFieldById(id);
+}
+else
+/*Cas dans WorkflowPackage */
+	df = wp.getDataFieldById(id);
+
 %>
 <%=ModeleTexte.dataField(df) %>
 </body>
