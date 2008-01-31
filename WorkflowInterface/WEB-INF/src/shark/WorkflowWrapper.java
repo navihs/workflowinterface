@@ -401,7 +401,11 @@ public class WorkflowWrapper
       sConn.connect(user[1], user[2], engineName, null);
       System.out.println(" OK");
     }
-    
+
+
+    executionAdministration = shark.getAdminInterface().getExecutionAdministration();
+    executionAdministration.connect(users.get(0)[1],users.get(0)[2],engineName,null);
+
     System.out.println("####### Tous les utilisateurs sont connectes");
   }
   //-----------------------------------------------------------------------------
