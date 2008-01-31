@@ -88,16 +88,33 @@ public class Workflow{
 	
 	/**
 	 * Permet d'obtenir une activité à partir de son Id
-	 * @param id Identifiant de l'activité à rechercher
+	 * @param actId Identifiant de l'activité à rechercher
 	 * @return Retourne l'objet Activity correspondant
 	 */
-	public Activity getActivityById(String id)
+	public Activity getActivityById(String actId)
 	{
 		Iterator<Activity> it = this.activities.iterator();
 		while(it.hasNext())
 		{
 			Activity act = it.next();
-			if(act.getId().equals(id))
+			if(act.getId().equals(actId))
+				return act;
+		}
+		return null;
+	}
+	
+	/**
+	 * Permet d'obtenir une activité à partir de son Name
+	 * @param actName Identifiant de l'activité à rechercher
+	 * @return Retourne l'objet Activity correspondant
+	 */
+	public Activity getActivityByName(String actName)
+	{
+		Iterator<Activity> it = this.activities.iterator();
+		while(it.hasNext())
+		{
+			Activity act = it.next();
+			if(act.getName().equals(actName))
 				return act;
 		}
 		return null;
