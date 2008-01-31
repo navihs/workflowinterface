@@ -132,7 +132,7 @@ public class WorkflowPackage {
 				Activity a = itA.next();
 				
 				//Parcours des transitions
-				Iterator<Transition> itT = a.getTranstions().iterator();
+				Iterator<Transition> itT = a.getTransitions().iterator();
 				while(itT.hasNext())
 				{
 					Transition t = itT.next();
