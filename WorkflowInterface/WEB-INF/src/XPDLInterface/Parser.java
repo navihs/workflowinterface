@@ -143,8 +143,8 @@ public class Parser {
 		{
 			Element dataField = itDataField.next();
 			DataField d = new DataField(dataField.getAttribute("Id").getValue(), dataField.getAttribute("Name").getValue(), dataField.getAttribute("IsArray").getValue());
-			if(dataField.getChild("Description")!=null)
-				d.setInitialValue(dataField.getChild("Description").getText());
+			if(dataField.getChild("Description",ns)!=null)
+				d.setDescription(dataField.getChild("Description",ns).getText());
 			datafieldsReturn.add(d);		
 		}
 		
