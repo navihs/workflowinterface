@@ -66,7 +66,7 @@ public class Transition {
 		this.condition = tCondition;
 		this.from = activityFrom;
 		this.to = activityTo;
-		activityFrom.addTranstion(this);
-		activityTo.addTranstion(this);
+		activityFrom.addTransition(this);
+		activityTo.addTransition(this);
 	}
 }
