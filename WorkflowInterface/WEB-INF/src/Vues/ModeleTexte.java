@@ -286,6 +286,10 @@ public class ModeleTexte{
 		s+="<td>ExtendedAttributes ("+wf.getExtendedAttributes().size()+")</td>";
 		s+="<td> "+ModeleTexte.listeExtendedAttributes(wf.getExtendedAttributes(),"&workflow="+wf.getId())+"</td>";
 		s+="</tr>";
+		s+="<tr>";
+		s+="<td>DataFields ("+wf.getDataFields().size()+")</td>";
+		s+="<td> "+ModeleTexte.listeDataFields(wf.getDataFields(), "&workflow="+wf.getId())+"</td>";
+		s+="</tr>";
 		s+="</table>";
 		return s;
 	}
@@ -293,7 +297,7 @@ public class ModeleTexte{
 	public static String listeDataFields(List<DataField> dataFields, String args)
 	{
 		String s=" ";
-		
+
 		Iterator<DataField> it = dataFields.iterator();
 		if(dataFields.size()==0) return "&nbsp";
 		while(it.hasNext())
