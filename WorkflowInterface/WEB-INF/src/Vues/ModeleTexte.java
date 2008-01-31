@@ -6,6 +6,11 @@ import java.util.*;
 import org.enhydra.shark.api.client.wfmodel.WfActivity;
 import org.enhydra.shark.api.client.wfmodel.WfProcess;
 
+/**
+ * La classe ModeleTexte permet de générer l'affichage HTML des objets du modèle.<BR>
+ * Chaque fonction statique permet l'affichage d'un objet en particulier ou d'une liste le représentant.<br>
+ * @author Laurent
+ */
 public class ModeleTexte{
 	
 	public static String listeParticipants(List<Participant> participants)
@@ -22,7 +27,7 @@ public class ModeleTexte{
 
 	public static String activity(Activity a)
 	{
-		HashMap<Activity,String> mapEtats = ModeleTexte.getWorkflowState(a.getWorkflowParent());
+		HashMap<Activity,String> mapEtats = WorkflowPackage.getWorkflowState(a.getWorkflowParent());
 		
 		String s=" ";
 		s+="<table border=1 cellspacing=0 cellspacing=0>";
@@ -355,77 +360,5 @@ public class ModeleTexte{
 		return s;
 	}
 	
-	/**
-	 * Permet d'obtenir un map faisant correspondre une Activity à une String donnant son état Shark à partir d'un Workflow donné
-	 * liste des états possibles :	 
-	 * <ul>
-	 *   <li>open.running</li>
-	 *   <li>open.not_running.not_started</li>
-	 *   <li>open.not_running.suspended</li>
-	 *   <li>closed.completed</li>
-	 *   <li>closed.terminated</li>
-	 *   <li>closed.aborted</li>
-   	 * </ul>
-   	 * @param w Workflow dont on veut connaitre l'état des activités;
-	 * @return Map ou une Activity correspond à un état sous formede String
-	 */
-	public static HashMap<Activity, String> getWorkflowState(Workflow w)
-	{
-		HashMap<Activity, String> activitiesMap = new HashMap<Activity, String>();
-		
-		/*Iterator<Activity> itA = w.getActivities().iterator();
-		int i=0;
-		while(itA.hasNext())
-		{
-			i++;
-			switch(i%3)
-			{
-				case 0 : activitiesMap.put(itA.next(), "open.running");break;
-				case 1 : activitiesMap.put(itA.next(), "open.not_running");break;
-				case 2 : activitiesMap.put(itA.next(), "open.terminated");break;
-			}
-		}
-		*/
-		try{
-			System.out.println("AllActivities");
-			
-			//On lit le map de toutes les activités et workflow de shark
-			HashMap<WfProcess, WfActivity[]> allActivities = WorkflowWrapper.getAll(true);
-			
-			System.out.println(allActivities.size());
-			
-			Set<WfProcess> s = allActivities.keySet();
-			Iterator<WfProcess> it = s.iterator();
-			
-			//On parcourt chacun des WfProcess à la recherche de celui qui nous interesse
-			while(it.hasNext())
-			{
-				WfProcess wf = it.next();
-				//Si on a trouvé le bon WfProcess
-				if(WorkflowWrapper.getName(wf).equals(w.getName()))
-				{
-					//On récupère le tableau de WfActivity correspondant et on le parcourt
-					WfActivity[] wfA = allActivities.get(wf);
-					for(int i=0;i<wfA.length;i++)
-					{
-						WfActivity wfActivity = wfA[i];
-						Activity activity = w.getActivityByName(WorkflowWrapper.getName(wfActivity));
-						String state = WorkflowWrapper.getState(wfActivity);
-						
-						//On ajoute à notre map l'objet Activity et la String state correspondante
-						activitiesMap.put(activity, state);
-					}
-					break;
-				}
-			}
-			
-		}catch(Exception err)
-		{
-			System.out.println(err.toString());
-			System.out.println("Erreur dans la création du Map");
-		}
-		
-		
-		return activitiesMap;
-	}
+
 }
