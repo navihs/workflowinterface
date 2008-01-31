@@ -2,7 +2,7 @@
 <%@page import="Vues.ModeleTest;"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
 
 	<title>Test</title>
 
