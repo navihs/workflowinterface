@@ -168,12 +168,8 @@ public class WorkflowPackage {
 		HashMap<Activity, String> activitiesMap = new HashMap<Activity, String>();
 		
 		try{
-			System.out.println("AllActivities");
-			
 			//On lit le map de toutes les activités et workflow de shark
 			HashMap<WfProcess, WfActivity[]> allActivities = WorkflowWrapper.getAll(true);
-			
-			System.out.println(allActivities.size());
 			
 			Set<WfProcess> s = allActivities.keySet();
 			Iterator<WfProcess> it = s.iterator();
