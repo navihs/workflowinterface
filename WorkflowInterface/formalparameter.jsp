@@ -7,7 +7,7 @@
 <body>
 <% 
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
-FormalParameter fp = wp.get(request.getParameter("id"));
+FormalParameter fp = wp.g(request.getParameter("id"));
 %>
 <%=ModeleTexte.formalParameter(fp) %>
 </body>
