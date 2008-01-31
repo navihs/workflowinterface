@@ -1555,7 +1555,7 @@ public class WorkflowWrapper
     
     HashMap<WfProcess,WfActivity[]> result = new HashMap<WfProcess,WfActivity[]>(); 
 
-    // Il y a un "WfProcessMgr" par processus déclaré dans le XPDL
+    // Il y a un "WfProcessMgr" par processus déclaré dans Shark
     WfProcessMgr[] mgrs = getProcessMgr();
     WfProcess[] processesTab = null;
     
