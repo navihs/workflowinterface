@@ -24,9 +24,14 @@ public class DataField
 	public void setIsArray(boolean dataFieldIsArray){this.isArray = dataFieldIsArray;}
 
 	private String dataType;
-	public String getDataType(){return this.length;}
+	public String getDataType(){return this.dataType;}
 	public void setDataType(String dataFieldDataType){this.dataType = dataFieldDataType;}
 
+	private String description;
+	public String getDescription(){return this.description;}
+	public void setDescription(String dataFieldDescription){this.description = dataFieldDescription;}
+
+	
 	public DataField(String dataFieldId, String dataFieldName, String dataFieldIsArray)
 	{
 		this.id = dataFieldId;
