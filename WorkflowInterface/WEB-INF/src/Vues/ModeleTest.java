@@ -397,7 +397,7 @@ public class ModeleTest{
 		
 		//initialisation du tableau
 		s+= "<table border=1  height="+largTab+" width="+longTab+">";
-		s+= "\n<tr><td width="+performersWidth+" height="+worflowHeight+"><b>"+wf.getName()+"<b></td></tr>";
+		s+= "\n<tr><td width="+performersWidth+" height="+worflowHeight+"><b>"+wf.getName()+"<b></td><td>&nbsp</td></tr>";
 		
 		//affichage des participants
 		it = performers.iterator();
@@ -405,7 +405,7 @@ public class ModeleTest{
 		{			
 			Participant pa = it.next();
 			s+="\n<tr><td>"+((pa!=null)?"<a href='Afficheur?action=doGetParticipant&id="+pa.getId()+"'>"+pa.getName()+"</td>":"&nbsp</td>");
-			s+= "\n<td> <td>";
+			s+= "\n<td>&nbsp </td></tr>";
 		}
 		s+= "\n</table>";
 		
