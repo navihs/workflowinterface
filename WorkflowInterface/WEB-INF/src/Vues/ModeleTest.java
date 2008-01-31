@@ -3,22 +3,27 @@ import XPDLInterface.*;
 
 import java.util.*;
 
-class Box{
-	
-	String name;
-	int positionX;
-	int positionY;
-
-	public Box(String name,int x,int y)
-	{
-		this.name=name;
-		this.positionX=x;
-		this.positionY=y;
-	}
-	
-}
-
 public class ModeleTest{
+	
+	private static int longTab =0;
+	private static int largTab =0;
+	private static int boxWidth =300;
+	private static int boxHeight=120;
+	
+	private static int spacingWidth =50;
+	private static int spacingHeight =45;
+	
+	private static int x =boxWidth+spacingWidth;
+	private static int y =boxHeight+spacingHeight;
+	
+	private static int performersWidth = 200;
+	private static int worflowHeight = 30;
+	
+	private static int dimX =performersWidth + spacingWidth;
+	private static int dimY =worflowHeight + 15;
+	//+spacingHeight;
+	
+	private static int i =0;
 	
 	public static String listeParticipants(List<Participant> participants)
 	{
@@ -36,7 +41,7 @@ public class ModeleTest{
 	{
 		String s=" ";
 		String html=" ";
-		
+		spacingHeight =45;
 			
 		html= "<table border=0 cellpadding=0 cellspacing=5>";
 		html+="<tr>";
@@ -247,31 +252,198 @@ public class ModeleTest{
 		
 		return s;		 
 	}
+	
+	public static List<Box> createBox(Workflow wf)
+	{
 
-	public static String workflow(Workflow wf)
+		List<Box> boxes =new ArrayList<Box>();
+				
+
+		dimX =performersWidth + spacingWidth;
+		dimY =worflowHeight + 15; //+spacingHeight;
+
+		largTab =0;
+		y =boxHeight+spacingHeight;
+		
+		//affichage tableau des participants
+		List<Participant> performers;
+		performers = wf.getActivityPerformers();
+		Iterator<Participant> it = performers.iterator();
+		if(performers.size()==0) return null;
+		
+		//Calcul de la Largeur du tableau en fonction du nombre de participants
+		largTab=(y*performers.size())+worflowHeight+spacingHeight;;
+		
+		//Calcul de la largeur d'une ligne
+		y=(largTab-worflowHeight)/performers.size();
+				
+		it = performers.iterator();
+		while(it.hasNext())
+		{			
+			Participant pa = it.next();
+			List<Activity> activities= wf.getActivitiesByPerformer(pa);
+			Iterator<Activity> it2 = activities.iterator();
+			
+			while(it2.hasNext())
+			{
+				Activity ac = it2.next();
+				//System.out.println(ac.getName());
+				
+				boxes.add(new Box(ac,dimY,dimX));
+				//System.out.println("");
+				dimX+=x;
+			}	
+			
+			dimY+=y;
+			
+			//remise à la ligne des activités des autres participants
+			//dimX=x-performersWidth;
+			dimX=performersWidth+ spacingWidth;;
+		}
+		
+		
+		return boxes;
+	}
+	
+	public static String displayBox(List<Box> boxes, Workflow wf)
+	{
+		String s=" ";
+		String html =" ";
+		longTab =0;
+		largTab =0;
+		
+		y =boxHeight+spacingHeight;
+		
+		s+="<script>";
+		
+		//fenetre d'activité completed
+		s+="\nfunction activityWindowTerminated(name, x, y, html) {";
+		s+="\n    var win = new Window(name, {className: \"greenlighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
+		s+="\n   win.setLocation(x, y);";
+		s+="\n   win.setDestroyOnClose();";
+		//s+="\n   winsetContent(html, true, true);";
+		s+="\n   win.setHTMLContent(html);";
+		s+="\n   win.show();";
+		s+="\n  }";
+		
+		//fenetre d'activité en attente
+		s+="\nfunction activityWindowWaiting(name, x, y, html) {";
+		s+="\n    var win = new Window(name, {className: \"greylighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
+		s+="\n   win.setLocation(x, y);";
+		s+="\n   win.setDestroyOnClose();";
+		//s+="\n   winsetContent(html, true, true);";
+		s+="\n   win.setHTMLContent(html);";
+		s+="\n   win.show();";
+		s+="\n  }";
+		
+		//fenetre d'activité en cours
+		s+="\nfunction activityWindowRunning(name, x, y, html) {";
+		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
+		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
+		s+="\n   win.setLocation(x, y);";
+		s+="\n   win.setDestroyOnClose();";
+		//s+="\n   winsetContent(html, true, true);";
+		s+="\n   win.setHTMLContent(html);";
+		s+="\n   win.show();";
+		s+="\n  }";
+		
+		s+="\n</script>";
+		
+		//affichage tableau des participants
+		List<Participant> performers;
+		performers = wf.getActivityPerformers();
+		Iterator<Participant> it = performers.iterator();
+		if(performers.size()==0) return "&nbsp";
+		
+		//Calcul de la longeur du tableau en fonction du nombre d'activités
+		while(it.hasNext())
+		{
+			Participant pa = it.next();
+			List<Activity> activities= wf.getActivitiesByPerformer(pa);
+			if (activities.size()>longTab)
+				longTab=(x*activities.size())+ performersWidth + spacingWidth;
+		}
+		//Calcul de la Largeur du tableau en fonction du nombre de participants
+		largTab=(y*performers.size())+worflowHeight+spacingHeight;;
+		
+		//initialisation du tableau
+		s+= "<table border=1  height="+largTab+" width="+longTab+">";
+		s+= "\n<tr><td width="+performersWidth+" height="+worflowHeight+"><b>"+wf.getName()+"<b></td></tr>";
+		
+		//affichage des participants
+		it = performers.iterator();
+		while(it.hasNext())
+		{			
+			Participant pa = it.next();
+			s+="\n<tr><td>"+((pa!=null)?"<a href='Afficheur?action=doGetParticipant&id="+pa.getId()+"'>"+pa.getName()+"</td>":"&nbsp</td>");
+			s+= "\n<td> <td>";
+		}
+		s+= "\n</table>";
+		
+		
+		Iterator<Box> it2 = boxes.iterator();
+		while (it2.hasNext())
+		{
+			Box b = it2.next();
+			//affichage des boites
+			s+= "		" + ModeleTest.activity(b.getAct(),b.getPositionX(),b.getPositionY());
+			
+			//affichage des transitions
+			List<Transition> transitions = b.getAct().getTransitionsSortantes();
+			Iterator<Transition> it3 = transitions.iterator();
+			while (it3.hasNext())
+			{
+				Transition t = it3.next();
+				
+				Iterator<Box> it4 = boxes.iterator();
+				while (it4.hasNext())
+				{
+					Box boite =it4.next();
+					if (t.getTo()==boite.getAct())
+					{
+						html+="\n<script>";
+						html+=displayTransition(b, boite);
+						html+="\n</script>";
+					}
+				}
+				
+			}
+			//html+="    " + ModeleTest.displayTransition(b.act);	
+		}
+		
+		s+=html;
+		
+		return s;
+	}
+	public static String displayTransition(Box bFrom, Box bTo)
+	{
+		String s=" ";
+		int x1 = bFrom.getPositionX();
+		int y1 = bFrom.getPositionY();
+		int x2 = bTo.getPositionX();
+		int y2 = bTo.getPositionY();
+		i+=1;
+		x1=x1+boxHeight/2;
+		x2=x2+boxHeight/2;
+		y1=y1+boxWidth/2;
+		y2=y2+boxWidth/2;
+		
+		s+="\nvar jg"+i+" = new jsGraphics();";
+		s+="\njg"+i+".setColor(\"#ff0000\"); ";
+		s+="\njg"+i+".setStroke(\"5\"); ";	
+		s+="\njg"+i+".drawLine("+y1+","+x1+","+y2+","+x2+"); ";
+		s+="\njg"+i+".paint();";
+
+		
+		return s;
+	}
+	/*public static String workflow(Workflow wf)
 	{
 
 		String s=" ";
 		String html =" ";
-		
-		
-		int longTab =0;
-		int largTab =0;
-		int boxWidth =300;
-		int boxHeight=120;
-		
-		int spacingWidth =50;
-		int spacingHeight =45;
-		
-		int x =boxWidth+spacingWidth;
-		int y =boxHeight+spacingHeight;
-		
-		int performersWidth = 200;
-		int worflowHeight = 30;
-		
-		int dimX =performersWidth + spacingWidth;
-		int dimY =worflowHeight + 15; //+spacingHeight;
-		
 		
 		s+="<script>";
 				
@@ -365,10 +537,8 @@ public class ModeleTest{
 		html += "\n</table>";	
 		s+=html;
 		
-
-		
 		return s;
-	}
+	}*/
 	
 	public static String listeDataFields(List<DataField> dataFields, String args)
 	{
@@ -450,17 +620,6 @@ public class ModeleTest{
 			//l+=120;
 		}
 		return s;
-	}
-	public static String transition(int x1, int y1, int x2,int y2)
-	{
-		String s=" ";
-		
-		s="\n<script>";
-		s+="\nvar jg = new jsGraphics();";
-		s+="\njg.setColor(\"#ff0000\"); ";
-		s+="\njg.drawLine("+x1+","+x2+","+y1+","+y2+"); ";
-		s+="\njg.paint();";
-		s+="\n</script>";
-		return s;
-	}
+	}	
+	
 }
