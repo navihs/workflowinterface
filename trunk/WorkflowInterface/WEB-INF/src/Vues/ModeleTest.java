@@ -338,7 +338,8 @@ public class ModeleTest{
 		while(it.hasNext())
 		{			
 			Participant pa = it.next();
-			html += "\n<tr><td width="+performersWidth+"><b>"+pa.getName()+"</b></td>";
+			html+="\n<tr><td>"+((pa!=null)?"<a href='Afficheur?action=doGetParticipant&id="+pa.getId()+"'>"+pa.getName()+"</td>":"&nbsp</td>");
+			//html += "\n<tr><td width="+performersWidth+"><b>"+pa.getName()+"</b></td>";
 			List<Activity> activities= wf.getActivitiesByPerformer(pa);
 			Iterator<Activity> it2 = activities.iterator();
 			
@@ -449,14 +450,14 @@ public class ModeleTest{
 		}
 		return s;
 	}
-	public static String transition()
+	public static String transition(int x1, int y1, int x2,int y2)
 	{
 		String s=" ";
 		
 		s="\n<script>";
 		s+="\nvar jg = new jsGraphics();";
 		s+="\njg.setColor(\"#ff0000\"); ";
-		s+="\njg.drawLine(100, 113, 220, 290); ";
+		s+="\njg.drawLine("+x1+","+x2+","+y1+","+y2+"); ";
 		s+="\njg.paint();";
 		s+="\n</script>";
 		return s;
