@@ -133,7 +133,7 @@ public class InitComponent
       users.add(userSharkValideurInterne);
       users.add(userSharkValideurConference);
       WorkflowWrapper.createUsers(users);
-      //WorkflowWrapper.connectUsers(users,engineName);
+      WorkflowWrapper.connectUsers(users,engineName);
   }
   //-----------------------------------------------------------------------------
 public static String getFilesDir() {

@@ -392,20 +392,16 @@ public class WorkflowWrapper
    * @throws BaseException 
    */
   //public static void connectUsers(ArrayList<Object[]> groups, String engineName)
-  public static void connectUsers(ArrayList<String[]> groups, String engineName)
+  public static void connectUsers(ArrayList<String[]> users, String engineName)
     throws BaseException, ConnectFailed
   {
-    for (String[] group : groups)
+    for (String[] user : users)
     {
-      //String groupName = (String)group[0];
-      String groupName = group[0];
-      // TODO : le 4ème paramètre de la méthode connect(...) est une String nommée scope. A voir pour le problème de connexion.
-      sConn.connect(groupName, groupName, engineName, null);
+      System.out.print("####### Connexion de " + user[1] + "/" + user[2]);
+      sConn.connect(user[1], user[2], engineName, null);
+      System.out.println(" OK");
     }
     
-    executionAdministration = shark.getAdminInterface().getExecutionAdministration();
-    executionAdministration.connect("directeur_etablissement_scolaire","directeur_etablissement_scolaire",engineName,null);
-
     System.out.println("####### Tous les utilisateurs sont connectes");
   }
   //-----------------------------------------------------------------------------
