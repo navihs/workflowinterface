@@ -6,15 +6,12 @@ import javax.servlet.http.*;
 import XPDLInterface.*;
 
 /***
- * Servlet d'affichage d'un xpdl
+ * Servlet d'affichage d'un XPDL en mode <b>Graphique</b>.<br>
+ * Les actions possibles sont données par la méthode getActionId qui associe une action à un int.<br>
+ * L'action demandée est traitée au doGet(), selon l'action, 
+ * on redirige le servlet vers une page qui se chargera de l'affichage spécifique.<br>
+ * Une fois parsé, le WorkflowPackage est contenu dans la session. L'attribut s'apelle "workflowPackage".
  * @author Laurent
- * Les actions possibles :
- * 		action="doParse"&file="fichier"
- * 		action="doGetPackage"
- * 		action="doGetWorkflow"&id="idWorkflow"
- * 		action="doGetActivity"&id="idActivity"
- * 		action="doGetParticipant"&id="idParticipant"
- * 		...
  */
 public class Afficheur2 extends HttpServlet 
 {
