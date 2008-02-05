@@ -3,6 +3,8 @@ import XPDLInterface.*;
 
 import java.util.*;
 
+import org.enhydra.shark.api.client.wfmodel.WfProcess;
+
 public class ModeleTest{
 	
 	private static int longTab =0;
@@ -37,7 +39,40 @@ public class ModeleTest{
 		return p;
 	}
 
-	public static String activity(Activity a, int x, int y)
+	public static String activity(Activity a,int x, int y)
+	{
+		String s=" ";
+		String html=" ";
+		spacingHeight =45;
+			
+		html= "<table border=0 cellpadding=0 cellspacing=5>";
+		html+="<tr>";
+		html+="   <td align=right><b>Name :</b></td><td>"+ a.getName()+ "</td>"; 
+		html+="</tr>";
+		html+="<tr>";
+		html+="   <td align=right><b>Descripion :</b></td><td>"+a.getDescription()+"</td>";
+		html+="</tr>";
+		html+="<tr>";
+		html+="   <td align=center><b>Extended<br>Attributes ("+a.getExtendedAttributes().size()+")</td>";
+		html+="   <td>"+ModeleTest.listeExtendedAttributes(a.getExtendedAttributes(),"&workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId())+"</td>";
+		html+="</tr>";
+		if(a.getImplementation())
+		{
+			html+="<tr>";
+			html+="   <td align=right><b>Implementation</b></td>";
+			html+="	  <td><a href='Afficheur2?action=doGetWorkflow&id="+a.getSubflow().getId()+"'>"+a.getSubflow().getName()+"</td>";
+			html+="</tr>";
+		}
+		html+="</table>";
+		s+="\n<script>";
+		
+		s+="\nactivityWindowDefault('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
+		s+="\n</script>";
+		
+		return s;
+	}
+	
+	public static String activityInstance(String wfProcessKey, Activity a, int x, int y)
 	{
 		String s=" ";
 		String html=" ";
@@ -65,7 +100,7 @@ public class ModeleTest{
 		s+="\n<script>";
 		
 		String status="Default";
-		String activityStatus = WorkflowPackage.getWorkflowState(a.getWorkflowParent()).get(a);
+		String activityStatus = WorkflowPackage.getWorkflowInstancesStates(a.getWorkflowParent()).get(WorkflowPackage.getWfProcessByKey(wfProcessKey)).get(a);
 		if(activityStatus!=null)
 		{
 			if(activityStatus.equals("open.running"))
@@ -253,6 +288,7 @@ public class ModeleTest{
 		s+="<td>Workflows ("+wp.getWorkflows().size()+")</td>";
 		s+="<td> "+ModeleTest.listeWorkflows(wp.getWorkflows())+"</td>";
 		s+="</tr>";
+		s+=ModeleTest.listeWorkflowInstances(wp.getWorkflows())+"</td>";
 		s+="</table>";
 		
 		/*pour s'amuser*/
@@ -314,14 +350,14 @@ public class ModeleTest{
 			
 			//remise à la ligne des activités des autres participants
 			//dimX=x-performersWidth;
-			dimX=performersWidth+ spacingWidth;;
+			dimX=performersWidth+ spacingWidth;
 		}
 		
 		
 		return boxes;
 	}
 	
-	public static String displayBox(List<Box> boxes, Workflow wf)
+	public static String displayBoxInstance(List<Box> boxes, Workflow wf, String wfProcessKey)
 	{
 		String s=" ";
 		String html =" ";
@@ -397,7 +433,8 @@ public class ModeleTest{
 		
 		//initialisation du tableau
 		s+= "<table border=1  height="+largTab+" width="+longTab+">";
-		s+= "\n<tr><td width="+performersWidth+" height="+worflowHeight+"><b>"+wf.getName()+"<b></td><td>&nbsp</td></tr>";
+		s+= "\n<tr><td width="+performersWidth+" height="+worflowHeight+"><b>"+wf.getName()+"<b></td>";
+		s+= "<td><font color=#BFDBFF size=3><b>Actitivity en attente</b></font>, <font color=#CDCDCD size=3><b>Actitivity non demarrée</b></font>, <font color=#ACFCAF size=3><b>Actitivity terminée</b></font>, <font color=#fde1bd size=3><b>Actitivity en cours</b></font></td></tr>";
 		
 		//affichage des participants
 		it = performers.iterator();
@@ -415,7 +452,7 @@ public class ModeleTest{
 		{
 			Box b = it2.next();
 			//affichage des boites
-			s+= "		" + ModeleTest.activity(b.getAct(),b.getPositionX(),b.getPositionY());
+			s+= "		" + ModeleTest.activityInstance(wfProcessKey,b.getAct(),b.getPositionX(),b.getPositionY());
 			
 			//affichage des transitions
 			List<Transition> transitions = b.getAct().getTransitionsSortantes();
@@ -444,6 +481,7 @@ public class ModeleTest{
 		
 		return s;
 	}
+
 	public static String displayTransition(Box bFrom, Box bTo)
 	{
 		String s=" ";
@@ -466,27 +504,20 @@ public class ModeleTest{
 		
 		return s;
 	}
-	/*public static String workflow(Workflow wf)
+	
+	public static String displayBox(List<Box> boxes, Workflow wf)
 	{
-
 		String s=" ";
 		String html =" ";
+		longTab =0;
+		largTab =0;
+		
+		y =boxHeight+spacingHeight;
 		
 		s+="<script>";
-				
-		//fenetre d'activité completed
-		s+="\nfunction activityWindowTerminated(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"greenlighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
-		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
-		s+="\n   win.setLocation(x, y);";
-		s+="\n   win.setDestroyOnClose();";
-		//s+="\n   winsetContent(html, true, true);";
-		s+="\n   win.setHTMLContent(html);";
-		s+="\n   win.show();";
-		s+="\n  }";
-		
-		//fenetre d'activité en attente
-		s+="\nfunction activityWindowWaiting(name, x, y, html) {";
+
+		//fenetre d'activité non démarrable
+		s+="\nfunction activityWindowDefault(name, x, y, html) {";
 		s+="\n    var win = new Window(name, {className: \"greylighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
 		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
 		s+="\n   win.setLocation(x, y);";
@@ -495,19 +526,8 @@ public class ModeleTest{
 		s+="\n   win.setHTMLContent(html);";
 		s+="\n   win.show();";
 		s+="\n  }";
-		
-		//fenetre d'activité en cours
-		s+="\nfunction activityWindowRunning(name, x, y, html) {";
-		s+="\n    var win = new Window(name, {className: \"bluelighting\", top:0, right:x, bottom:y, width:"+boxWidth+", height:"+boxHeight+",title:name,";
-		s+="\n                          maximizable: false, draggable: false, closable: false, minimizable: false, resizable:false});";
-		s+="\n   win.setLocation(x, y);";
-		s+="\n   win.setDestroyOnClose();";
-		//s+="\n   winsetContent(html, true, true);";
-		s+="\n   win.setHTMLContent(html);";
-		s+="\n   win.show();";
-		s+="\n  }";
-		
 		s+="\n</script>";
+
 		
 		//affichage tableau des participants
 		List<Participant> performers;
@@ -526,46 +546,76 @@ public class ModeleTest{
 		//Calcul de la Largeur du tableau en fonction du nombre de participants
 		largTab=(y*performers.size())+worflowHeight+spacingHeight;;
 		
-		//Calcul de la largeur d'une ligne
-		y=(largTab-worflowHeight)/performers.size();
-		
 		//initialisation du tableau
-		html = "<table border=1  height="+largTab+" width="+longTab+">";
-		html += "\n<tr><td width="+performersWidth+" height="+worflowHeight+"><b>"+wf.getName()+"<b></td></tr>";
+		s+= "<table border=1  height="+largTab+" width="+longTab+">";
+		s+= "\n<tr><td width="+performersWidth+" height="+worflowHeight+"><b>"+wf.getName()+"<b></td>";
+		s+= "<td><font color=#CDCDCD size=3><b>Actitivity</b></font></td></tr>";
 		
-		
+		//affichage des participants
 		it = performers.iterator();
 		while(it.hasNext())
 		{			
 			Participant pa = it.next();
-			html+="\n<tr><td>"+((pa!=null)?"<a href='Afficheur?action=doGetParticipant&id="+pa.getId()+"'>"+pa.getName()+"</td>":"&nbsp</td>");
-			//html += "\n<tr><td width="+performersWidth+"><b>"+pa.getName()+"</b></td>";
-			List<Activity> activities= wf.getActivitiesByPerformer(pa);
-			Iterator<Activity> it2 = activities.iterator();
-			
-			while(it2.hasNext())
-			{
-				Activity ac = it2.next();
-				//System.out.println(ac.getName());
-				html += "\n		<td>";
-				html += "		" + ModeleTest.activity(ac,dimY,dimX);
-				html += "\n		</td>";
-				dimX+=x;
-			}
-			html += "\n</tr>";	
-			
-			dimY+=y;
-			
-			//remise à la ligne des activités des autres participants
-			//dimX=x-performersWidth;
-			dimX=performersWidth+ spacingWidth;;
+			s+="\n<tr><td>"+((pa!=null)?"<a href='Afficheur?action=doGetParticipant&id="+pa.getId()+"'>"+pa.getName()+"</td>":"&nbsp</td>");
+			s+= "\n<td>&nbsp </td></tr>";
 		}
-
-		html += "\n</table>";	
+		s+= "</table>";
+		
+		s+= "<table border=1 width="+longTab+">";
+		s+="\n<tr><td colspan=2><b>Paramètres divers</b></td></tr>";
+		s+= "\n<tr><td>Id</td><td>"+wf.getId()+"</td></tr>";
+		s+="<tr>";
+		s+="<td width="+performersWidth+" >Name</td>";
+		s+="<td>"+wf.getName()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Created</td>";
+		s+="<td>"+((wf.getCreated()!=null)?wf.getCreated().toString():"?")+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<tr>";
+		s+="<td>ExtendedAttributes ("+wf.getExtendedAttributes().size()+")</td>";
+		s+="<td> "+ModeleTest.listeExtendedAttributes(wf.getExtendedAttributes(),"&workflow="+wf.getId())+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>DataFields ("+wf.getDataFields().size()+")</td>";
+		s+="<td> "+ModeleTest.listeDataFields(wf.getDataFields(), "&workflow="+wf.getId())+"</td>";
+		s+="</tr>";
+		s+= "\n</table>";
+		
+		Iterator<Box> it2 = boxes.iterator();
+		while (it2.hasNext())
+		{
+			Box b = it2.next();
+			//affichage des boites
+			s+= "		" + ModeleTest.activity(b.getAct(),b.getPositionX(),b.getPositionY());
+			
+			//affichage des transitions
+			List<Transition> transitions = b.getAct().getTransitionsSortantes();
+			Iterator<Transition> it3 = transitions.iterator();
+			while (it3.hasNext())
+			{
+				Transition t = it3.next();
+				
+				Iterator<Box> it4 = boxes.iterator();
+				while (it4.hasNext())
+				{
+					Box boite =it4.next();
+					if (t.getTo()==boite.getAct())
+					{
+						html+="\n<script>";
+						html+=displayTransition(b, boite);
+						html+="\n</script>";
+					}
+				}
+			}
+		}
+		
 		s+=html;
 		
 		return s;
-	}*/
+	}
+
 	
 	public static String listeDataFields(List<DataField> dataFields, String args)
 	{
@@ -649,4 +699,33 @@ public class ModeleTest{
 		return s;
 	}	
 	
+	public static String listeWorkflowInstances(List<Workflow> workflows)
+	{
+		String s=" ";
+
+		Iterator<Workflow> it = workflows.iterator();
+		if(workflows.size()==0) return "&nbsp";
+		
+		while(it.hasNext())
+		{
+			Workflow wf = it.next();
+			HashMap<String,HashMap<Activity,String>> map = WorkflowPackage.getWorkflowInstancesStates(wf);
+			
+			Set<String> set = map.keySet();
+			Iterator<String> wfProcessMap = set.iterator();
+			
+			s+="<tr><td>Instances de "+wf.getName()+" ("+map.size()+")</td><td>";
+			
+			while(wfProcessMap.hasNext())
+			{
+				String wfProcessKey = wfProcessMap.next();
+				try{
+					s+="<a href='Afficheur2?action=doGetWorkflowInstance&workflow="+wf.getId()+"&id="+wfProcessKey+"'>"+wfProcessKey+"</a><br>\n";	
+				}catch(Exception err){err.printStackTrace();}
+			}
+			
+			s+="</td></tr>";
+		}
+		return s;
+	}
 }

@@ -163,10 +163,10 @@ public class WorkflowPackage {
    	 * @param w Workflow dont on veut connaitre l'état des activités;
 	 * @return Map ou une Activity correspond à un état sous formede String
 	 */
-	public static HashMap<Activity, String> getWorkflowState(Workflow w)
+	public static HashMap<String,HashMap<Activity, String>> getWorkflowInstancesStates(Workflow w)
 	{
-		HashMap<Activity, String> activitiesMap = new HashMap<Activity, String>();
-		
+		HashMap<String,HashMap<Activity, String>> activitiesMapList = new HashMap<String,HashMap<Activity, String>>();
+
 		try{
 			//On lit le map de toutes les activités et workflow de shark
 			HashMap<WfProcess, WfActivity[]> allActivities = WorkflowWrapper.getAll(true);
@@ -174,10 +174,12 @@ public class WorkflowPackage {
 			Set<WfProcess> s = allActivities.keySet();
 			Iterator<WfProcess> it = s.iterator();
 			
-			//On parcourt chacun des WfProcess à la recherche de celui qui nous interesse
+			//On parcourt chacun des WfProcess
 			while(it.hasNext())
 			{
 				WfProcess wf = it.next();
+				HashMap<Activity, String> activitiesMap = new HashMap<Activity,String>();
+
 				//Si on a trouvé le bon WfProcess
 				if(WorkflowWrapper.getName(wf).equals(w.getName()))
 				{
@@ -192,8 +194,8 @@ public class WorkflowPackage {
 						//On ajoute à notre map l'objet Activity et la String state correspondante
 						activitiesMap.put(activity, state);
 					}
-					break;
 				}
+				activitiesMapList.put(wf.key(), activitiesMap);
 			}
 			
 		}catch(Exception err)
@@ -201,9 +203,23 @@ public class WorkflowPackage {
 			System.out.println(err.toString());
 			System.out.println("Erreur dans la création du Map");
 		}
-		
-		
-		return activitiesMap;
+
+		return activitiesMapList;
 	}
 
+	public static String getWfProcessByKey(String key)
+	{
+		try{
+			HashMap<WfProcess, WfActivity[]> allActivities = WorkflowWrapper.getAll(true);
+			Set<WfProcess> set = allActivities.keySet();
+			Iterator<WfProcess> it = set.iterator();
+			while(it.hasNext())
+			{
+				WfProcess wfP = it.next();
+				
+				if(wfP.key().equals(key)) return wfP.key();
+			}
+		}catch(Exception err){err.printStackTrace();}
+		return null;
+	}
 }
