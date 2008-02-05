@@ -1,5 +1,6 @@
 package Vues;
 import XPDLInterface.*;
+
 import java.util.*;
 
 /**
@@ -21,9 +22,9 @@ public class ModeleTexte{
 		return p;
 	}
 
-	public static String activity(Activity a)
+	public static String activityInstance(Activity a,String wfProcessKey)
 	{
-		HashMap<Activity,String> mapEtats = WorkflowPackage.getWorkflowState(a.getWorkflowParent());
+		HashMap<Activity,String> mapEtats =WorkflowPackage.getWorkflowInstancesStates(a.getWorkflowParent()).get(WorkflowPackage.getWfProcessByKey(wfProcessKey));
 		
 		String s=" ";
 		s+="<table border=1 cellspacing=0 cellspacing=0>";
@@ -84,6 +85,65 @@ public class ModeleTexte{
 		return s;
 	}
 	
+	public static String activity(Activity a)
+	{
+		String s=" ";
+		s+="<table border=1 cellspacing=0 cellspacing=0>";
+		s+="<tr><td colspan=2 align=center>Activity</font>";
+		s+="</td></tr>";
+		s+="<tr>";
+		s+="<td>Id</td>";
+		s+="<td>"+a.getId()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Name</td>";
+		s+="<td>"+a.getName()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Descripion</td>";
+		s+="<td>"+a.getDescription()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>ExtendedAttributes ("+a.getExtendedAttributes().size()+")</td>";
+		s+="<td>"+ModeleTexte.listeExtendedAttributes(a.getExtendedAttributes(),"&workflow="+a.getWorkflowParent().getId()+"&activity="+a.getId())+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Implementation</td>";
+		s+="<td>"+a.getImplementation()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Limit</td>";
+		s+="<td>"+a.getLimit()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Performer</td>";
+		s+="<td>"+((a.getPerformer()!=null)?"<a href='Afficheur?action=doGetParticipant&id="+a.getPerformer().getId()+"'>"+a.getPerformer().getName()+"</td>":"&nbsp</td>");
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Route</td>";
+		s+="<td>"+a.getRoute()+"</td>";
+		s+="</tr>";
+		if(a.isSubflow())
+		{
+			s+="<tr>";
+			s+="<td>Subflow</td>";
+			s+="<td><a href='Afficheur?action=doGetWorkflow&id="+a.getSubflow().getId()+"'>"+a.getSubflow().getName()+"</td>";
+			s+="</tr>";
+		}
+		s+="<tr>";
+		s+="<td>Transition Restriction Join</td>";
+		s+="<td>"+a.getTransitionRestrictionJoin()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Transition Restriction Split</td>";
+		s+="<td>"+a.getTransitionRestrictionSplit()+"</td>";
+		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Transitions ("+a.getTransitions().size()+")</td>";
+		s+="<td>"+((a.getTransitions()!=null)?listeTransitions(a.getTransitions()):":&nbsp")+"</td>";
+		s+="</table>";
+		return s;
+	}
 	
 	public static String participant(Participant p)
 	{
@@ -257,6 +317,10 @@ public class ModeleTexte{
 		s+="<td>Workflows ("+wp.getWorkflows().size()+")</td>";
 		s+="<td> "+ModeleTexte.listeWorkflows(wp.getWorkflows())+"</td>";
 		s+="</tr>";
+		s+="<tr>";
+		s+="<td>Workflow Instances ("+wp.getWorkflows().size()+")</td>";
+		s+="<td> "+ModeleTexte.listeWorkflows(wp.getWorkflows())+"</td>";
+		s+="</tr>";
 		s+="</table>";
 		return s;
 	}
@@ -374,6 +438,35 @@ public class ModeleTexte{
 		{
 			Workflow wf = it.next();
 			s+="<a href='Afficheur?action=doGetWorkflow&id="+wf.getId()+"'>"+wf.getName()+"</a><br>\n";	
+		}
+		return s;
+	}
+	
+	public static String listeWorkflowsInstance(List<Workflow> workflows)
+	{
+		String s=" ";
+		
+		Iterator<Workflow> it = workflows.iterator();
+		if(workflows.size()==0) return "&nbsp";
+		
+		while(it.hasNext())
+		{
+			Workflow wf = it.next();
+			HashMap<String,HashMap<Activity,String>> map = WorkflowPackage.getWorkflowInstancesStates(wf);
+			
+			Set<String> set = map.keySet();
+			Iterator<String> wfProcessMap = set.iterator();
+			
+			s+="<tr><td>Instances de "+wf.getName()+" ("+map.size()+")</td><td>";
+			
+			while(wfProcessMap.hasNext())
+			{
+				String wfProcessKey = wfProcessMap.next();
+				try{
+					s+="<a href='Afficheur?action=doGetWorkflowInstance&worflow="+wf.getId()+"&id="+wfProcessKey+"'>"+wfProcessKey+"</a><br>\n";
+				}catch(Exception err){err.printStackTrace();}
+			}
+			s+="</td></tr>";
 		}
 		return s;
 	}

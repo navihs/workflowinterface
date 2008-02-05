@@ -59,6 +59,9 @@ public class Afficheur2 extends HttpServlet
 			case 8:
 				this.forward("/transition2.jsp", request, response);
 				break;
+			case 9:
+				this.forward("/workflowInstance2.jsp", request, response);
+				break;
 			default:
 				writer.println("<html><body>");
 				writer.println("<a href=\"Afficheur2?action=doParse\">Lancer le parsing du fichier XPDL Afficheur2</a><br>");
@@ -111,6 +114,7 @@ public class Afficheur2 extends HttpServlet
 		map.put("doGetExtendedAttribute", 6);
 		map.put("doGetFormalParameter", 7);
 		map.put("doGetTransition", 8);
+		map.put("doGetWorkflowInstance", 9);
 		
 		return (map.get(action)!=null)?map.get(action):-1;
 	}
