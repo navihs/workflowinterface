@@ -7,7 +7,6 @@
 <body>
 <% 
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
-session.setAttribute("LastObjet",wp);
 %>
 <%=ModeleTexte.workflowPackage(wp) %>
 </body>
