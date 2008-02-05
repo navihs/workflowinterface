@@ -3,21 +3,49 @@ import XPDLInterface.*;
 
 import java.util.*;
 
-import org.enhydra.shark.api.client.wfmodel.WfProcess;
-
+/**
+ * La classe ModeleTest permet de générer l'affichage HTML graphique des objets du modèle.<BR>
+ * Chaque fonction statique permet l'affichage d'un objet en particulier ou d'une liste le représentant.<br>
+ * Chaque activity est représentée par un objet "Box" dont une liste est générée au moment de l'affichage d'un workflow
+ * @author Laurent
+ */
 public class ModeleTest{
-	
+	/**
+	 * Longueur du tableau d'affichage d'un workflow
+	 */
 	private static int longTab =0;
+	/**
+	 * largeur du tableau d'affichage d'un workflow
+	 */
 	private static int largTab =0;
+	/**
+	 * Largeur d'une boite affichant une activity
+	 */
 	private static int boxWidth =300;
+	/**
+	 * Hauteur d'une boite affichant une activity
+	 */
 	private static int boxHeight=120;
-	
+	/**
+	 * Largeur de l'espacement de base
+	 */
 	private static int spacingWidth =50;
+	/**
+	 * Hauteur de l'espacement de base
+	 */
 	private static int spacingHeight =45;
-	
+	/**
+	 * Point de référence en largeur
+	 */
 	private static int x =boxWidth+spacingWidth;
+	/**
+	 * Point de référence en hauteur
+	 */
 	private static int y =boxHeight+spacingHeight;
 	
+	/**
+	 * Largeur de la colone des performers
+	 */
 	private static int performersWidth = 200;
 	private static int worflowHeight = 30;
 	
@@ -72,6 +100,14 @@ public class ModeleTest{
 		return s;
 	}
 	
+	/**
+	 * Génère le contenu d'une boite affichant une instance d'activity
+	 * @param wfProcessKey Attribut Key du workflow process recherché
+	 * @param a Activity a afficher
+	 * @param x Position x de la box
+	 * @param y Position y de la box
+	 * @return contenu d'une box activity
+	 */
 	public static String activityInstance(String wfProcessKey, Activity a, int x, int y)
 	{
 		String s=" ";
@@ -99,6 +135,7 @@ public class ModeleTest{
 		html+="</table>";
 		s+="\n<script>";
 		
+		// Ici est testé l'attribut status de l'instance de l'activity
 		String status="Default";
 		String activityStatus = WorkflowPackage.getWorkflowInstancesStates(a.getWorkflowParent()).get(WorkflowPackage.getWfProcessByKey(wfProcessKey)).get(a);
 		if(activityStatus!=null)
@@ -111,7 +148,7 @@ public class ModeleTest{
 				status="Terminated";
 		}
 
-		
+		// La box appelée est celle qui correspond au status
 		s+="\nactivityWindow"+status+"('" + a.getName() + "'," + x + "," + y + ",'" +html + "');";
 		s+="\n</script>";
 		
@@ -305,11 +342,15 @@ public class ModeleTest{
 		return s;		 
 	}
 	
+	/**
+	 * Permet de générer une liste de Box destinées à êtres placées (Pour l'affichage d'un workflow)
+	 * @param wf Workflow dont on doit générer les box d'activity
+	 * @return Liste de box correspondante
+	 */
 	public static List<Box> createBox(Workflow wf)
 	{
 
 		List<Box> boxes =new ArrayList<Box>();
-				
 
 		dimX =performersWidth + spacingWidth;
 		dimY =worflowHeight + 15; //+spacingHeight;
@@ -328,7 +369,8 @@ public class ModeleTest{
 		
 		//Calcul de la largeur d'une ligne
 		y=(largTab-worflowHeight)/performers.size();
-				
+			
+		//Pour chaque performer, on récupère la liste de ses activités au sein du workflow
 		it = performers.iterator();
 		while(it.hasNext())
 		{			
@@ -339,10 +381,7 @@ public class ModeleTest{
 			while(it2.hasNext())
 			{
 				Activity ac = it2.next();
-				//System.out.println(ac.getName());
-				
 				boxes.add(new Box(ac,dimY,dimX));
-				//System.out.println("");
 				dimX+=x;
 			}	
 			
@@ -357,6 +396,13 @@ public class ModeleTest{
 		return boxes;
 	}
 	
+	/**
+	 * Permet de générer une liste de Box destinées à êtres placées (Pour l'affichage d'une instance de workflow)
+	 * @param boxes Liste de box à afficher
+	 * @param wf Workflow dont on doit générer les box d'activity
+	 * @param wfProcessKey Attribut Key du WfProcess à afficher
+	 * @return Liste de box correspondante
+	 */
 	public static String displayBoxInstance(List<Box> boxes, Workflow wf, String wfProcessKey)
 	{
 		String s=" ";
@@ -366,6 +412,7 @@ public class ModeleTest{
 		
 		y =boxHeight+spacingHeight;
 		
+		//Dans un premier temps, il faut générer des fonctions d'affichage
 		s+="<script>";
 		
 		//fenetre d'activité completed
@@ -482,6 +529,12 @@ public class ModeleTest{
 		return s;
 	}
 
+	/**
+	 * Génération des traits pour les transitions
+	 * @param bFrom box de départ de la transition
+	 * @param bTo box de fin de la transition
+	 * @return String permettant l'affichage HTML(js) des transitions
+	 */
 	public static String displayTransition(Box bFrom, Box bTo)
 	{
 		String s=" ";
@@ -505,6 +558,12 @@ public class ModeleTest{
 		return s;
 	}
 	
+	/**
+	 * Génération du code HTML/JS des box activity
+	 * @param boxes Liste des box
+	 * @param wf Workflow dont on veut afficher les activity
+	 * @return String permettant l'affichage HTML(js) des Box
+	 */
 	public static String displayBox(List<Box> boxes, Workflow wf)
 	{
 		String s=" ";
@@ -699,6 +758,11 @@ public class ModeleTest{
 		return s;
 	}	
 	
+	/**
+	 * Liste des instances Shark d'un workflow
+	 * @param workflows Workflow dont on cherche les instances
+	 * @return Affichage HTML d'une liste d'instances de workflows
+	 */
 	public static String listeWorkflowInstances(List<Workflow> workflows)
 	{
 		String s=" ";
