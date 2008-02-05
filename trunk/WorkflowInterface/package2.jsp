@@ -20,17 +20,12 @@
     position:relative;
     overflow:hidden;
   }  
-  a {
-    color:#333;
-    font-size: 16px;
-  }
   </style>
 </head>
 <body>
 
 <% 
 WorkflowPackage wp = (WorkflowPackage)session.getAttribute("workflowPackage");
-session.setAttribute("LastObjet",wp);
 %>
 
 <%=ModeleTest.workflowPackage(wp) %>
