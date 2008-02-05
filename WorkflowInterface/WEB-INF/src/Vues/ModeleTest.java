@@ -329,7 +329,7 @@ public class ModeleTest{
 		s+="</table>";
 		
 		/*pour s'amuser*/
-		s+="\n</div>";
+		/*s+="\n</div>";
 		s+="<script>";
 		s+="\nfunction openPopup(){";
 		s+="\nvar master = new Window(\"master\", {className: \"alphacube\", width:700, height:500,title:\"WorkflowPackage\", top:200, right:700, url:\"http://en.wikipedia.org/wiki/Workflow/\", showEffectOptions: {duration:1.5}});";
@@ -338,7 +338,7 @@ public class ModeleTest{
 		s+="\n}";
 		s+="\nopenPopup();";
 		s+="\n</script>";
-		
+		*/
 		return s;		 
 	}
 	
