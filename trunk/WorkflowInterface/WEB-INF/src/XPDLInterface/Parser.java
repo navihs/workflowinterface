@@ -47,7 +47,8 @@ public class Parser {
 		 SAXBuilder sxb = new SAXBuilder();
 	     try
 	     {
-	    	 document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/soumission_article.xpdl"));
+           document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/soumission_article.xpdl"));
+           //document = sxb.build(new File(InitComponent.getFilesDir()+"repositoryXPDL/DAI3.1.xpdl"));
 	     }
 	     catch(Exception e){}
 	     racine = document.getRootElement();
@@ -142,7 +143,16 @@ public class Parser {
 		while (itDataField.hasNext()) 
 		{
 			Element dataField = itDataField.next();
-			DataField d = new DataField(dataField.getAttribute("Id").getValue(), dataField.getAttribute("Name").getValue(), dataField.getAttribute("IsArray").getValue());
+
+			String idValue      = dataField.getAttribute("Id").getValue();
+            String isArrayValue = dataField.getAttribute("IsArray").getValue();
+            String nameValue    = (dataField.getAttribute("Name")==null?idValue+" (no name)":dataField.getAttribute("Name").getValue());
+			
+			//DataField d = new DataField(dataField.getAttribute("Id").getValue(),
+			//                            dataField.getAttribute("Name").getValue(),
+			//                            dataField.getAttribute("IsArray").getValue());
+			DataField d = new DataField(idValue,nameValue,isArrayValue);
+
 			if(dataField.getChild("Description",ns)!=null)
 				d.setDescription(dataField.getChild("Description",ns).getText());
 			datafieldsReturn.add(d);		
