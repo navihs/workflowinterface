@@ -1,0 +1,1 @@
+Interface de visualisation de l'état d'avancement d'un workflow
